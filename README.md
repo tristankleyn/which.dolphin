@@ -1,2 +1,2 @@
-# delphinID
-CNN classification of dolphin species by latent features in frequency spectra of whistle and click vocalizations.
+# delphinID - deep acoustic classification for delphinid species
+User manual
