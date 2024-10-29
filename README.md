@@ -37,8 +37,8 @@ R script containing functions required for compiledata_main script
 
 ### Overview
 delphinID is a deep learning-based framework designed for identifying delphinid species in underwater recordings (Kleyn, Janik and Oswald, in prep.). Written and trained in Python for identifying seven commonly occurring North Atlantic species, it uses detections from the Click Detector and Whistle & Moan Detector module in the open-source PAMGuard software (Gillespie, 2008). to inform species prediction. 
-A defining element of delphinID’s ability to accurately classify delphinid vocalizations to species is its utilisation of readily available tools, alongside carefully selected filters, to reduce the amount of ‘hard work’ required from its neural networks. PAMGuard’s well-tested whistle and click detection algorithms extract meaningful information from vocalizations, providing a “human in the loop” and improving identification of species in acoustic data.
-Users of delphinID use these tools to feed detections into the classification model. After that they can sit back, be it below the boat deck with dolphins passing by on the other side of their hull or at home on the sofa next to a heavy hard drive of acoustic data, and enjoy exploring new insights into their data at species-level resolution! Below is a brief description of the delphinID classification workflow.
+A defining element of delphinID’s ability to accurately classify delphinid vocalizations to species is its utilisation of readily available tools, alongside carefully selected filters, to reduce the amount of ‘hard work’ required from its neural networks. PAMGuard’s whistle and click detection algorithms extract acoustic profiles of vocalizations and are flexible in design, providing a “human in the loop” step for assuring quality of data before input to classification.
+Users of delphinID use these tools to feed detections into the classification model. Below is a brief description of the delphinID classification workflow.
 
 #### Principles of Operation 
 There are five main stages to classifying acoustic encounters with delphinids using delphinID (Figure A). 
