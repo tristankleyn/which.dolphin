@@ -21,7 +21,7 @@ R script containing functions required for compiledata_main script
 
 ## User manual
 ### Terminology
-| Column 1 Header | Column 2 Header |
+| Term | Description |
 |-----------------|-----------------|
 | Accuracy | The proportion of correct (out of total) predictions made by a classifier.  |
 | Bandwidth | A range of frequencies (Hz) |
