@@ -1,31 +1,21 @@
 # delphinID - deep acoustic classification for delphinid species
 ## Overview
-This repostiory contains code for training and testing delphinID models, convolutional neural networks designed to accurately identify delphinid species by latent features in the frequency spectra of their echolocation click and whistle vocalizations, detected from passive acoustic recordings using [PAMGuard software](https://www.pamguard.org/). Code is available here in following structure:
+This repostiory contains code for training and testing delphinID models, convolutional neural networks designed to accurately identify delphinid species by latent features in the frequency spectra of their echolocation click and whistle vocalizations, detected from passive acoustic recordings using [PAMGuard software](https://www.pamguard.org/). Code is available in the following scripts:
 
-### classify/
+### delphinID/
 
-#### └── pycache/
+#### └── classify_main.py
 
-Folder containing bytecode for Python application
+Python script for training, evaluating, and outputting delphinID models.
 
-#### └── models/
+#### └── classify_functions.py
 
-Folder containing whistle and click classifier models, formatted as .joblib files and built using [Scikit-Learn](https://scikit-learn.org/stable/) for different species combinations to use in app.
+Python script containing functions required for classify_main script
 
-#### └── html/
+#### └── compiledata_main.R
 
-Folder containing .txt files storing HTML content for the application.
+R script for extracting features from PAMGuard detections and preparing data in format required for training and evaluating models.
 
-#### └── www/
+#### └── compiledata_functions.R
 
-Folder containing images sourced by application.
-
-#### └── app.py
-
-Python script of application
-
-#### └── requirements.txt
-
-Text file containing list of Python packages required to run app.py
-
-## Running the classifier app
+R script containing functions required for compiledata_main script
