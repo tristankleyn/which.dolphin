@@ -1,4 +1,4 @@
-![Alt text](images/logo_1.png)
+![Alt text](images/logo_1.PNG)
 # delphinID - deep acoustic classification for delphinid species
 This repostiory contains code for training and testing delphinID models, convolutional neural networks designed to accurately identify delphinid species by latent features in the frequency spectra of their echolocation click and whistle vocalizations, detected from passive acoustic recordings using [PAMGuard software](https://www.pamguard.org/). Code is available in the following scripts:
 
