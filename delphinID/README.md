@@ -72,7 +72,8 @@ delphinID’s whistle classifier uses the entire 2-20 kHz frequency band to clas
 2.	Threshold
 The detection threshold of the Whistle & Moan Detector works similarly to that of the Click Detector, limiting detections to those only showing a signal-to-noise ratio above a dB threshold. This threshold, which was set consistently at +6 dB for training and testing the delphinID whistle classifier, should be adjusted to prioritise minimisation of the proportion of false positive detections (even at the cost of false negative detections).
 
-For both click and whistle detection, all settings used for training and evaluation the delphinID classifiers can be found in Appendix XXX. We strongly encourage users to manually monitor a portion of their detections until a satisfactorily low false positive rate is achieved. We again stress that delphinID does not require a large number of vocalizations to accurate classify to species. We encourage users to thus prioritise minimising false positive detections over minimising false negative (missed) detections. If a recording is very noisy with vocalizations exhibiting considerably low signal-to-noise ratios, it should not be used for classification. 
+#### The importance of quality detections
+Classification performance is highly sensitive to the quality of the detections fed into it. We therefore encourage some form of quality assurance when running automated detection of clicks and whistles for use with delphinID suggest prioritising a low false detection rate over avoiding missed detections (which can be unavoidable in noisy recordings).
 
 
 
