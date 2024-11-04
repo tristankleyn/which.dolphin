@@ -6,7 +6,7 @@ This is a repository containing two workflows for training and evaluating machin
 
 #### └── delphinID/
 
-delphinID is a deep learning workflow for training and testing classifiers to recognise species based on averaged spectral profiles of whistles and clicks
+[delphinID](https://github.com/tristankleyn/which.dolphin/tree/main/delphinID) is a deep learning workflow for training and testing classifiers to recognise species based on averaged spectral profiles of whistles and clicks
 
 #### └── rocca/
 
