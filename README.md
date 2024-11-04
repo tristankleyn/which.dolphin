@@ -1,5 +1,4 @@
 ![Alt text](images/logo_2.PNG)
-## Overview
 This repostiory contains code for training and testing delphinID models, convolutional neural networks designed to accurately identify delphinid species by latent features in the frequency spectra of their echolocation click and whistle vocalizations, detected from passive acoustic recordings using [PAMGuard software](https://www.pamguard.org/). Code is available in the following scripts:
 
 ### delphinID/
@@ -37,7 +36,7 @@ R script containing functions required for compiledata_main script
 | Whistle | A narrowband signal used by dolphins for social communication. |
 
 ### Overview
-delphinID is a deep learning-based framework designed for identifying delphinid species in underwater recordings (Kleyn, Janik and Oswald, in prep.). Written and trained in Python for identifying seven commonly occurring North Atlantic species, it uses detections from the Click Detector and Whistle & Moan Detector module in the open-source PAMGuard software (Gillespie, 2008). to inform species prediction. 
+delphinID is a deep learning-based framework designed for identifying delphinid species in underwater recordings (Kleyn et al., in prep.). Written and trained in Python for identifying seven commonly occurring North Atlantic species, it uses detections from the Click Detector and Whistle & Moan Detector module in the open-source PAMGuard software (Gillespie, 2008). to inform species prediction. 
 A defining element of delphinID’s ability to accurately classify delphinid vocalizations to species is its utilisation of readily available tools, alongside carefully selected filters, to reduce the amount of ‘hard work’ required from its neural networks. PAMGuard’s whistle and click detection algorithms extract acoustic profiles of vocalizations and are flexible in design, providing a “human in the loop” step for assuring quality of data before input to classification.
 Users of delphinID use these tools to feed detections into the classification model. Below is a brief description of the delphinID classification workflow.
 
