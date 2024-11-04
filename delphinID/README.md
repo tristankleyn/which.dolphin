@@ -4,8 +4,7 @@ This repostiory contains code for training and testing delphinID models, convolu
 
 ### delphinID/
 
-#### └── classify_main.py
-
+#### └── [classify_main.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_main.py)
 Python script for training, evaluating, and exporting delphinID models.
 
 #### └── classify_functions.py
