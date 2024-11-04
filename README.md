@@ -10,4 +10,5 @@ delphinID is a deep learning workflow for training and testing classifiers to re
 
 #### └── rocca/
 
-ROCCA (Real-time Odontocete Call Classification Algorithm) ([Oswald et al., 2007]([https://pubs.aip.org/asa/jasa/article/122/1/587/813007]) is a method for classifying dolphin vocalizations to species using select measurements with Random Forest analysis. This folder contains code to train and test models using this method.
+ROCCA (Real-time Odontocete Call Classification Algorithm) ([Oswald et al., 2007](https://pubs.aip.org/asa/jasa/article/122/1/587/813007)) is a method for classifying dolphin vocalizations to species using select measurements with Random Forest analysis. This folder contains code to train and test models using this method.
+
