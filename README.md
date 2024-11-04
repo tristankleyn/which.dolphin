@@ -49,6 +49,8 @@ There are five main stages to classifying acoustic encounters with delphinids us
 4.	Classification of detection frames
 5.	Classification of acoustic encounters
 
+![Alt text](images/workflow_1.PNG)
+
 delphinID is a set of deep learning models coded in Python 3.0 for classifying dolphin vocalizations to species. The current models available are tested for classifying seven species found in the northeast Atlantic Ocean. The models classify acoustic representations of clicks and whistle fragments detected in PAMGuard to inform species identity. Detections must be made using the pre-existing Click Detector and Whistle and Moan Detector modules in PAMGuard. Acoustic representations of clicks and whistle fragments, which are made separately and herein referred to as detection frames, are normalised arrays containing the average frequency power spectra of all whistle fragments or clicks detected within a rolling 4-second window. The delphinID click and whistle models predict species identity based on these frames and predictions are accumulated over time to inform an overall prediction for each acoustic encounter Finally, encounter predictions from the separate whistle and click models are combined into a merged feature which is used by a Random Forest model to form a final prediction based on both vocalization types. For full details on the methods used and model evaluation, please refer to our publication (Kleyn et al., in prep.). 
 
 ### Configuring supporting PAMGuard modules
