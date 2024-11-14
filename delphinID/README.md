@@ -75,9 +75,9 @@ delphinID’s whistle classifier uses the entire 2-20 kHz frequency band to clas
 The detection threshold of the Whistle & Moan Detector works similarly to that of the Click Detector, limiting detections to those only showing a signal-to-noise ratio above a dB threshold. This threshold, which was set consistently at +6 dB for training and testing the delphinID whistle classifier, should be adjusted to prioritise minimisation of the proportion of false positive detections (even at the cost of false negative detections).
 
 ### Performance metrics & the importance of quality detections
-While performance varies widely between species for classifying events based on solely whistles (**species accuracy/precision 0.41-0.72/0.44-0.73; mean 0.54/0.56; F1=0.30**) or clicks (**species accuracy/precision 0.52-0.96/0.50-1.00; mean 0.76/0.75; F1=0.57**) alone, classification accuracy is more consistent for events containing both types of vocalization (**species accuracy/precision 0.80-1.00/0.85-1.00; mean 0.88/0.086; F1=0.76**).
+While performance varies widely between species for classifying events based on solely whistles or clicks alone, classification accuracy is more consistent for events containing both types of vocalization.
 
-delphinID classification performance (F1 score = accuracy x precision)
+**delphinID classification performance (F1 score = accuracy x precision)**
 | Species | Event, whistles only | Event, clicks only | Event, whistles and clicks |
 |-----------------|-----------------|-----------------|-----------------|
 | Delphinus delphis | 0.20 | 0.60 | 0.50 |
@@ -87,6 +87,8 @@ delphinID classification performance (F1 score = accuracy x precision)
 | Lagenorhynchus albirostris | 0.54 | 0.86 | 0.90 |
 | Orcinus orca | 0.57 | --- | 0.80 |
 | Tursiops truncatus | 0.20 | 0.45 | 0.81 |
+| **All species** | **0.30** | **0.57** | **0.76** |
+
 
 
 Performance is, however, highly sensitive to the quality of the detections fed into it. We therefore encourage some form of quality assurance when running automated detection of clicks and whistles for use with delphinID suggest prioritising a low false detection rate over avoiding missed detections (which can be unavoidable in noisy recordings). The performance metrics cited are based on classifiers trained and evaluate using certain thresholds for discarding  low signal-to-noise or false detections. 
