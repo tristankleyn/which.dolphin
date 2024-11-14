@@ -42,11 +42,11 @@ Users of delphinID use these tools to feed detections into the classification mo
 
 #### Principles of Operation 
 There are five main stages to classifying acoustic encounters with delphinids using delphinID (Figure A). 
-1.	Detection of echolocation click vocalizations (clicks)
-2.	Detection of narrowband whistle vocalizations (whistles)
-3.	Selection of classification parameters in delphinID
-4.	Classification of detection frames
-5.	Classification of acoustic encounters
+##### 1.	Detection of echolocation click vocalizations (clicks)
+##### 2.	Detection of narrowband whistle vocalizations (whistles)
+##### 3.	Selection of classification parameters in delphinID
+##### 4.	Classification of detection frames
+##### 5.	Classification of acoustic encounters
 
 ![Alt text](images/workflow_1.PNG)
 
