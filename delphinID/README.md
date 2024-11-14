@@ -80,13 +80,13 @@ While performance varies widely between species for classifying events based on 
 delphinID classification performance (F1 score = accuracy x precision)
 | Species | Event, whistles only | Event, clicks only | Event, whistles and clicks |
 |-----------------|-----------------|-----------------|-----------------|
-| Delphinus delphis | 0.20 | 0.60 |  |
-| Grampus griseus | 0.29/0.35 | 0.89/0. |  |
-| Globicephala melas | Containing a wide range of frequencies (Hz) |
-| Lagenorhynchus acutus | Broadband pulse signal used by dolphins for echolocation |
-| Lagenorhynchus albirostris | A 2D representation of PAMGuard detections containing one or more vocalizations. Peak-frequency contours are plotted across frequency (Hz, vertical axis) and time (sec, horizontal axis) to represent whistles in whistle detection frames. Average normalised power spectra are plotted across proportion of energy (vertical axis) and frequency (Hz, horizontal axis) in click detection frames. |
-| Orcinus orca | A period of time containing one or more dolphin vocalizations. Independent encounters are spatiotemporally separate from one another (at least 1 hour or 5 km apart). | 
-| Tursiops truncatus | Containing a narrow range of frequencies (Hz) | 
+| Delphinus delphis | 0.20 | 0.60 | 0.50 |
+| Grampus griseus | 0.11 | 0.80 | 0.70 |
+| Globicephala melas | 0.14 | 0.46 | 0.65 |
+| Lagenorhynchus acutus | 0.37 | --- | 0.58 |
+| Lagenorhynchus albirostris | 0.54 | 0.86 | 0.90 |
+| Orcinus orca | 0.57 | --- | 0.80 |
+| Tursiops truncatus | 0.20 | 0.45 | 0.81 |
 
 
 Performance is, however, highly sensitive to the quality of the detections fed into it. We therefore encourage some form of quality assurance when running automated detection of clicks and whistles for use with delphinID suggest prioritising a low false detection rate over avoiding missed detections (which can be unavoidable in noisy recordings). The performance metrics cited are based on classifiers trained and evaluate using certain thresholds for discarding  low signal-to-noise or false detections. 
