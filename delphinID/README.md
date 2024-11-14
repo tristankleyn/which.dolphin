@@ -36,12 +36,10 @@ R script containing functions required for compiledata_main script
 | Whistle | A narrowband signal used by dolphins for social communication. |
 
 ### Overview
-delphinID is a deep learning-based framework designed for identifying delphinid species in underwater recordings (Kleyn et al., in prep.). Written and trained in Python for identifying seven commonly occurring North Atlantic species, it uses detections from the Click Detector and Whistle & Moan Detector module in the open-source PAMGuard software (Gillespie, 2008). to inform species prediction. 
-A defining element of delphinID’s ability to accurately classify delphinid vocalizations to species is its utilisation of readily available tools, alongside carefully selected filters, to reduce the amount of ‘hard work’ required from its neural networks. PAMGuard’s whistle and click detection algorithms extract acoustic profiles of vocalizations and are flexible in design, providing a “human in the loop” step for assuring quality of data before input to classification.
-Users of delphinID use these tools to feed detections into the classification model. Below is a brief description of the delphinID classification workflow.
+delphinID is a deep learning-based framework designed for identifying delphinid species in underwater recordings (Kleyn et al., in prep.). Written and trained in Python for identifying seven commonly occurring North Atlantic species, it uses detections from the Click Detector and Whistle & Moan Detector module in the open-source PAMGuard software (Gillespie, 2008). to inform species prediction. A defining element of delphinID’s ability to accurately classify delphinid events to species is its utilisation of readily available tools, alongside conservative post-processing of detections, to reduce the amount of ‘hard work’ required from its neural networks. PAMGuard’s whistle and click detection algorithms extract acoustic profiles of vocalizations and are flexible in design, providing a “human in the loop” step for assuring quality of data before input to classification. delphinID learns latent species-specific patterns in average spectra of whistle and click detections to inform species prediction based on both types of vocalization. Below is a brief description of the delphinID classification workflow.
 
 #### Principles of Operation 
-There are four main stages to classifying acoustic encounters with delphinids using delphinID (Figure A). 
+There are four main stages to classifying acoustic events with delphinids using delphinID.
 ##### 1)	Detect echolocation clicks
 ##### 2)	Detect narrowband whistle fragments
 ##### 3)	Classification of detection frames (using whistles and clicks separately)
@@ -76,7 +74,7 @@ delphinID’s whistle classifier uses the entire 2-20 kHz frequency band to clas
 ##### Threshold
 The detection threshold of the Whistle & Moan Detector works similarly to that of the Click Detector, limiting detections to those only showing a signal-to-noise ratio above a dB threshold. This threshold, which was set consistently at +6 dB for training and testing the delphinID whistle classifier, should be adjusted to prioritise minimisation of the proportion of false positive detections (even at the cost of false negative detections).
 
-#### The importance of quality detections
+### On the importance of quality detections
 Classification performance is highly sensitive to the quality of the detections fed into it. We therefore encourage some form of quality assurance when running automated detection of clicks and whistles for use with delphinID suggest prioritising a low false detection rate over avoiding missed detections (which can be unavoidable in noisy recordings).
 
 
