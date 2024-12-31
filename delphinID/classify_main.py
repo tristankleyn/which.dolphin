@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 ###classify_main.ipynb
-
+#########################
+## IMPORT MODULES
+#########################
 import os
 import numpy as np
 import pandas as pd
@@ -26,7 +28,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from keras.layers import BatchNormalization
 from keras.callbacks import EarlyStopping
-from tensorflow.keras import layers, models # For specifying the type of layer (Dense)
+from tensorflow.keras import layers, models 
 from tensorflow.keras.models import Sequential
 
 import warnings
@@ -34,49 +36,44 @@ warnings.filterwarnings('ignore')
 
 from classify_functions.py import *
 
-from google.colab import drive
-drive.mount('/content/drive', force_remount=True)
+#######################################
+##SETTINGS FOR CLASSIFIER DESIGN
+#######################################
 
-folder = 'INPUT/PATH/HERE' #folder storing 'whistlespectra.csv' and 'clickspectra.csv' files
-
-
-##TRAIN/EVALUATE CLASSIFIER
-voctype = 'whistle' #input 'whistle' or 'click' to train respective classifiers
+##LOCATE DATA
+folder = '.../delphinID/data'                     #INPUT FULL PATH TO FOLDER CONTAINING SPECTRA DATA
+voctype = '...'                                   #INPUT 'whistle' or 'click'
 if voctype == 'whistle':
   d = pd.read_csv(f'{folder}//whistlespectra.csv')
 else:
   d = pd.read_csv(f'{folder}//clickspectra.csv')
 
-binary = True
+selectspecies = np.unique(d.species)
+testencs = np.unique(d.enc_id)
 
-#detection thresholds (adjust as needed)
-nmin = 1 #min clicks per second
-THR = 0.1 #min whistle detection density
-dd = (0.15,2)
+###HYPERPARAMETERS
+nmin = 1                              #minimum number of clicks for detection frames
+dd = (0.1, 100)                       #range of whistle detection density for detection frames
+nmax = 30                             #maximum examples per encounter used for training (default = 30)       
+resize = 1                            #factor to compress input arrays by (i.e. factor of 2 halves array length) (default = 1)
+batch_size = 1                        #number of examples used for training before retraining internal model parameters (default = 1)
+epochs = 20                           #number of training epochs for each bootstrap of training and validation data (default = 20)
+partitions = 5                        #number of different partitions/bootstraps of training and validation data to train model on (default = 5)
+nfiltersconv=16                       #number of filters used in 1D convolutional layers in CNN model (default = 16)
+kernelconv=3                          #number of kernels used in 1D convolutional layers in CNN model (default = 3)
+padding='same'                        #zero-pad input features to match output size of 1D convolutional layer in CNN model (default = 'same')
+maxpool=2                             #size of sliding window for max pooling layer in CNN model (default = 2)
+leaky=0.1                             #constant value for negative inputs into leaky ReLU activation function in CNN model (default = 0.1)
+densesize=10                          #size of dense layer in CNN model (default = 10)
+dropout=0.2                           #proportion of neurons randomly discarded by dropout in each training step (default = 0.2)
+patience=20                           #number of epochs before early stopping callback during model training (default = 20)
+seed = 10                             #initial random seed for training
+use_selectencs = False                #use list of select encounters for training
+split = 0.33                          #proportion of training data used for validation in each training epoch (default = 0.33)
+omit_encs = []                        #omit select encounters
+model_format = 'saved_model'          #'saved_model' or '.keras' format for saving CNN models
 
-#classification hyperparameters (adjust as needed)
-nmax = 30
-resize = 1
-batch_size = 1
-epochs = 20
-partitions = 5
-nfiltersconv=16
-kernelconv=3
-padding='same'
-maxpool=2
-leaky=0.1
-densesize=10
-dropout=0.3
-patience=20
-seed = 10
-use_selectencs = False
-split = 0.33
-
-#omit encounters (adjust as needed)
-omit_encs = []
-omit_encs = []
-
-#initialise model history and scoring
+##INITIALISE MODEL AND RESULTS FOLDER
 history = {'2s':{}, '4s':{}, '8s':{}}
 count_framecorrect = {'2s':0, '4s':0, '8s':0}
 count_frametotal = {'2s':0, '4s':0, '8s':0}
@@ -86,11 +83,8 @@ ccc = 0
 max_ss = None
 ratio = 0.5
 seedcount = 0
-testencs = np.unique(d.enc_id)
-np.random.shuffle(testencs)
 df_preds_tot = pd.DataFrame()
 
-#initialise new run in /models folder
 runs = [int(item[3:]) for item in os.listdir(f'{folder}/models') if 'run' in item]
 runid = 0
 while runid in runs:
@@ -99,33 +93,21 @@ while runid in runs:
 if f'run{runid}' not in os.listdir(f'{folder}/models'):
   os.mkdir(f'{folder}/models/run{runid}')
 
-#train and test classifier
-print(f'Classifying {len(testencs)} unseen encounters...\n')
+##TRAIN AND TEST CLASSIFIER
+print(f'Classifying {len(testencs)} encounters...\n')
 for test in testencs:
   seedcount += 1
   for w in [4]:
     if voctype in ['click', 'clicks', 'c']:
       dd = None
-      selectspecies = ['Dde', 'Ggr', 'Gme', 'Lal', 'Ttr']
-      if binary == True:
-        startcol = 0
-        path = f'{folder}/spectraBinary/allclicks_ds2_pruned.csv'
-        img_shape = (81,1)
-      else:
-        startcol = 1
-        path = f'{folder}/clickspectra_all/spectra_4s_pruned_smooth5.csv'
-        img_shape = (156,1)
+      startcol = 0
+      path = f'{folder}/clickspectra.csv'
+      img_shape = (81,1)
 
     if voctype in ['whistle', 'whistles', 'w']:
-      selectspecies = ['Dde', 'Ggr', 'Gme', 'Lal', 'Ttr']
-      if binary == True:
-        startcol = 0
-        path = f'{folder}/spectraBinary/allwhistles_ds2_pruned_edit.csv'
-        img_shape = (90,1)
-      else:
-        startcol = 1
-        path = f'{folder}/whistlespectra_minMAS1/whistlespectra_minMAS1_pruned.csv'
-        img_shape = (90,1)
+      startcol = 0
+      path = f'{folder}/whistlespectra.csv'
+      img_shape = (90,1)
 
     model_2s, model_4s, model_8s, es, lr_schedule = initialise_model(img_shape=img_shape, classes=len(selectspecies), batch_size=batch_size, epochs=epochs,
                                                                      patience=patience, nfiltersconv=nfiltersconv, kernelconv=kernelconv, padding=padding, maxpool=maxpool, leaky=leaky, densesize=densesize, dropout=dropout)
@@ -147,7 +129,6 @@ for test in testencs:
 
       if len(xtest) > 0:
         testsp = ytest[0]
-    #    xtrain, xval, xtest, ytrain, yval, ytest, filenames, encs, info_train, info_val = compile_data(folder, locs=locs, verbose=False, resize_factor=resize)
         sub = info_train[info_train.species==testsp]
         sub['site'].replace(np.nan, 'other', inplace=True)
 
@@ -207,10 +188,15 @@ for test in testencs:
       info_test = pd.concat([info_test, input_test.reset_index().drop(columns=['index'])], axis=1)
       info_test = info_test.sort_values(by=['starttime'], ascending=True).reset_index().drop(columns=['index'])
 
+      #SAVE MODEL AND TEST RESULTS
       if f'{voctype}_{w}s_{test}' not in os.listdir(f'{folder}/models/run{runid}'):
         os.mkdir(f'{folder}/models/run{runid}/{voctype}_{w}s_{test}')
 
-      model_4s.save(f'{folder}/models/run{runid}/{voctype}_{w}s_{test}/model.keras')
+      if model_format == 'saved_model':
+        tf.saved_model.save(model_4s, f'{folder}/models/run{runid}/{voctype}_{w}s_{test}')
+      else:
+        model_4s.save(f'{folder}/models/run{runid}/{voctype}_{w}s_{test}/model.keras')
+        
       info_train.to_csv(f'{folder}/models/run{runid}/{voctype}_{w}s_{test}/infotrain.csv', index=False, header=True, mode='w')
       info_val.to_csv(f'{folder}/models/run{runid}/{voctype}_{w}s_{test}/infoval.csv', index=False, header=True, mode='w')
       info_test.to_csv(f'{folder}/models/run{runid}/{voctype}_{w}s_{test}/infotest.csv', index=False, header=True, mode='w')
@@ -231,11 +217,9 @@ for test in testencs:
       valloss.extend(hist['val_loss'])
 
       df_preds_tot = df_preds_tot._append(df_preds).reset_index().drop(columns=['index'])
-
-      #save model
       filename = f'models/run{runid}/{voctype}_{w}s_{test}/c{test}_{nmin}_all_{nmax}_meta.csv'
       savetolog(folder=folder, filename=filename, selectspecies=selectspecies, info_train=info_train, info_val=info_val,
                 testsp=testsp, testenc=test, w=w, epochs=epochs, batch_size=batch_size, resize=resize, patience=patience, model=models[f'{w}s'], nfiltersconv=nfiltersconv, kernelconv=kernelconv,
-                padding=padding, maxpool=maxpool, leaky=leaky, densesize=densesize, dropout=dropout, trainencs=None, valencs=None, THR=THR, nmax=nmax, minval=None,
+                padding=padding, maxpool=maxpool, leaky=leaky, densesize=densesize, dropout=dropout, trainencs=None, valencs=None, THR=dd, nmax=nmax, minval=None,
                 xtrain=xtrain, xtest=xtest, ytrain=ytrain, ytest=ytest, encs_t=None, encs_v=None, conf_matrix=conf_matrix, cum=cum, acc=acc, loss=loss, valacc=valacc, valloss=valloss,
                 initial=True)

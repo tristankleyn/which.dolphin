@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 ###classify_functions.py
-
+#########################
+## IMPORT MODULES
+#########################
 import os
 import numpy as np
 import pandas as pd
@@ -8,7 +10,6 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 import shutil
 import random
-from colorama import Fore
 from tqdm import tqdm
 import itertools
 import tensorflow as tf
@@ -26,224 +27,9 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from keras.layers import BatchNormalization
 from keras.callbacks import EarlyStopping
-from tensorflow.keras import layers, models # For specifying the type of layer (Dense)
+from tensorflow.keras import layers, models 
 from tensorflow.keras.models import Sequential
 
-def compile_examples(folder, w=2, omit_encs = ['500'], nmin=2, THR=10, selectspecies = ['Dde', 'Ggr', 'Gme', 'Lac', 'Lal', 'Oor', 'Ttr'], create_test=True, specify_enc=None, seed=42, verbose=True):
-  #summary of images in drive
-  d = {'species':[], 'enc_id':[], 'arr_id':[], 'filename':[]}
-
-  subf = f'CDsegments_{w}s_ALL'
-  if verbose == True:
-    print(f'Loading...')
-
-  items = os.listdir(f'{folder}/{subf}')
-  count = 0
-  for item in items:
-    if item[3] != "_":
-      continue
-    enc = item[item.index('_')+1:item.index('_')+4]
-    if enc in omit_encs:
-      continue
-    d['species'].append(item[:3])
-    d['enc_id'].append(enc)
-    d['arr_id'].append(item[item.index('arr')+3:item.rindex('_')])
-    d['filename'].append(item)
-    count += 1
-
-  imgs = pd.DataFrame(d)
-  imgs = imgs[imgs.species.isin(selectspecies)].reset_index().drop(columns=['index'])
-  imgs_ = pd.DataFrame(d)
-  imgs_ = imgs_[imgs_.species.isin(selectspecies)].reset_index().drop(columns=['index'])
-
-  items = np.array([int(f[f.rindex('_')+1:f.rindex('.')]) for f in imgs.filename])
-  items_ = np.array([int(f[f.rindex('_')+1:f.rindex('.')]) for f in imgs.filename])
-  keep = items > w*nmin
-  keep_ = items_ > w*nmin
-  imgs = imgs.iloc[keep, :].reset_index().drop(columns=['index'])
-  imgs_ = imgs_.iloc[keep_, :].reset_index().drop(columns=['index'])
-
-  if verbose == True:
-    print(f'Done. Loaded {count} examples')
-
-  #remove encounters with less than THR examples
-  n0 = len(np.unique(imgs.enc_id))
-  for enc in np.unique(imgs.enc_id):
-    N = len(imgs[imgs.enc_id==enc])
-    if N < THR:
-      inds = imgs[imgs.enc_id==enc].index
-      inds = np.array(list(inds))
-      imgs = imgs.loc[~imgs.index.isin(inds)]
-
-  imgs = imgs.reset_index().drop(columns=['index'])
-  n1 = len(np.unique(imgs.enc_id))
-  if verbose==True:
-    print(f'Removed {n0-n1} encounters with less than {THR} examples')
-    print('')
-    print(f'New size of dataset: {len(imgs)} examples')
-
-  ntestencs = 1
-  mintest = 10
-  testcount = {}
-
-  imgs_species = imgs_[imgs_.species.isin(selectspecies)]
-  enclist = np.unique(imgs_species.enc_id)
-  random.seed(seed)
-
-  if create_test == True:
-    #clear test folder
-    for item in os.listdir(f'{folder}/test'):
-        os.remove(f'{folder}/test/{item}')
-
-    if verbose == True:
-      print(f'All items cleared from {folder}/test \n')
-
-  #extract test encounters
-  if specify_enc is not None:
-    testenc = specify_enc
-    ntest = len(imgs_[imgs_.enc_id==testenc])
-
-  else:
-    ntest = 0
-    while ntest < mintest:
-      np.random.shuffle(enclist)
-      testenc = enclist[:1][0]
-      ntest = len(imgs_[imgs_.enc_id==testenc])
-
-  if create_test == True:
-    testfiles = imgs_[imgs_.enc_id==testenc].filename.values
-    testsp = list(imgs_[imgs_.enc_id==testenc]['species'])[0]
-    testcount = 0
-
-    for file in testfiles:
-      src = f'{folder}/{subf}/{file}'
-      dst = f'{folder}/test/{file}'
-      shutil.copy(src, dst)
-      testcount += 1
-
-    inds = imgs[imgs.enc_id==testenc].index
-    inds = np.array(list(inds))
-    imgs = imgs.loc[~imgs.index.isin(inds)]
-
-  if create_test == False:
-    testenc = None
-    testsp = 'No species'
-    testcount = 0
-
-  if verbose==True:
-    print(f'Test encounter: {testenc} ({testsp})')
-    print(f'Extracted {testcount} examples for {testsp} to test folder and removed from dataframe')
-    print(f'\n{len(imgs)} examples for {len(np.unique(imgs.species))} species remain for training and validation')
-
-  return imgs
-
-def create_trainval_new(basefolder,
-                    subf,
-                    imgs,
-                    selectspecies=['Dde', 'Ggr', 'Gme', 'Lac', 'Lal', 'Oor', 'Ttr'],
-                    nmax=60,
-                    split=0.33,
-                    nvalencs=2,
-                    seed=42,
-                    verbose=False):
-
-
-
-  # Limit number of examples per encounter
-  orgsize = len(imgs)
-  remove_inds = []
-  for sp in np.unique(imgs.species):
-    sub = imgs[imgs.species==sp]
-    for enc in np.unique(sub.enc_id):
-      subsub = sub[sub.enc_id==enc]
-      if len(subsub) > nmax:
-        diff = len(subsub) - nmax
-        inds = subsub.sample(n=diff, random_state=seed).index
-        inds = np.array(list(inds))
-        remove_inds.extend(inds)
-
-  imgs = imgs.loc[~imgs.index.isin(remove_inds)]
-  if verbose == True:
-    newsize = len(imgs)
-    print(f'{orgsize-newsize} examples removed after applying encounter limit \n')
-
-  # Clear train, val sets
-  for x in ['train', 'val']:
-    for subx in os.listdir(f'{folder}/{x}'):
-      items = os.listdir(f'{folder}/{x}/{subx}')
-      for item in items:
-        os.remove(f'{folder}/{x}/{subx}/{item}')
-      os.rmdir(f'{folder}/{x}/{subx}')
-    if verbose == True:
-      print(f'All items cleared from {folder}/{x}')
-
-
-  #compile train, val sets
-  np.random.seed(seed)
-  minss = 10000
-  for sp in selectspecies:
-    sub = imgs[imgs.species==sp]
-    nsub = len(sub)
-    if nsub < minss:
-      minss = nsub
-
-  if verbose == True:
-    print(f'\nAll species downsampled to {minss} \n')
-
-  for sp in selectspecies:
-    sub = imgs[imgs.species==sp]
-    sub = sub.sample(n=minss, random_state=seed)
-    subtrain = sub.iloc[int(len(sub)*split):].reset_index().drop(columns=['index'])
-    subval = sub.iloc[:int(len(sub)*split)].reset_index().drop(columns=['index'])
-    if sp == selectspecies[0]:
-      imgs_train = subtrain
-      imgs_val = subval
-    else:
-      imgs_train = imgs_train._append(subtrain).reset_index().drop(columns=['index'])
-      imgs_val = imgs_val._append(subval).reset_index().drop(columns=['index'])
-
-  if verbose == True:
-    print(f'\nCreating training and validation sets...')
-    print(f'Examples per species training set: {int(minss*(1-split))}')
-    print(f'Examples per species validation set: {int(minss*split)}')
-
-  traincount = {}
-  valcount = {}
-  for sp in selectspecies:
-    examples_train = imgs_train[imgs_train.species==sp]
-    examples_val = imgs_val[imgs_val.species==sp]
-
-    if sp not in os.listdir(f'{folder}/train'):
-      os.mkdir(f'{folder}/train/{sp}')
-    if sp not in os.listdir(f'{folder}/val'):
-      os.mkdir(f'{folder}/val/{sp}')
-
-    traincount[sp] = 0
-    for i in examples_train.index:
-      file = examples_train.filename[i]
-      src = f'{folder}/{subf}/{file}'
-      dst = f'{folder}/train/{sp}/{file}'
-      shutil.copy(src, dst)
-      traincount[sp] += 1
-
-    valcount[sp] = 0
-    for i in examples_val.index:
-      file = examples_val.filename[i]
-      src = f'{folder}/{subf}/{file}'
-      dst = f'{folder}/val/{sp}/{file}'
-      shutil.copy(src, dst)
-      valcount[sp] += 1
-
-  if verbose == True:
-    print('\nDone creating train and validation sets:')
-    for sp in list(traincount.keys()):
-      print(f'{sp} (Train): {traincount[sp]}')
-      print(f'{sp} (Validation): {valcount[sp]}')
-
-def syncshuffle(a, b):
-    assert len(a) == len(b)
-    p = np.random.permutation(len(a))
-    return a[p], b[p]
 
 def compile_data_from_csvpath(path, testenc, w=4, startcol=1, nmax=50, selectspecies=['Dde', 'Ggr', 'Gme', 'Lal', 'Ttr'], omit_encs=[], dd=None, max_ss=None, ss_exc_species=[], split=0.33, verbose=False, seed=42):
   data = pd.read_csv(path).iloc[:,startcol:]
@@ -485,11 +271,10 @@ def predict_test_singlemodel(model, xtest, ytest, testenc, selectspecies=['Dde',
   if verbose == True:
     if ytest[0] == predicted_species:
       result = 'correct'
-      print(f'Encounter {testenc} ({w} sec res.) - - - ' + Fore.GREEN + f'Prediction {result} (True: {ytest[0]}, Predicted: {predicted_species})')
+      print(f'Encounter {testenc} ({w} sec res.) - - - ' + f'Prediction {result} (True: {ytest[0]}, Predicted: {predicted_species})')
     else:
       result = 'incorrect'
-      print(f'Encounter {testenc} ({w} sec res.) - - - ' + Fore.RED + f' Prediction {result} (True: {ytest[0]}, Predicted: {predicted_species})')
-  print(Fore.BLACK)
+      print(f'Encounter {testenc} ({w} sec res.) - - - ' + f'Prediction {result} (True: {ytest[0]}, Predicted: {predicted_species})')
 
   return df_preds, cum, predicted_species, ytest[0], conf_matrix
 
