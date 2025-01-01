@@ -1,7 +1,7 @@
 <img src="./images/logo_2.PNG" alt="Example image" width="600">
 
 ##
-This repostiory contains code for training and testing delphinID models, convolutional neural networks designed to accurately identify delphinid species by latent features in the frequency spectra of their echolocation click and whistle vocalizations, detected from passive acoustic recordings using [PAMGuard software](https://www.pamguard.org/). Code is available in the following scripts:
+This repository contains code for training and testing delphinID models, convolutional neural networks designed to accurately identify delphinid species by latent features in the frequency spectra of their echolocation click and whistle vocalizations, detected from passive acoustic recordings using [PAMGuard software](https://www.pamguard.org/). Code is available in the following scripts:
 
 ### delphinID/
 
@@ -20,22 +20,7 @@ R script for extracting features from PAMGuard detections and preparing data in 
 
 R script containing functions required for compiledata_main script
 
-### Pre-trained classifiers for Northeast Atlantic delphinid species 
-Trained models for classifying recordings of seven northeast Atlantic delphinid species (Short-beaked common dolpins _(Delphinus delphis)_, Common bottlenose dolphins _(Tursiops truncatus)_, Risso's dolphins _(Grampus griseus)_, Atlantic white-sided dolphins _(Lagenorhynchus acutus)_, white-beaked dolphins _(Lagenorhynchus albirostris)_, killer whales _(Orcinus orca)_, and long-finned pilot whales _(Globicephala melas)_) are available and citable for use [here](https://zenodo.org/records/14578299?preview=1).
 
-The northeast Atlantic delphinid classifier predicts events with an average accuracy of 86.3% (90% CI 82.5-90.1%) across the seven species, ranging from 80% accuracy for short-beaked common dolphins to 92% for white-beaked dolphins. F1 score (accuracy x precision) is shown for each species below:
-
-**Northeast Atlantic classifier performance (F1 score = accuracy x precision)**
-| Species | Event, whistles only | Event, clicks only | Event, whistles and clicks |
-|-----------------|-----------------|-----------------|-----------------|
-| Delphinus delphis | 0.20 | 0.60 | 0.50 |
-| Grampus griseus | 0.11 | 0.80 | 0.70 |
-| Globicephala melas | 0.14 | 0.46 | 0.65 |
-| Lagenorhynchus acutus | 0.37 | --- | 0.58 |
-| Lagenorhynchus albirostris | 0.54 | 0.86 | 0.90 |
-| Orcinus orca | 0.57 | --- | 0.80 |
-| Tursiops truncatus | 0.20 | 0.45 | 0.81 |
-| **All species** | **0.30** | **0.57** | **0.76** |
 
 ## User manual
 ### Terminology
@@ -53,9 +38,6 @@ The northeast Atlantic delphinid classifier predicts events with an average accu
 | Spectrogram | A 2D representation of sound showing the frequency (Hz, vertical axis) and amplitude (colour intensity) of sound over time (sec, horizontal axis) | 
 | Whistle | A narrowband signal used by dolphins for social communication. |
 
-### Overview
-delphinID is a deep learning-based framework designed for identifying delphinid species in underwater recordings (Kleyn et al., in prep.). Written and trained in Python for identifying seven commonly occurring North Atlantic species, it uses detections from the Click Detector and Whistle & Moan Detector module in the open-source PAMGuard software (Gillespie, 2008). to inform species prediction. A defining element of delphinID’s ability to accurately classify delphinid events to species is its utilisation of readily available tools, alongside conservative post-processing of detections, to reduce the amount of ‘hard work’ required from its neural networks. PAMGuard’s whistle and click detection algorithms extract acoustic profiles of vocalizations and are flexible in design, providing a “human in the loop” step for assuring quality of data before input to classification. delphinID learns latent species-specific patterns in average spectra of whistle and click detections to inform species prediction based on both types of vocalization. Below is a brief description of the delphinID classification workflow.
-
 #### Principles of Operation 
 There are four main stages to classifying acoustic events with delphinids using delphinID.
 ##### 1)	Detect echolocation clicks
@@ -65,7 +47,9 @@ There are four main stages to classifying acoustic events with delphinids using 
 
 ![Alt text](images/workflow_1.PNG)
 
-delphinID is a set of deep learning models coded in Python 3.0 for classifying dolphin vocalizations to species. The current models available are tested for classifying seven species found in the northeast Atlantic Ocean. The models classify acoustic representations of clicks and whistle fragments detected in PAMGuard to inform species identity. Detections must be made using the pre-existing Click Detector and Whistle and Moan Detector modules in PAMGuard. Acoustic representations of clicks and whistle fragments, which are made separately and herein referred to as detection frames, are normalised arrays containing the average frequency power spectra of all whistle fragments or clicks detected within a rolling 4-second window. The delphinID click and whistle models predict species identity based on these frames and predictions are accumulated over time to inform an overall prediction for each acoustic encounter Finally, encounter predictions from the separate whistle and click models are combined into a merged feature which is used by a Random Forest model to form a final prediction based on both vocalization types. For full details on the methods used and model evaluation, please refer to our publication (Kleyn et al., in prep.). 
+delphinID models are convolutional neural networks developed in TensorFlow for classifying dolphin vocalizations to species. The current models available are tested for classifying seven species found in the northeast Atlantic Ocean. The models classify spectral profiles of 4-seconds of either click or whistle fragments detected in PAMGuard to predict species identity. These profiles are normalised 1-dimensional arrays representing the average frequency power spectra of all detections within a 4-second window. 
+
+Acoustic representations of clicks and whistle fragments, which are made separately and herein referred to as detection frames, are normalised arrays containing the average frequency power spectra of all whistle fragments or clicks detected within a rolling 4-second window. The delphinID click and whistle models predict species identity based on these frames and predictions are accumulated over time to inform an overall prediction for a given acoustic event.
 
 ##### What is a detection frame?
 Detection frames are the units of classification used by delphinID, representing the average frequency power spectra of either whistles or clicks detected across a 4-second time window. For whistles, spectra are calculated between 2-20 kHz while for clicks spectra range from 10-40 kHz. Higher frequencies may contain information that could improve classification but were not used due to the high proportion of available training data that were restricted in sampling rate to 96 kHz or below and also due to interferring noise sources across several data sources between 40-48 kHz. The frequency ranges selected thus represented a range where useful information pertaining to the frequency content of whistles and clicks could be reliably extracted from detections and used to train delphinID models. A benefit of using detection frames over spectrogram images, which have been traditionally used for machine learning classification problems in acoustics, is that 100% of the information contained in a detection frame is relevant to the signals of interest. While the influence of background noise is difficult to prevent entirely, this technique significantly limits it compared with spectrogram-based approaches. As mentioned previously, automated whistle contour extraction algorithms such as the Whistle & Moan Detector in PAMGuard are known to produce fragemented detections, often missing a significant portion of a whistle contour. A benefit of using detection frames as classification features over parameters measured from individual whistles, as has been done extensively in previous classification studies, is that the average frequency power spectra of whistle across 4-second windows is relatively robust across different degrees of fragmentation compared with individual whistle measurements. 
@@ -92,7 +76,24 @@ Whistle detections made using the PAMGuard Whistle & Moan Detector (Gillespie et
 ### On the importance of quality detections
 Performance is, however, highly sensitive to the quality of the detections fed into it. We therefore encourage some form of quality assurance when running automated detection of clicks and whistles for use with delphinID suggest prioritising a low false detection rate over avoiding missed detections (which can be unavoidable in noisy recordings). The performance metrics cited are based on classifiers trained and evaluate using certain thresholds for discarding  low signal-to-noise or false detections. 
 
+##
 
+### Pre-trained classifiers for Northeast Atlantic delphinid species 
+Trained models for classifying recordings of seven northeast Atlantic delphinid species (Short-beaked common dolpins _(Delphinus delphis)_, Common bottlenose dolphins _(Tursiops truncatus)_, Risso's dolphins _(Grampus griseus)_, Atlantic white-sided dolphins _(Lagenorhynchus acutus)_, white-beaked dolphins _(Lagenorhynchus albirostris)_, killer whales _(Orcinus orca)_, and long-finned pilot whales _(Globicephala melas)_) are available and citable for use [here](https://zenodo.org/records/14578299?preview=1).
+
+The northeast Atlantic delphinid classifier predicts events with an average accuracy of 86.3% (90% CI 82.5-90.1%) across the seven species, ranging from 80% accuracy for short-beaked common dolphins to 92% for white-beaked dolphins. F1 score (accuracy x precision) is shown for each species below:
+
+**Northeast Atlantic classifier performance (F1 score = accuracy x precision)**
+| Species | Event, whistles only | Event, clicks only | Event, whistles and clicks |
+|-----------------|-----------------|-----------------|-----------------|
+| Delphinus delphis | 0.20 | 0.60 | 0.50 |
+| Grampus griseus | 0.11 | 0.80 | 0.70 |
+| Globicephala melas | 0.14 | 0.46 | 0.65 |
+| Lagenorhynchus acutus | 0.37 | --- | 0.58 |
+| Lagenorhynchus albirostris | 0.54 | 0.86 | 0.90 |
+| Orcinus orca | 0.57 | --- | 0.80 |
+| Tursiops truncatus | 0.20 | 0.45 | 0.81 |
+| **All species** | **0.30** | **0.57** | **0.76** |
 
 
 
