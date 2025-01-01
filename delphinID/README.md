@@ -22,7 +22,19 @@ R script containing functions required for compiledata_main script
 ### Pre-trained classifiers for Northeast Atlantic delphinid species 
 Trained models for classifying recordings of seven northeast Atlantic delphinid species (Short-beaked common dolpins _(Delphinus delphis)_, Common bottlenose dolphins _(Tursiops truncatus)_, Risso's dolphins _(Grampus griseus)_, Atlantic white-sided dolphins _(Lagenorhynchus acutus)_, white-beaked dolphins _(Lagenorhynchus albirostris)_, killer whales _(Orcinus orca)_, and long-finned pilot whales _(Globicephala melas)_) are available and citable for use [here](https://zenodo.org/records/14578299?preview=1).
 
-The northeast Atlantic delphinid classifier predicts events with an average accuracy of 86.3% (90% CI [82.5-90.1%] across the seven species, ranging from 80% accuracy for short-beaked common dolphins to 92% for white-beaked dolphins.
+The northeast Atlantic delphinid classifier predicts events with an average accuracy of 86.3% (90% CI 82.5-90.1%) across the seven species, ranging from 80% accuracy for short-beaked common dolphins to 92% for white-beaked dolphins. F1 score (accuracy x precision) is shown for each species below:
+
+**Northeast Atlantic classifier performance (F1 score = accuracy x precision)**
+| Species | Event, whistles only | Event, clicks only | Event, whistles and clicks |
+|-----------------|-----------------|-----------------|-----------------|
+| Delphinus delphis | 0.20 | 0.60 | 0.50 |
+| Grampus griseus | 0.11 | 0.80 | 0.70 |
+| Globicephala melas | 0.14 | 0.46 | 0.65 |
+| Lagenorhynchus acutus | 0.37 | --- | 0.58 |
+| Lagenorhynchus albirostris | 0.54 | 0.86 | 0.90 |
+| Orcinus orca | 0.57 | --- | 0.80 |
+| Tursiops truncatus | 0.20 | 0.45 | 0.81 |
+| **All species** | **0.30** | **0.57** | **0.76** |
 
 ## User manual
 ### Terminology
@@ -76,23 +88,7 @@ Whistle detections made using the PAMGuard Whistle & Moan Detector (Gillespie et
 
 **The detection threshold of the Whistle & Moan Detector works similarly to that of the Click Detector, limiting detections to those only showing a signal-to-noise ratio above a dB threshold.** This threshold, which was set consistently at +6 dB for training and testing the delphinID whistle classifier, should be adjusted to prioritise minimisation of the proportion of false positive detections (even at the cost of false negative detections).
 
-### Performance metrics & the importance of quality detections
-While performance varies widely between species for classifying events based on solely whistles or clicks alone, classification accuracy is more consistent for events containing both types of vocalization.
-
-**delphinID classification performance (F1 score = accuracy x precision)**
-| Species | Event, whistles only | Event, clicks only | Event, whistles and clicks |
-|-----------------|-----------------|-----------------|-----------------|
-| Delphinus delphis | 0.20 | 0.60 | 0.50 |
-| Grampus griseus | 0.11 | 0.80 | 0.70 |
-| Globicephala melas | 0.14 | 0.46 | 0.65 |
-| Lagenorhynchus acutus | 0.37 | --- | 0.58 |
-| Lagenorhynchus albirostris | 0.54 | 0.86 | 0.90 |
-| Orcinus orca | 0.57 | --- | 0.80 |
-| Tursiops truncatus | 0.20 | 0.45 | 0.81 |
-| **All species** | **0.30** | **0.57** | **0.76** |
-
-
-
+### On the importance of quality detections
 Performance is, however, highly sensitive to the quality of the detections fed into it. We therefore encourage some form of quality assurance when running automated detection of clicks and whistles for use with delphinID suggest prioritising a low false detection rate over avoiding missed detections (which can be unavoidable in noisy recordings). The performance metrics cited are based on classifiers trained and evaluate using certain thresholds for discarding  low signal-to-noise or false detections. 
 
 
