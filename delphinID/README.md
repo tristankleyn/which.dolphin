@@ -10,6 +10,10 @@ Python script for training, evaluating, and exporting delphinID models.
 #### └── [classify_functions.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_functions.py)
 
 Python script containing functions required for classify_main script
+- **compile_data_from_csvpath()**: partitions examples of 1D spectra into training, validation, and testing sets.
+- **initialise_model()**: initialises 8-layer convolutional neural network model for training
+- **predict_test_singlemodel()**: uses trained model to predict species in test data
+- **savetolog()**: logs results from training and testing of models
 
 #### └── [compiledata_main.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_main.R)
 
