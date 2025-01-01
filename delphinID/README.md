@@ -10,10 +10,6 @@ Python script for training, evaluating, and exporting delphinID models.
 #### └── [classify_functions.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_functions.py)
 
 Python script containing functions required for classify_main script
-- **compile_data_from_csvpath()**: partitions examples of 1D spectra into training, validation, and testing sets.
-- **initialise_model()**: initialises 8-layer convolutional neural network model for training
-- **predict_test_singlemodel()**: uses trained model to predict species in test data
-- **savetolog()**: logs results from training and testing of models
 
 #### └── [compiledata_main.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_main.R)
 
@@ -22,6 +18,9 @@ R script for extracting features from PAMGuard detections and preparing data in 
 #### └── [compiledata_functions.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R)
 
 R script containing functions required for compiledata_main script
+
+### Pre-trained classifiers for Northeast Atlantic delphinid species 
+Trained models for classifying recordings of seven northeast Atlantic delphinid species (Short-beaked common dolpins _(Delphinus delphis)_, Common bottlenose dolphins _(Tursiops truncatus)_, Risso's dolphins _(Grampus griseus)_, Atlantic white-sided dolphins _(Lagenorhynchus acutus)_, White-beaked dolphins _(Lagenorhynchus albirostris)_, killer whales _(Orcinus orca)_, and long-finned pilot whales _(Globicephala melas)_) are available and citable for use [here](https://zenodo.org/records/14578299?preview=1).
 
 ## User manual
 ### Terminology
