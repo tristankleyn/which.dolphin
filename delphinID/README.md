@@ -20,7 +20,9 @@ R script for extracting features from PAMGuard detections and preparing data in 
 R script containing functions required for compiledata_main script
 
 ### Pre-trained classifiers for Northeast Atlantic delphinid species 
-Trained models for classifying recordings of seven northeast Atlantic delphinid species (Short-beaked common dolpins _(Delphinus delphis)_, Common bottlenose dolphins _(Tursiops truncatus)_, Risso's dolphins _(Grampus griseus)_, Atlantic white-sided dolphins _(Lagenorhynchus acutus)_, White-beaked dolphins _(Lagenorhynchus albirostris)_, killer whales _(Orcinus orca)_, and long-finned pilot whales _(Globicephala melas)_) are available and citable for use [here](https://zenodo.org/records/14578299?preview=1).
+Trained models for classifying recordings of seven northeast Atlantic delphinid species (Short-beaked common dolpins _(Delphinus delphis)_, Common bottlenose dolphins _(Tursiops truncatus)_, Risso's dolphins _(Grampus griseus)_, Atlantic white-sided dolphins _(Lagenorhynchus acutus)_, white-beaked dolphins _(Lagenorhynchus albirostris)_, killer whales _(Orcinus orca)_, and long-finned pilot whales _(Globicephala melas)_) are available and citable for use [here](https://zenodo.org/records/14578299?preview=1).
+
+The northeast Atlantic delphinid classifier predicts events with an average accuracy of 86.3% (90% CI [82.5-90.1%] across the seven species, ranging from 80% accuracy for short-beaked common dolphins to 92% for white-beaked dolphins.
 
 ## User manual
 ### Terminology
