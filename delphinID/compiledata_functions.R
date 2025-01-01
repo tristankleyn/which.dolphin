@@ -52,10 +52,10 @@ clickData <- function(myStudy, fft) {
     subsub <- subset(subcdata, detectorName %in% c('Click_Detector_1'))
     subBg <- subset(subcdata, detectorName %in% c('Click_Detector_0'))
     
-    avSpec <- calculateAverageSpectra(myStudy, evNum = 1:100, wl=fft, noise=FALSE, plot=c(FALSE, FALSE))
+    avSpec <- calculateAverageSpectra(myStudy, evNum = 1:1000, wl=fft, noise=FALSE, plot=c(FALSE, FALSE))
     spec <- avSpec$allSpec[,avSpec$UID %in% subsub$UID]
     
-    avSpec <- calculateAverageSpectra(myStudy, evNum = 1:100, wl=32, noise=TRUE, plot=c(FALSE, TRUE))
+    avSpec <- calculateAverageSpectra(myStudy, evNum = 1:1000, wl=32, noise=TRUE, plot=c(FALSE, TRUE))
     noise <- avSpec$allNoise
     noise <- rowMeans(noise)
     uid <- avSpec$UID[avSpec$UID %in% subsub$UID]
@@ -67,9 +67,10 @@ clickData <- function(myStudy, fft) {
 }
 
 
-filterClicks <- function(cdata, w=1, nmin=3) {
+filterClicks <- function(cdata, dt=0, w=1, nmin=3) {
   omitrows <- c()
   ici <- c()
+  cdata$t <- cdata$t + dt
   for (i in 1:dim(cdata)[1]) {
     t0 <- cdata$UTC[i]
     if (i > 1) {
@@ -87,12 +88,13 @@ filterClicks <- function(cdata, w=1, nmin=3) {
   }
   
   cdata$ici <- ici
-  cfilt <- cdata[-omitrows,]
+#  cfilt <- cdata[-omitrows,]
+  cfilt <- cdata
   return(cfilt)
 }
 
-createClickSpectra <- function(subsub, spec, nspec=NULL, dest='temp.csv', file='clickspectraNS.csv', startrect0=NULL, sr=96000,
-                               dur=4, step=1, nmin=4, k=3, maxout=1800, site=NULL, startrec=NULL, endrec=NULL) {
+createClickSpectra <- function(subsub, spec, nspec=NULL, dest='temp.csv', file='clickspectra.csv', startrect0=NULL, sr=96000,
+                               dur=4, step=1, nmin=3, k=3, maxout=1800, site=NULL, startrec=NULL, endrec=NULL, include_empty=FALSE) {
   t0 <- 0
   t1 <- t0 + dur
   data <- data.frame()
@@ -100,6 +102,7 @@ createClickSpectra <- function(subsub, spec, nspec=NULL, dest='temp.csv', file='
   nclicks <- c()
   snr <- c()
   noise <- c()
+  nlevel <- 0
   
   if (max(subsub$t) > maxout) {
     maxt <- maxout
@@ -132,9 +135,22 @@ createClickSpectra <- function(subsub, spec, nspec=NULL, dest='temp.csv', file='
       x <- seq(10, 40, 30/length(y))
       x <- x[1:length(x)-1]
       
+      ynew <- c()
+      ccount <- 1
+      for (i in 1:length(y)) {
+        if (i%%2 != 0 & i != length(y)) {
+          ynew <- append(ynew, mean(c(y[i], y[i+1])))
+          ccount <- ccount + 1
+        } else if (i == length(y)) {
+          ynew <- append(ynew, y[i])
+        }
+      }
+      
+      ynew <- as.numeric(ynew)
+      ynew <- ynew/sum(ynew)
       
       if (any(is.nan(y)) == FALSE) {
-        data <- rbind(data, y)
+        data <- rbind(data, ynew)
         starts <- append(starts, startrect0 + t0)
         nclicks <- append(nclicks, N)
         noise <- append(noise, nspec)
@@ -146,6 +162,15 @@ createClickSpectra <- function(subsub, spec, nspec=NULL, dest='temp.csv', file='
       }
       
     } else {
+      if (include_empty==TRUE) {
+        f <- seq(10, 40, 30/80)
+        y <- rep(0, length(f))
+        data <- rbind(data, y)
+        nclicks <- append(nclicks, length(inds))
+        noise <- append(noise, 0)
+        snr <- append(snr, 0)
+        starts <- append(starts, startrect0 + t0)
+      }
       t0 <- t0 + step
     }
   }
@@ -161,41 +186,43 @@ createClickSpectra <- function(subsub, spec, nspec=NULL, dest='temp.csv', file='
     data <- cbind(startrec=startrec, data)
     data <- cbind(site=site, data)
     write.table(data, dest, sep=',', quote=TRUE, row.names=FALSE, col.names = TRUE)
-    
-    temp <- read.csv(dest)
-    if (dim(temp)[1] > 1) {
-      omitrows <- c()
-      for (i in 2:dim(temp)[1]) {
-        a <- temp$SNR[i-1]
-        b <- temp$SNR[i]
-        if (!(any(c(is.na(a), is.na(b))))) {
-          if (a==b) {
-            omitrows <- append(omitrows, i)
-          }
-        }
-      }
-      if (length(omitrows) > 0) {
-        temp <- temp[-omitrows,]
-      }
-    }
-  
-    temp$starttime <- as.POSIXct(temp$starttime)
-    
-    if (file %in% dir('I:/MarineScotland')) {
-      path <- sprintf('I:/MarineScotland/%s', file)
-      write.table(temp, path, append=TRUE, quote=TRUE, sep=',', row.names=FALSE, col.names=FALSE)
-    } else {
-      path <- sprintf('I:/MarineScotland/%s', file)
-      write.table(temp, path, append=FALSE, quote=TRUE, sep=',', row.names=FALSE, col.names=TRUE)
-    }
     print(sprintf('Done. Saved %s click %ss-detection frames to file.', dim(data)[1], dur))
-  } else {
-    print('Done. No detection frames created.')
   }
+    
+#    temp <- read.csv(dest)
+#    if (dim(temp)[1] > 1) {
+#      omitrows <- c()
+#      for (i in 2:dim(temp)[1]) {
+#        a <- temp$SNR[i-1]
+#        b <- temp$SNR[i]
+#        if (!(any(c(is.na(a), is.na(b))))) {
+#          if (a==b) {
+#            omitrows <- append(omitrows, i)
+#          }
+#        }
+#      }
+#      if (length(omitrows) > 0) {
+#        temp <- temp[-omitrows,]
+#      }
+#    }
+#  
+#    temp$starttime <- as.POSIXct(temp$starttime)
+#    
+#    if (file %in% dir('I:/newSpectra')) {
+#      path <- sprintf('I:/newSpectra/%s', file)
+#      write.table(temp, path, append=TRUE, quote=TRUE, sep=',', row.names=FALSE, col.names=FALSE)
+#    } else {
+#      path <- sprintf('I:/newSpectra/%s', file)
+#      write.table(temp, path, append=FALSE, quote=TRUE, sep=',', row.names=FALSE, col.names=TRUE)
+#    }
+#    print(sprintf('Done. Saved %s click %ss-detection frames to file.', dim(data)[1], dur))
+#  } else {
+#    print('Done. No detection frames created.')
+#  }
   
 }
 
-whistleData <- function(myStudy) {
+whistleData <- function(myStudy, dt=0) {
   wdata <- getWhistleData(myStudy)
   if (length(wdata) != 0) {
     wdata <- wdata[order(wdata$UTC),]
@@ -209,9 +236,10 @@ whistleData <- function(myStudy) {
   }
 }
 
-filterWhistles <- function(wdata, mindur=0.2) {
+filterWhistles <- function(wdata, mindur=0.2, dt=0) {
   omitUID <- c()
   wdata <- subset(wdata, duration >= 0.2)
+  wdata$t <- wdata$t + dt
   for (file in unique(wdata$BinaryFile)) {
     sub <- subset(wdata, BinaryFile == file)
     ind <- sapply(gregexpr("_", file), tail, 1)
@@ -236,8 +264,8 @@ filterWhistles <- function(wdata, mindur=0.2) {
 }
 
 
-createWhistleSpectra <- function(wdata, bwdata, freq_res, dest='temp.csv', file='whistlespectra.csv', startrect0=NULL, 
-                                 w=4, step=1, dd_thr=0.05, min_combined_bandwidth=0, min_bandwidth=0,
+createWhistleSpectra <- function(wdata, bwdata, temp_res, dest='temp.csv', file='whistlespectra.csv', startrect0=NULL, 
+                                 w=4, step=1, dd_thr=0.05, min_combined_bandwidth=0, min_bandwidth=0, include_empty=FALSE,
                                  maxout=1800, site=NULL, startrec=NULL, endrec=NULL) {
   t0 <- 0
   data <- data.frame()
@@ -259,7 +287,7 @@ createWhistleSpectra <- function(wdata, bwdata, freq_res, dest='temp.csv', file=
       bandwidths <- c()
       dt <- c()
       for (i in inds) {
-        ctr <- append(ctr, bwdata[[i]]$contour*freq_res)
+        ctr <- append(ctr, bwdata[[i]]$contour*temp_res)
         bandwidths <- append(bandwidths, max(ctr)-min(ctr))
         ns <- bwdata[[i]]$nSlices
         dur <- bwdata[[i]]$sampleDuration/sr
@@ -286,10 +314,19 @@ createWhistleSpectra <- function(wdata, bwdata, freq_res, dest='temp.csv', file=
         t0 <- t0 + step
       }
     } else {
+      if (include_empty==TRUE) {
+        f <- seq(2000,19900,100)
+        y <- rep(0, length(f))
+        data <- rbind(data, y)
+        dd <- append(dd, 0)
+        starts <- append(starts, startrect0 + t0)
+      }
       t0 <- t0 + step
     } 
   }
   
+  print(length(starts))
+  print(dim(data))
   if (dim(data)[1] > 0) {
     names(data) <- seq(1, dim(data)[2])
     data <- cbind(dd=dd, data)
@@ -299,40 +336,41 @@ createWhistleSpectra <- function(wdata, bwdata, freq_res, dest='temp.csv', file=
     data <- cbind(startrec=startrec, data)
     data <- cbind(site=site, data)
     write.table(data, dest, sep=',', quote=TRUE, row.names=FALSE, col.names = TRUE)
-    
-    temp <- read.csv(dest)
-    if (dim(temp)[1] > 1) {
-      omitrows <- c()
-      for (i in 2:dim(temp)[1]) {
-        a <- temp$dd[i-1]
-        b <- temp$dd[i]
-        if (!(any(c(is.na(a), is.na(b))))) {
-          if (a==b) {
-            omitrows <- append(omitrows, i)
-          }
-        }
-      }
-      if (length(omitrows) > 0) {
-        temp <- temp[-omitrows,]
-      }
-    }
-    
-    temp$starttime <- as.POSIXct(temp$starttime)
-
-    if (file %in% dir('I:/MarineScotland')) {
-      path <- sprintf('I:/MarineScotland/%s', file)
-      write.table(temp, path, append=TRUE, quote=TRUE, sep=',', row.names=FALSE, col.names=FALSE)
-    } else {
-      path <- sprintf('I:/MarineScotland/%s', file)
-      write.table(temp, path, append=FALSE, quote=TRUE, sep=',', row.names=FALSE, col.names=TRUE)
-    }
-    print(sprintf('Done. Saved %s whistle %ss-detection frames to file.', dim(data)[1], w))
-  } else {
-    print('Done. No detection frames created.')
+    print(sprintf('Done. Saved %s click %ss-detection frames to file.', dim(data)[1], dur))
   }
-  
-  
 }
+    
+#    temp <- read.csv(dest)
+#    if (dim(temp)[1] > 1) {
+#      omitrows <- c()
+#      for (i in 2:dim(temp)[1]) {
+#        a <- temp$dd[i-1]
+#        b <- temp$dd[i]
+#        if (!(any(c(is.na(a), is.na(b))))) {
+#          if (a==b) {
+#            omitrows <- append(omitrows, i)
+#          }
+#        }
+#      }
+#      if (length(omitrows) > 0) {
+#        temp <- temp[-omitrows,]
+#      }
+#    }
+#    
+#    temp$starttime <- as.POSIXct(temp$starttime)
+
+#   if (file %in% dir('I:/newSpectra')) {
+#      path <- sprintf('I:/newSpectra/%s', file)
+#      write.table(temp, path, append=TRUE, quote=TRUE, sep=',', row.names=FALSE, col.names=FALSE)
+#    } else {
+#      path <- sprintf('I:/newSpectra/%s', file)
+#      write.table(temp, path, append=FALSE, quote=TRUE, sep=',', row.names=FALSE, col.names=TRUE)
+#    }
+#    print(sprintf('Done. Saved %s whistle %ss-detection frames to file.', dim(data)[1], w))
+#  } else {
+#    print('Done. No detection frames created.')
+#  }
+
 
 downsample <- function(x, k=3) {
   if (k > 1) {
@@ -360,7 +398,7 @@ analyseDetections <- function(site, monthstart, daystart, monthend, dayend, thr_
   dbname <- sprintf('I:/MarineScotland/detections/%s.sqlite3', item)
   binaryfolder <- sprintf('I:/MarineScotland/detections/binary/%s', item)
   split_path <- function(x) if (dirname(x)==x) x else c(basename(x),split_path(dirname(x)))
-  freq_res <- as.numeric(fr[as.character(sr)][1])
+  temp_res <- as.numeric(fr[as.character(sr)][1])
   d1 <- as.POSIXct(sprintf("2019-%s-%s 00:00:00", monthstart, daystart), tz="UTC")
   d2 <- as.POSIXct(sprintf("2019-%s-%s 23:59:59", monthend, dayend), tz="UTC")
   
