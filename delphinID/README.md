@@ -48,11 +48,37 @@ The R and Python scripts described above can be used to train and test your own 
 
 3. Detect whistle and click vocalizations in passive acoustic recordings. This can be with PAMGuard, as done for our northeast Atlantic models, or with other software.
 
-4. Generate detection frame examples from whistle and click detections. The [compiledata_main.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_main.R) script and its functions [compiledata_functions.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R) can be used to generate detection frames for detections made in PAMGuard. Otherwise, any other workflow can be used to calculate average frequency spectra for any given duration of time frame, so long as the output array is 1-dimensional so that it can be passed through 1D convolutional layer in the models.
+4. Generate detection frame examples from whistle and click detections. [compiledata_main.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_main.R) and its functions [compiledata_functions.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R) can be used to generate detection frames for detections made in PAMGuard. Otherwise, any other workflow can be used to calculate average frequency spectra for any given duration of time frame, so long as the output array is 1-dimensional so that it can be passed through 1D convolutional layer in the models.
    
 5. Save click detection frames as 'clickspectra.csv' and whistle detection frames as 'whistlespectra.csv' in the folder ./delphinID/data folder of this repository. This is done automatically if using PAMGuard and the R scripts provided to compile data; otherwise .csv file columns should follow exactly the format of the example .csv files found in ./delphinID/data.
 
 6. Use [classify_main.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_main.py) and its functions [classify_functions.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R) to train and test delphinID classifier models. All examples in each unique encounter will form a separate testing set for evaluating a new classifier trained on all other encounters in the dataset, while models and results are exported to ./delphinID/data. Users can adjust the model hyperparameters in the "classify_main.py" script, which are described in the table below, to achieve optimal results.
+
+| Term | Default | Description |
+|-----------------|-----------------|-----------------|
+| nmin | 3 | Minimum threshold for the number of clicks per detection frame to be used for classification |
+| dd | (0.1, 100) | Minimum and maximum detection density of whistle detection frames to be used for classification |
+| nmax | 30 | Maximum number of examples per encounter used for training |
+| resize | 1 | Factor to compress input arrays by (i.e. factor of 2 halves array length) |
+| batch_size | 1 | Number of examples used for training before retraining internal model parameters |
+| epochs | 20 | Number of training epochs for each bootstrap of training and validation data |
+| partitions | 5 | Number of different partitions/bootstraps of training and validation data to train model on |
+| nfiltersconv | 16 | Number of filters used in 1D convolutional layers in CNN model |
+| kernelconv | 3 | Number of kernels used in 1D convolutional layers in CNN model |
+| padding | 'same' | Zero-pad input features to match output size of 1D convolutional layer in CNN model |
+| maxpool | 2 | Size of sliding window for max pooling layer in CNN model |
+| leaky | 0.1 | Constant value for negative inputs into leaky ReLU activation function in CNN model |
+| densesize | 10 | Size of dense layer in CNN model |
+| dropout | 0.2 | Proportion of neurons randomly discarded by dropout in each training step |
+| patience | 20 | Number of epochs before early stopping callback during model training |
+| seed | 42 | Initial random seed for training |
+| use_selectencs | False | Use custom list of select encounters for training |
+| omit | [] | Custom list of select encounters to omit from training and testing |
+| split | 0.33 | Proportion of training data used for validation in each training epoch |
+| model_format | 'saved_model' | 'saved_model' or '.keras' format for saving CNN models |
+
+
+
 
 ## User manual
 ### Terminology
