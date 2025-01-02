@@ -22,8 +22,37 @@ R script containing functions required for compiledata_main script
 
 
 
+## Using pre-trained classifiers for Northeast Atlantic delphinid species 
+Trained models for classifying recordings of seven northeast Atlantic delphinid species (Short-beaked common dolpins _(Delphinus delphis)_, Common bottlenose dolphins _(Tursiops truncatus)_, Risso's dolphins _(Grampus griseus)_, Atlantic white-sided dolphins _(Lagenorhynchus acutus)_, white-beaked dolphins _(Lagenorhynchus albirostris)_, killer whales _(Orcinus orca)_, and long-finned pilot whales _(Globicephala melas)_) are available and citable for use [here](https://zenodo.org/records/14578299?preview=1).
 
+The northeast Atlantic delphinid classifier predicts events with an average accuracy of 86.3% (90% CI 82.5-90.1%) across the seven species, ranging from 80% accuracy for short-beaked common dolphins to 92% for white-beaked dolphins. F1 score (accuracy x precision) is shown for each species below:
 
+**Northeast Atlantic classifier performance (F1 score = accuracy x precision)**
+| Species | Event, whistles only | Event, clicks only | Event, whistles and clicks |
+|-----------------|-----------------|-----------------|-----------------|
+| Delphinus delphis | 0.20 | 0.60 | 0.50 |
+| Grampus griseus | 0.11 | 0.80 | 0.70 |
+| Globicephala melas | 0.14 | 0.46 | 0.65 |
+| Lagenorhynchus acutus | 0.37 | --- | 0.58 |
+| Lagenorhynchus albirostris | 0.54 | 0.86 | 0.90 |
+| Orcinus orca | 0.57 | --- | 0.80 |
+| Tursiops truncatus | 0.20 | 0.45 | 0.81 |
+| **All species** | **0.30** | **0.57** | **0.76** |
+
+## DIY: Train your own delphinID classifiers
+The R and Python scripts described above can be used to train and test your own delphinID classifier models through the following steps:
+
+1. Make sure the latest version of R ([link](https://cran.r-project.org/)) and Python ([link](https://www.python.org/downloads/)) are installed on your device.
+
+2. Clone or download this repository to your device.
+
+3. Detect whistle and click vocalizations in passive acoustic recordings. This can be with PAMGuard, as done for our northeast Atlantic models, or with other software.
+
+4. Generate detection frame examples from whistle and click detections. The "compiledata_main.R" script and its functions "compiledata_functions.R" can be used to generate detection frames for detections made in PAMGuard. Otherwise, any other workflow can be used to calculate average frequency spectra for any given duration of time frame, so long as the output array is 1-dimensional so that it can be passed through 1D convolutional layer in the models.
+   
+5. Save click detection frames as 'clickspectra.csv' and whistle detection frames as 'whistlespectra.csv' in the folder ./delphinID/data folder of this repository. This is done automatically if using PAMGuard and the R scripts provided to compile data; otherwise .csv file columns should follow exactly the format of the example .csv files found in ./delphinID/data.
+
+6. Use "classify_main.py" and its functions "classify_functions.py" to train and test delphinID classifier models. All examples in each unique encounter will form a separate testing set for evaluating a new classifier trained on all other encounters in the dataset, while models and results are exported to ./delphinID/data. Users can adjust the model hyperparameters in the "classify_main.py" script, which are described in the table below, to achieve optimal results.
 
 ## User manual
 ### Terminology
@@ -81,22 +110,7 @@ Performance is, however, highly sensitive to the quality of the detections fed i
 
 ##
 
-### Pre-trained classifiers for Northeast Atlantic delphinid species 
-Trained models for classifying recordings of seven northeast Atlantic delphinid species (Short-beaked common dolpins _(Delphinus delphis)_, Common bottlenose dolphins _(Tursiops truncatus)_, Risso's dolphins _(Grampus griseus)_, Atlantic white-sided dolphins _(Lagenorhynchus acutus)_, white-beaked dolphins _(Lagenorhynchus albirostris)_, killer whales _(Orcinus orca)_, and long-finned pilot whales _(Globicephala melas)_) are available and citable for use [here](https://zenodo.org/records/14578299?preview=1).
 
-The northeast Atlantic delphinid classifier predicts events with an average accuracy of 86.3% (90% CI 82.5-90.1%) across the seven species, ranging from 80% accuracy for short-beaked common dolphins to 92% for white-beaked dolphins. F1 score (accuracy x precision) is shown for each species below:
-
-**Northeast Atlantic classifier performance (F1 score = accuracy x precision)**
-| Species | Event, whistles only | Event, clicks only | Event, whistles and clicks |
-|-----------------|-----------------|-----------------|-----------------|
-| Delphinus delphis | 0.20 | 0.60 | 0.50 |
-| Grampus griseus | 0.11 | 0.80 | 0.70 |
-| Globicephala melas | 0.14 | 0.46 | 0.65 |
-| Lagenorhynchus acutus | 0.37 | --- | 0.58 |
-| Lagenorhynchus albirostris | 0.54 | 0.86 | 0.90 |
-| Orcinus orca | 0.57 | --- | 0.80 |
-| Tursiops truncatus | 0.20 | 0.45 | 0.81 |
-| **All species** | **0.30** | **0.57** | **0.76** |
 
 
 
