@@ -44,15 +44,17 @@ The R and Python scripts described above can be used to train and test your own 
 
 1. Make sure the latest versions of R ([link](https://cran.r-project.org/)) and Python ([link](https://www.python.org/downloads/)) are installed on your device.
 
-2. Clone or download this repository to your device.
-
-3. Detect whistle and click vocalizations in passive acoustic recordings. This can be with PAMGuard, as done for our northeast Atlantic models, or with other software.
-
-4. Generate detection frame examples from whistle and click detections. [compiledata_main.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_main.R) and its functions [compiledata_functions.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R) can be used to generate detection frames for detections made in PAMGuard. Otherwise, any other workflow can be used to calculate average frequency spectra for any given duration of time frame, so long as the output array is 1-dimensional so that it can be passed through 1D convolutional layer in the models.
+2. Clone or download this repository to your device. To clone the repository, install Git and open Terminal or Command Prompt and run the following code:
+   `git clone https://github.com/tristankleyn/which.dolphin.git`
    
-5. Save click detection frames as 'clickspectra.csv' and whistle detection frames as 'whistlespectra.csv' in the folder ./delphinID/data folder of this repository. This is done automatically if using PAMGuard and the R scripts provided to compile data; otherwise .csv file columns should follow exactly the format of the example .csv files found in ./delphinID/data.
 
-6. Use [classify_main.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_main.py) and its functions [classify_functions.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R) to train and test delphinID classifier models. All examples in each unique encounter will form a separate testing set for evaluating a new classifier trained on all other encounters in the dataset, while models and results are exported to ./delphinID/data. Users can adjust the model hyperparameters in the "classify_main.py" script, which are described in the table below, to achieve optimal results.
+4. Detect whistle and click vocalizations in passive acoustic recordings. This can be with PAMGuard, as done for our northeast Atlantic models, or with other software.
+
+5. Generate detection frame examples from whistle and click detections. [compiledata_main.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_main.R) and its functions [compiledata_functions.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R) can be used to generate detection frames for detections made in PAMGuard. Otherwise, any other workflow can be used to calculate average frequency spectra for any given duration of time frame, so long as the output array is 1-dimensional so that it can be passed through 1D convolutional layer in the models.
+   
+6. Save click detection frames as 'clickspectra.csv' and whistle detection frames as 'whistlespectra.csv' in the folder ./delphinID/data folder of this repository. This is done automatically if using PAMGuard and the R scripts provided to compile data; otherwise .csv file columns should follow exactly the format of the example .csv files found in ./delphinID/data.
+
+7. Use [classify_main.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_main.py) and its functions [classify_functions.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R) to train and test delphinID classifier models. All examples in each unique encounter will form a separate testing set for evaluating a new classifier trained on all other encounters in the dataset, while models and results are exported to ./delphinID/data. Users can adjust the model hyperparameters in the "classify_main.py" script, which are described in the table below, to achieve optimal results.
 
 | Parameter | Default | Description | Tip |
 |-----------------|-----------------|-----------------|-----------------|
