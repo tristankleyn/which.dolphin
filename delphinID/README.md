@@ -49,9 +49,12 @@ The R and Python scripts described above can be used to train and test your own 
    
 
 4. Detect whistle and click vocalizations in passive acoustic recordings. Support for running automatic detectors in PAMGuard can be found [here](https://www.pamguard.org/tutorials/getstarted.html), though classifiers can be trained with data from any software.
-5. 
-   <img width="545" alt="image" src="https://github.com/user-attachments/assets/5b3ae13b-882c-4fec-ae30-d6cd5c24bf34" />
-   #### PAMGuard display showing bearings, waveforms, and spectra of click detections in passive acoustic data. 
+
+<p align="center">
+  <img width="545" src="[https://via.placeholder.com/150](https://github.com/user-attachments/assets/5b3ae13b-882c-4fec-ae30-d6cd5c24bf34)" alt="Example Image">
+  <br>
+  <em>Figure 1: PAMGuard display showing bearings, waveforms, and spectra of click detections in passive acoustic data. .</em>
+</p>
 
 6. Generate detection frame examples from whistle and click detections. [compiledata_main.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_main.R) and its functions [compiledata_functions.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R) can be used to generate detection frames for detections made in PAMGuard. Otherwise, any other workflow can be used to calculate average frequency spectra for any given duration of time frame, so long as the output array is 1-dimensional so that it can be passed through 1D convolutional layer in the models.
    
