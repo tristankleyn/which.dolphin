@@ -53,10 +53,19 @@ The R and Python scripts described above can be used to train and test your own 
 <p align="center">
    <img width="545" alt="image" src="https://github.com/user-attachments/assets/719973a2-1e02-4b2b-8803-1c10dccea0a9" />
    <br>
-   <em>Figure 1: PAMGuard display showing bearings, waveforms, and spectra of click detections in passive acoustic data.</em>
+   <em>PAMGuard display showing bearings, waveforms, and spectra of click detections in passive acoustic data.</em>
 </p>
 
 6. Generate detection frame examples from whistle and click detections. [compiledata_main.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_main.R) and its functions [compiledata_functions.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R) can be used to generate detection frames for detections made in PAMGuard. Other software or custom methods can alternatively be used to generate detection frames. All detection frames to should be saved into .csv files within ./delphinID/data - this is done automatically when using the scripts provided.
+
+<p align="center">
+   <img width="580" alt="image" src="https://github.com/user-attachments/assets/101ba3b2-43da-424f-aef2-42df0e045deb" />
+   <br>
+   <em>Detection frames represent average frequencies present in detections within 4-second time windows.</em>
+</p>
+
+
+
 
 8. Train and evaluate classifier models using [classify_main.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_main.py) and its functions [classify_functions.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R). All examples in each unique encounter will form a separate testing set for evaluating a new classifier trained on all other encounters in the dataset, while models and results are exported to ./delphinID/data. Classification parameters used in the "classify_main.py" script, which are described in the table below, can be adjusted to achieve optimal results.
 
