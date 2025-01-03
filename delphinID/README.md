@@ -42,7 +42,7 @@ The northeast Atlantic delphinid classifier predicts events with an average accu
 ## Train your own delphinID classifiers
 The R and Python scripts described above can be used to train and test your own delphinID classifier models through the following steps:
 
-1. Make sure the latest versions of ([R](https://cran.r-project.org/)) and ([Python](https://www.python.org/downloads/)) are installed on your device.
+1. Make sure the latest versions of [R](https://cran.r-project.org/) and [Python](https://www.python.org/downloads/) are installed on your device.
 
 2. Clone or download this repository to your device
    `git clone https://github.com/tristankleyn/which.dolphin.git`
