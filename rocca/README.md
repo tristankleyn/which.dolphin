@@ -1,5 +1,5 @@
 ## Random Forest acoustic classifiers for delphinid species
-[classify_main.py](https://github.com/tristankleyn/which.dolphin/blob/main/rocca/classify_main.py) contains code to train and test Random Forest classifiers based on acoustic measurements extracted using the [ROCCA (Real-time Odontocete Call Classification Algorithm)](https://www.pamguard.org/rocca/rocca.html) module in [PAMGuard](https://www.pamguard.org/). Existing classifiers developed for different geographic regions covering different compositions of delphinid species were developed by Julie Oswald and colleagues and can be downloaded [here](https://www.pamguard.org/rocca/rocca.html) and used within PAMGuard ROCCA.
+[classify_main.py](https://github.com/tristankleyn/which.dolphin/blob/main/rocca/classify_main.py) contains code to train and test Random Forest classifiers based on acoustic measurements extracted using the ROCCA (Real-time Odontocete Call Classification Algorithm) module in [PAMGuard](https://www.pamguard.org/). Existing classifiers developed for different geographic regions covering different compositions of delphinid species were developed by Julie Oswald and colleagues and can be downloaded [here](https://www.pamguard.org/rocca/rocca.html) and used within PAMGuard ROCCA.
 
 ### rocca/
 
