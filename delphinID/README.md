@@ -60,30 +60,32 @@ The R and Python scripts described above can be used to train and test your own 
 
 8. Train and evaluate classifier models using [classify_main.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_main.py) and its functions [classify_functions.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R). All examples in each unique encounter will form a separate testing set for evaluating a new classifier trained on all other encounters in the dataset, while models and results are exported to ./delphinID/data. Users can adjust the model hyperparameters in the "classify_main.py" script, which are described in the table below, to achieve optimal results.
 
+#### Adjustable classification hyperparameters
 | Parameter | Default | Description | Tip |
 |-----------------|-----------------|-----------------|-----------------|
 | nmin | 3 | Minimum threshold for the number of clicks per detection frame to be used for classification | Use higher values to focus training on denser regions of clicks |
 | dd | (0.1, 100) | Minimum and maximum detection density of whistle detection frames to be used for classification | Use a higher minimum value to discard frames with very low whistle densities and a lower maximum value to discard frames with very high whistle densities from classifier training |
 | nmax | 30 | Maximum number of examples per encounter used for training | Use lower values to level out relative influence of individual encounters on training |
-| resize | 1 | Factor to compress input arrays by (i.e. factor of 2 halves array length) | Compressing input arrays reduces training time/computational expense |
 | batch_size | 1 | Number of examples used for training before retraining internal model parameters | Lower batch_sizes help introduce regularisation and may improve generalisability of models, but may also prolong time required for model convergence |
 | epochs | 20 | Number of training epochs for each bootstrap of training and validation data | More epochs allow more training time for models to converge but may be not necessary |
 | partitions | 5 | Number of different partitions/bootstraps of training and validation data to train model on | More partitions provide training with more variability in but increase training time |
-| nfiltersconv | 16 | Number of filters used in 1D convolutional layers in CNN model | More filters allow for learning of complex features spanning larger ranges in frequency across input spectra, but also increase training time susceptability to overfitting  |
-| kernelconv | 3 | Size of filters, or kernels, used in 1D convolutional layers in CNN model | Similar to the number of filters, larger filters can learn complex features but increase training time and are susceptible to overfitting |
-| padding | 'same' | Zero-pad input features to match output size of 1D convolutional layer in CNN model | 'same' padding reduces information loss at edges of input features  |
-| maxpool | 2 | Size of sliding window for max pooling layer in CNN model | Larger max pooling windows reduce dimensionality of features more, reducing training time but also reducing model complexity |
-| densesize | 10 | Size of dense layer in CNN model | Larger values increase complexity of layer and increase training time |
-| dropout | 0.2 | Proportion of neurons randomly discarded by dropout in each training step | Larger values increase regularisation and model's ability to generalise, but may cause model to underfit |
-| patience | 20 | Number of epochs before early stopping callback during model training | Values equal to the number of epochs will have no effect. Use values less than the number of epochs to enact early stopping |
 | seed | 42 | Initial random seed for training | |
 | use_selectencs | False | Use custom list of select encounters for training | |
 | omit | [] | Custom list of select encounters to omit from training and testing | |
 | split | 0.33 | Proportion of training data used for validation in each training epoch | |
 | model_format | 'saved_model' | 'saved_model' or '.keras' format for saving CNN models | |
 
-### Additional hyperparameters
-
+#### Additional hyperparameters (recommended to be kept at default settings)
+| Parameter | Default | Description |
+|-----------------|-----------------|-----------------|
+| resize | 1 | Factor to compress input arrays by (i.e. factor of 2 halves array length) | Compressing input arrays reduces training time/computational expense |
+| nfiltersconv | 16 | Number of filters used in 1D convolutional layers in CNN model |
+| kernelconv | 3 | Size of filters, or kernels, used in 1D convolutional layers in CNN model |
+| padding | 'same' | Zero-pad input features to match output size of 1D convolutional layer in CNN model |
+| maxpool | 2 | Size of sliding window for max pooling layer in CNN model |
+| densesize | 10 | Size of dense layer in CNN model | 
+| dropout | 0.2 | Proportion of neurons randomly discarded by dropout in each training step |
+| patience | 20 | Number of epochs before early stopping callback during model training |
 
 
 
