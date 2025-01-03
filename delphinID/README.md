@@ -28,7 +28,7 @@ Trained models for classifying recordings of seven northeast Atlantic delphinid 
 The northeast Atlantic delphinid classifier predicts events with an average accuracy of 86.3% (90% CI 82.5-90.1%) across the seven species, ranging from 80% accuracy for short-beaked common dolphins to 92% for white-beaked dolphins. F1 score (accuracy x precision) is shown for each species below:
 
 **Northeast Atlantic classifier performance (F1 score = accuracy x precision)**
-| Species | Event, whistles only | Event, clicks only | Event, whistles and clicks |
+| Species name | Event, whistles only | Event, clicks only | Event, whistles and clicks |
 |-----------------|-----------------|-----------------|-----------------|
 | Delphinus delphis | 0.20 | 0.60 | 0.50 |
 | Grampus griseus | 0.11 | 0.80 | 0.70 |
