@@ -61,19 +61,19 @@ The R and Python scripts described above can be used to train and test your own 
 8. Train and evaluate classifier models using [classify_main.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_main.py) and its functions [classify_functions.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R). All examples in each unique encounter will form a separate testing set for evaluating a new classifier trained on all other encounters in the dataset, while models and results are exported to ./delphinID/data. Users can adjust the model hyperparameters in the "classify_main.py" script, which are described in the table below, to achieve optimal results.
 
 #### Adjustable classification hyperparameters
-| Parameter | Default | Description | Tip |
-|-----------------|-----------------|-----------------|-----------------|
-| nmin | 3 | Minimum threshold for the number of clicks per detection frame to be used for classification | Use higher values to focus training on denser regions of clicks |
-| dd | (0.1, 100) | Minimum and maximum detection density of whistle detection frames to be used for classification | Use a higher minimum value to discard frames with very low whistle densities and a lower maximum value to discard frames with very high whistle densities from classifier training |
-| nmax | 30 | Maximum number of examples per encounter used for training | Use lower values to level out relative influence of individual encounters on training |
-| batch_size | 1 | Number of examples used for training before retraining internal model parameters | Lower batch_sizes help introduce regularisation and may improve generalisability of models, but may also prolong time required for model convergence |
-| epochs | 20 | Number of training epochs for each bootstrap of training and validation data | More epochs allow more training time for models to converge but may be not necessary |
-| partitions | 5 | Number of different partitions/bootstraps of training and validation data to train model on | More partitions provide training with more variability in but increase training time |
-| seed | 42 | Initial random seed for training | |
-| use_selectencs | False | Use custom list of select encounters for training | |
-| omit | [] | Custom list of select encounters to omit from training and testing | |
-| split | 0.33 | Proportion of training data used for validation in each training epoch | |
-| model_format | 'saved_model' | 'saved_model' or '.keras' format for saving CNN models | |
+| Parameter | Default | Description |
+|-----------------|-----------------|-----------------|
+| nmin | 3 | Minimum threshold for the number of clicks per detection frame to be used for classification |
+| dd | (0.1, 100) | Minimum and maximum detection density of whistle detection frames to be used for classification |
+| nmax | 30 | Maximum number of examples per encounter used for training |
+| batch_size | 1 | Number of examples used for training before retraining internal model parameters |
+| epochs | 20 | Number of training epochs for each bootstrap of training and validation data |
+| partitions | 5 | Number of different partitions/bootstraps of training and validation data to train model on | 
+| seed | 42 | Initial random seed for training |
+| use_selectencs | False | Use custom list of select encounters for training |
+| omit | [] | Custom list of select encounters to omit from training and testing |
+| split | 0.33 | Proportion of training data used for validation in each training epoch |
+| model_format | 'saved_model' | 'saved_model' or '.keras' format for saving CNN models |
 
 #### Additional hyperparameters (recommended to be kept at default settings)
 | Parameter | Default | Description |
