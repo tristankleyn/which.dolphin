@@ -39,7 +39,7 @@ The northeast Atlantic delphinid classifier predicts events with an average accu
 | Tursiops truncatus | 0.20 | 0.45 | 0.81 |
 | **All species** | **0.30** | **0.57** | **0.76** |
 
-## DIY: Train your own delphinID classifiers
+## Train your own delphinID classifiers
 The R and Python scripts described above can be used to train and test your own delphinID classifier models through the following steps:
 
 1. Make sure the latest versions of ([R](https://cran.r-project.org/)) and ([Python](https://www.python.org/downloads/)) are installed on your device.
@@ -53,14 +53,12 @@ The R and Python scripts described above can be used to train and test your own 
 <p align="center">
    <img width="545" alt="image" src="https://github.com/user-attachments/assets/719973a2-1e02-4b2b-8803-1c10dccea0a9" />
    <br>
-   <em>Figure 1: PAMGuard display showing bearings, waveforms, and spectra of click detections in passive acoustic data. .</em>
+   <em>Figure 1: PAMGuard display showing bearings, waveforms, and spectra of click detections in passive acoustic data ([pamguard.org](https://www.pamguard.org/tutorials/getstarted.html)). .</em>
 </p>
 
-6. Generate detection frame examples from whistle and click detections. [compiledata_main.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_main.R) and its functions [compiledata_functions.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R) can be used to generate detection frames for detections made in PAMGuard. Otherwise, any other workflow can be used to calculate average frequency spectra for any given duration of time frame, so long as the output array is 1-dimensional so that it can be passed through 1D convolutional layer in the models.
-   
-7. Save click detection frames as 'clickspectra.csv' and whistle detection frames as 'whistlespectra.csv' in the folder ./delphinID/data folder of this repository. This is done automatically if using PAMGuard and the R scripts provided to compile data; otherwise .csv file columns should follow exactly the format of the example .csv files found in ./delphinID/data.
+6. Generate detection frame examples from whistle and click detections. [compiledata_main.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_main.R) and its functions [compiledata_functions.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R) can be used to generate detection frames for detections made in PAMGuard. Other software or custom methods can alternatively be used to generate detection frames. All detection frames to should be saved into .csv files within ./delphinID/data - this is done automatically when using the scripts provided.
 
-8. Use [classify_main.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_main.py) and its functions [classify_functions.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R) to train and test delphinID classifier models. All examples in each unique encounter will form a separate testing set for evaluating a new classifier trained on all other encounters in the dataset, while models and results are exported to ./delphinID/data. Users can adjust the model hyperparameters in the "classify_main.py" script, which are described in the table below, to achieve optimal results.
+8. Train and evaluate classifier models using [classify_main.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_main.py) and its functions [classify_functions.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R). All examples in each unique encounter will form a separate testing set for evaluating a new classifier trained on all other encounters in the dataset, while models and results are exported to ./delphinID/data. Users can adjust the model hyperparameters in the "classify_main.py" script, which are described in the table below, to achieve optimal results.
 
 | Parameter | Default | Description | Tip |
 |-----------------|-----------------|-----------------|-----------------|
@@ -83,6 +81,10 @@ The R and Python scripts described above can be used to train and test your own 
 | omit | [] | Custom list of select encounters to omit from training and testing | |
 | split | 0.33 | Proportion of training data used for validation in each training epoch | |
 | model_format | 'saved_model' | 'saved_model' or '.keras' format for saving CNN models | |
+
+### Additional hyperparameters
+
+
 
 
 
