@@ -52,6 +52,7 @@ The R and Python scripts described above can be used to train and test your own 
 
 <p align="center">
    <img width="545" alt="image" src="https://github.com/user-attachments/assets/719973a2-1e02-4b2b-8803-1c10dccea0a9" />
+   <br>
    <em>Figure 1: PAMGuard display showing bearings, waveforms, and spectra of click detections in passive acoustic data. .</em>
 </p>
 
