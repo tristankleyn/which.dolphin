@@ -9,11 +9,11 @@ This repository contains code for training and testing machine learning models f
 
 #### └── [delphinID](https://github.com/tristankleyn/which.dolphin/tree/main/delphinID)/
 
-**delphinID** models are convolutional neural networks (CNNs) developed in TensorFlow and trained to classify species by latent characteristics in concatenated average frequency spectra of whistles or clicks. 
+delphinID models are convolutional neural networks (CNNs) developed in TensorFlow and trained to classify species by latent characteristics in concatenated normalised frequency power spectra of whistles or clicks. 
 
 #### └── [rocca](https://github.com/tristankleyn/which.dolphin/tree/main/rocca)/
 
-**[ROCCA](https://www.pamguard.org/rocca/rocca.html)** (Real-time Odontocete Call Classification Algorithm) ([Oswald et al., 2007](https://pubs.aip.org/asa/jasa/article/122/1/587/813007)) models are Random Forest models developed in WEKA and trained to classify species based on select acoustic-temporal measurements extracted from whistles or clicks.
+[ROCCA](https://www.pamguard.org/rocca/rocca.html) (Real-time Odontocete Call Classification Algorithm) ([Oswald et al., 2007](https://pubs.aip.org/asa/jasa/article/122/1/587/813007)) models are Random Forest models developed in WEKA and trained to classify species based on select acoustic-temporal measurements extracted from whistles or clicks.
 
 
 
