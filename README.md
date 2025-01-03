@@ -13,7 +13,7 @@ This repository contains code for training and testing machine learning models f
 
 #### └── [rocca](https://github.com/tristankleyn/which.dolphin/tree/main/rocca)/
 
-**[ROCCA](https://www.pamguard.org/rocca/rocca.html) (Real-time Odontocete Call Classification Algorithm)** ([Oswald et al., 2007](https://pubs.aip.org/asa/jasa/article/122/1/587/813007)) models are Random Forest models developed in WEKA and trained to classify species based on select acoustic-temporal measurements extracted from whistles or clicks.
+**[ROCCA](https://www.pamguard.org/rocca/rocca.html)** (Real-time Odontocete Call Classification Algorithm) ([Oswald et al., 2007](https://pubs.aip.org/asa/jasa/article/122/1/587/813007)) models are Random Forest models developed in WEKA and trained to classify species based on select acoustic-temporal measurements extracted from whistles or clicks.
 
 
 
