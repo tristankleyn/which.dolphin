@@ -67,7 +67,8 @@ The R and Python scripts described above can be used to train and test your own 
 8. Train and evaluate classifier models using [classify_main.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_main.py) and its functions [classify_functions.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R). All examples in each unique encounter will form a separate testing set for evaluating a new classifier trained on all other encounters in the dataset, while models and results are exported to ./delphinID/data. Classification parameters used in the "classify_main.py" script, which are described in the table below, can be adjusted to achieve optimal results.
 
 <p align="center">
-   <img width="623" alt="image" src="https://github.com/user-attachments/assets/310599b1-1302-4b10-bdd8-0f349b6a4757" />
+   <img width="623" alt="image" src="https://github.com/user-attachments/assets/0fbf5aad-d110-4bff-b76a-2e7390d123fc" />
+
    <br>
    <em>Classifiers are iteratively trained and tested using cross validation across all unique encounters in the dataset.</em>
 </p>
