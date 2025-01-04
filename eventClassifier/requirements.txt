@@ -1,0 +1,11 @@
+DBI
+dbplyr
+dplyr
+ggplot2
+janitor
+randomForest
+RSQLite
+rvest
+shiny
+shinyWidgets
+tidyverse
