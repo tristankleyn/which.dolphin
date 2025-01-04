@@ -15,5 +15,7 @@ delphinID models are convolutional neural networks (CNNs) developed in TensorFlo
 
 [ROCCA](https://www.pamguard.org/rocca/rocca.html) (Real-time Odontocete Call Classification Algorithm) ([Oswald et al., 2007](https://pubs.aip.org/asa/jasa/article/122/1/587/813007)) models are Random Forest models developed in WEKA and trained to classify species based on select acoustic-temporal measurements extracted from whistles or clicks.
 
+#### └── [eventClassifier](https://github.com/tristankleyn/which.dolphin/tree/main/eventClassifier)/
 
+Folder containing simple graphical user interface developed in R _Shiny_, which allows users to integrate predictions from whistle and click classifiers (either ROCCA or delphinID) with an event classifier model to form final species predictions for isolated acoustic events.
 
