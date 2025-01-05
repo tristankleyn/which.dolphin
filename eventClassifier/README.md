@@ -19,11 +19,12 @@ R packages required for running eventClassifier application.
 
 ### How to use the eventClassifier application
 `packages <- readLines("requirements.txt")`
+<br>
 `for (pkg in packages) {
   if (!require(pkg, character.only = TRUE)) {
     install.packages(pkg)
     library(pkg, character.only = TRUE)
   }
 }`
-
-shiny::runApp('eventClassifier')
+<br>
+`shiny::runApp('eventClassifier')`
