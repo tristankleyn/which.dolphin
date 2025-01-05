@@ -1,8 +1,8 @@
 # (1) Set the appropriate working directory
-setwd('C:/Users/tk81/Downloads/delphinID/setup/eventClassifier')
+setwd('___SET PATH TO FOLDER CONTAINING eventClassifier FOLDER___')
 
 # (2) Load list of required packages
-packages <- readLines("requirements.txt")
+packages <- readLines("eventClassifier/requirements.txt")
 
 # (3) Install required packages
 for (pkg in packages) {
@@ -13,4 +13,4 @@ for (pkg in packages) {
 }
 
 # (4) Run app
-shiny::runApp('C:/Users/tk81/Downloads/delphinID/setup/eventClassifier')
+shiny::runApp('eventClassifier')

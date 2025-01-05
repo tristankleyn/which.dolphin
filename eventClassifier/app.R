@@ -15,7 +15,7 @@ options(shiny.maxRequestSize=1000*1024^2)
 ####SHINY####
 ui <- fluidPage(
   
-  img(src='logo_05.png', style = "height: auto; width: 40%;"),
+  img(src='header_01.png', style = "height: auto; width: 30%;"),
   
   titlePanel(title=''),
   
