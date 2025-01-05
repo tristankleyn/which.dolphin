@@ -20,7 +20,6 @@ R packages required for running eventClassifier application.
 ### How to use the eventClassifier application
 ```R
 packages <- readLines("requirements.txt")
-<br>
 for (pkg in packages) {
   if (!require(pkg, character.only = TRUE)) {
     install.packages(pkg)
