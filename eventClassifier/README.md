@@ -1,1 +1,1 @@
-## eventClassifier: Integrate whistles and clicks to classify acoustic events with delphinids.
+## Integrate whistles and clicks to classify acoustic events with delphinids.
