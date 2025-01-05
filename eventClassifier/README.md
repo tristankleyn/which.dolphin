@@ -39,6 +39,7 @@ shiny::runApp('eventClassifier')
 The event classifier app requires upload of PAMGuard databases (.sqlite3) containing information pertaining to the sound files used and the classification output from either the ROCCA or Deep Learning module. These data are stored in the _Sound_Aquisition_ and _ROCCA_Whistle_Stats_ or _Deep_Learning_ tables, respectively. Note that upon selecting the database file, the app may take up to several minutes to process files containing many acoustic events, which are defined as individual files analysed in PAMGuard. To process smaller batches of data, users can adjust the period of days from which data are analysed. Users may then specify the minimum number of whistles or clicks required per event for classification, as well as minimum decision score threshold. The decision score is defined as the product of the maximum species likelihood for a given prediction and the difference between the first and second species likelihoods for the same prediction. For example, if the most likely species predicted for an event was predicted with a likelihood of 0.40 and the second most likely species with a likelihood of 0.30, the decision score would be equal to 0.40 x (0.40-0.30) = 0.04. 
 </p>
 ![image](https://github.com/user-attachments/assets/963a3dac-71e8-4d71-a69e-927559f05c53)
+
 ##
 #### 3. View classification results and adjust thresholds to filter predictions
 <p align="justify">
