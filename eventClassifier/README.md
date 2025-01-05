@@ -18,6 +18,9 @@ R script for installing required packages and running _Shiny_ app.
 R packages required for running eventClassifier application.
 
 ### How to use the eventClassifier application
+
+```markdown
+**Example R Code**
 ```R
 packages <- readLines("requirements.txt")
 for (pkg in packages) {
