@@ -17,8 +17,10 @@ R script for installing required packages and running _Shiny_ app.
 #### └── [requirements.txt](https://github.com/tristankleyn/which.dolphin/blob/main/eventClassifier/requirements.txt)
 R packages required for running eventClassifier application.
 
+##
 ### Using the event classifier app
-#### Run the below R code to download necessary packages and launch the eventClassifier app interface
+##
+#### 1. Run the below R code to download necessary packages and launch the eventClassifier app interface
 ```R
 packages <- readLines("requirements.txt")
 for (pkg in packages) {
@@ -30,9 +32,9 @@ for (pkg in packages) {
 shiny::runApp('eventClassifier')
 ```
 ##
-#### Select database containing output of PAMGuard classifiers (delphinID or ROCCA)
+#### 2. Select database containing output of PAMGuard classifiers (delphinID or ROCCA)
 ![image](https://github.com/user-attachments/assets/963a3dac-71e8-4d71-a69e-927559f05c53)
 ##
-#### Adjust optional thresholds to filter predictions
+#### 3. Adjust optional thresholds to filter predictions
 ![image](https://github.com/user-attachments/assets/f1e49228-af05-4c24-8120-02584fb3767d)
 ##
