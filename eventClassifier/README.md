@@ -38,3 +38,4 @@ shiny::runApp('eventClassifier')
 #### 3. Adjust optional thresholds to filter predictions
 ![image](https://github.com/user-attachments/assets/f1e49228-af05-4c24-8120-02584fb3767d)
 ##
+#### 4. Export classified events to .csv format
