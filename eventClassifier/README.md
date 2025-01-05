@@ -24,7 +24,8 @@ R packages required for running eventClassifier application.
 ##
 #### 1. Run the below R code to download necessary packages and launch the eventClassifier app interface
 ```R
-packages <- readLines("requirements.txt")
+setwd('___SET PATH TO FOLDER CONTAINING eventClassifier FOLDER___')
+packages <- readLines("eventClassifier/requirements.txt")
 for (pkg in packages) {
   if (!require(pkg, character.only = TRUE)) {
     install.packages(pkg)
