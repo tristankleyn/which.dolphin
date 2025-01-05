@@ -1,6 +1,6 @@
 ## Integrate whistles and clicks to classify delphinid events.
 <p align="justify">
-This folder contains a graphical user _Shiny_ interface for integrating predictions from ROCCA or delphinID classifiers to classify events to species based on information from  whistles and clicks. Learn below how to use predictions exported from PAMGuard's ROCCA or Deep Learning modules in PAMGuard databases as input for event classification. 
+This folder contains a graphical user *Shiny* interface for integrating predictions from ROCCA or delphinID classifiers to classify events to species based on information from  whistles and clicks. Learn below how to use predictions exported from PAMGuard's ROCCA or Deep Learning modules in PAMGuard databases as input for event classification. 
 </p>
 
 ### eventClassifier/
