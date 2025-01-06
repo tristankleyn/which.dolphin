@@ -29,7 +29,7 @@ The northeast Atlantic delphinid classifier predicts events with an average accu
 
 **Northeast Atlantic classifier performance (F1 score = accuracy x precision)**
 | Species name | Species name | Whistles only | Clicks only | Whistles and clicks |
-|-----------------|-----------------|-----------------|-----------------|
+|-----------------|-----------------|-----------------|-----------------|-----------------|
 | Short-beaked common dolphin | _Delphinus delphis_ | 0.20 | 0.60 | 0.50 |
 | Risso's dolphin | _Grampus griseus_ | 0.11 | 0.80 | 0.70 |
 | Long-finned pilot whale | _Globicephala melas_ | 0.14 | 0.46 | 0.65 |
