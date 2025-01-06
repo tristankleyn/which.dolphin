@@ -37,7 +37,7 @@ The northeast Atlantic delphinid classifier predicts events with an average accu
 | White-beaked dolphin | _Lagenorhynchus albirostris_ | 0.54 | 0.86 | 0.90 |
 | Killer whale | _Orcinus orca_ | 0.57 | --- | 0.80 |
 | Common bottlenose dolphin | _Tursiops truncatus_ | 0.20 | 0.45 | 0.81 |
-|  | **All species** | **0.30** | **0.57** | **0.76** |
+| **All species** |  | **0.30** | **0.57** | **0.76** |
 
 ## Train your own delphinID classifiers
 The R and Python scripts described above can be used to train and test your own delphinID classifier models through the following steps:
