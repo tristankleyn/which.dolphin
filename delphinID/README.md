@@ -32,7 +32,7 @@ The northeast Atlantic delphinid classifier predicts events with an average accu
   <tr>
     <td></td>
     <td></td>
-    <td colspan="3">F1 score (events)</td>
+    <td colspan="3"><b>F1 score (events)</b></td>
   </tr>
   <tr>
     <td><b>Species name</b></td>
