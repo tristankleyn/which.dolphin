@@ -28,16 +28,16 @@ Trained models for classifying recordings of seven northeast Atlantic delphinid 
 The northeast Atlantic delphinid classifier predicts events with an average accuracy of 86.3% (90% CI 82.5-90.1%) across the seven species, ranging from 80% accuracy for short-beaked common dolphins to 92% for white-beaked dolphins. F1 score (accuracy x precision) is shown for each species below:
 
 **Northeast Atlantic classifier performance (F1 score = accuracy x precision)**
-| Species name | Event, whistles only | Event, clicks only | Event, whistles and clicks |
+| Species name | Species name | Whistles only | Clicks only | Whistles and clicks |
 |-----------------|-----------------|-----------------|-----------------|
-| Delphinus delphis | 0.20 | 0.60 | 0.50 |
-| Grampus griseus | 0.11 | 0.80 | 0.70 |
-| Globicephala melas | 0.14 | 0.46 | 0.65 |
-| Lagenorhynchus acutus | 0.37 | --- | 0.58 |
-| Lagenorhynchus albirostris | 0.54 | 0.86 | 0.90 |
-| Orcinus orca | 0.57 | --- | 0.80 |
-| Tursiops truncatus | 0.20 | 0.45 | 0.81 |
-| **All species** | **0.30** | **0.57** | **0.76** |
+| Short-beaked common dolphin | _Delphinus delphis_ | 0.20 | 0.60 | 0.50 |
+| Risso's dolphin | _Grampus griseus_ | 0.11 | 0.80 | 0.70 |
+| Long-finned pilot whale | _Globicephala melas_ | 0.14 | 0.46 | 0.65 |
+| Atlantic white-sided dolphin | _Lagenorhynchus acutus_ | 0.37 | --- | 0.58 |
+| White-beaked dolphin | _Lagenorhynchus albirostris_ | 0.54 | 0.86 | 0.90 |
+| Killer whale | _Orcinus orca_ | 0.57 | --- | 0.80 |
+| Common bottlenose dolphin | _Tursiops truncatus_ | 0.20 | 0.45 | 0.81 |
+|  | **All species** | **0.30** | **0.57** | **0.76** |
 
 ## Train your own delphinID classifiers
 The R and Python scripts described above can be used to train and test your own delphinID classifier models through the following steps:
