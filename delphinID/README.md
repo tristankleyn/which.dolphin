@@ -66,7 +66,7 @@ The northeast Atlantic delphinid classifier predicts events with an average accu
     <td>Atlantic white-sided dolphin</td>
     <td><i>Lagenorhynchus acutus</i></td>
     <td>0.37</td>
-    <td>---</td>
+    <td>---*</td>
     <td>0.58</td>
   </tr>
   <tr>
@@ -80,7 +80,7 @@ The northeast Atlantic delphinid classifier predicts events with an average accu
     <td>Killer whale</td>
     <td><i>Orcinus orca</i></td>
     <td>0.57</td>
-    <td>---</td>
+    <td>---*</td>
     <td>0.80</td>
   </tr>
   <tr>
@@ -98,6 +98,7 @@ The northeast Atlantic delphinid classifier predicts events with an average accu
     <td><b>0.76</b></td>
   </tr>
 </table>
+*Not included in classifier due to data insufficiency  
 
 ## Train your own delphinID classifiers
 The R and Python scripts described above can be used to train and test your own delphinID classifier models through the following steps:
