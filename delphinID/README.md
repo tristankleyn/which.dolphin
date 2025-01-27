@@ -109,7 +109,7 @@ Scripts contained in this folder can be used to train and test your own delphinI
    `git clone https://github.com/tristankleyn/which.dolphin.git`
    
 
-4. Detect whistle and click vocalizations in passive acoustic recordings. Support for running automatic detectors in PAMGuard can be found [here](https://www.pamguard.org/tutorials/getstarted.html), though classifiers can be trained with data from any software.
+4. Detect whistle and click vocalizations in passive acoustic recordings. Support for running automatic detectors in PAMGuard can be found [here](https://www.pamguard.org/tutorials/getstarted.html), though classifiers can in theory be trained with data from any software.
 
 <p align="center">
    <img width="545" alt="image" src="https://github.com/user-attachments/assets/719973a2-1e02-4b2b-8803-1c10dccea0a9" />
