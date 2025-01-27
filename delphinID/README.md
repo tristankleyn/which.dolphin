@@ -101,7 +101,7 @@ The northeast Atlantic delphinid classifier predicts events with an average accu
 *Not included in classifier due to data insufficiency  
 
 ## Train your own delphinID classifiers
-Scripts contained in this folder can be used to train and test your own delphinID classifier models using the following steps:
+Scripts contained in this folder can be used to train and test your own delphinID classifiers. The necessary stages for doing so include generating delphinID-compatible inputs, which are spectral characterisations of groups of whistle or click detections we refer to as "detection frames", and training and evaluating delphinID (CNN) models to classify species present in your data. Follow the steps outlined below to train your own models and please get in touch if you have further questions.
 
 1. Make sure the latest versions of [R](https://cran.r-project.org/) and [Python](https://www.python.org/downloads/) are installed on your device.
 
