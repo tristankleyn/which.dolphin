@@ -1,4 +1,4 @@
-## Identify dolphin species acoustically through machine learning.
+## Identify dolphin species acoustically with machine learning.
 
 This repository contains code for training and testing machine learning models for identifying delphinid species by acoustic characteristics of their vocalizations. Subfolders linked below contain two different classification methods, one using convolutional neural networks (delphinID) and another using Random Forest analysis (ROCCA), for acoustically classifying species. Our documentation here focuses on training and applying models using automated detections of vocalizations made in the open-source software [PAMGuard](https://www.pamguard.org/), though the same workflow and code can be applied to detections extracted elsewhere.
 

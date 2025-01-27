@@ -27,17 +27,78 @@ Trained models for classifying recordings of seven northeast Atlantic delphinid 
 
 The northeast Atlantic delphinid classifier predicts events with an average accuracy of 86.3% (90% CI 82.5-90.1%) across the seven species, ranging from 80% accuracy for short-beaked common dolphins to 92% for white-beaked dolphins. F1 score (accuracy x precision) is shown for each species below:
 
-**Northeast Atlantic classifier performance (F1 score = accuracy x precision)**
-| Species name | Event, whistles only | Event, clicks only | Event, whistles and clicks |
-|-----------------|-----------------|-----------------|-----------------|
-| Delphinus delphis | 0.20 | 0.60 | 0.50 |
-| Grampus griseus | 0.11 | 0.80 | 0.70 |
-| Globicephala melas | 0.14 | 0.46 | 0.65 |
-| Lagenorhynchus acutus | 0.37 | --- | 0.58 |
-| Lagenorhynchus albirostris | 0.54 | 0.86 | 0.90 |
-| Orcinus orca | 0.57 | --- | 0.80 |
-| Tursiops truncatus | 0.20 | 0.45 | 0.81 |
-| **All species** | **0.30** | **0.57** | **0.76** |
+##### Average performance of the northeast Atlantic event classifier (F1 score = accuracy x precision)
+<table>
+  <tr>
+    <td></td>
+    <td></td>
+    <td colspan="3"><b>F1 score (events)</b></td>
+  </tr>
+  <tr>
+    <td><b>Species name</b></td>
+    <td><b>Species name</b></td>
+    <td><b>Whistles only</b></td>
+    <td><b>Clicks only</b></td>
+    <td><b>Whistles and clicks</b></td>
+  </tr>
+  <tr>
+    <td>Short-beaked common dolphin</td>
+    <td><i>Delphinus delphis</i></td>
+    <td>0.20</td>
+    <td>0.60</td>
+    <td>0.50</td>
+  </tr>
+  <tr>
+    <td>Risso's dolphin</td>
+    <td><i>Grampus griseus</i></td>
+    <td>0.11</td>
+    <td>0.80</td>
+    <td>0.70</td>
+  </tr>
+  <tr>
+    <td>Long-finned pilot whale</td>
+    <td><i>Globicephala melas</i></td>
+    <td>0.14</td>
+    <td>0.46</td>
+    <td>0.65</td>
+  </tr>
+  <tr>
+    <td>Atlantic white-sided dolphin</td>
+    <td><i>Lagenorhynchus acutus</i></td>
+    <td>0.37</td>
+    <td>---*</td>
+    <td>0.58</td>
+  </tr>
+  <tr>
+    <td>White-beaked dolphin</td>
+    <td><i>Lagenorhynchus albirostris</i></td>
+    <td>0.54</td>
+    <td>0.86</td>
+    <td>0.90</td>
+  </tr>
+  <tr>
+    <td>Killer whale</td>
+    <td><i>Orcinus orca</i></td>
+    <td>0.57</td>
+    <td>---*</td>
+    <td>0.80</td>
+  </tr>
+  <tr>
+    <td>Common bottlenose dolphin</td>
+    <td><i>Tursiops truncatus</i></td>
+    <td>0.20</td>
+    <td>0.45</td>
+    <td>0.81</td>
+  </tr>
+  <tr>
+    <td><b>All species</b></td>
+    <td></td>
+    <td><b>0.30</b></td>
+    <td><b>0.57</b></td>
+    <td><b>0.76</b></td>
+  </tr>
+</table>
+*Not included in classifier due to data insufficiency  
 
 ## Train your own delphinID classifiers
 The R and Python scripts described above can be used to train and test your own delphinID classifier models through the following steps:
