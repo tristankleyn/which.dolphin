@@ -1,4 +1,4 @@
-<img src="./images/logo_2.PNG" alt="Example image" width="400">
+<img src="./images/logo_2.PNG" alt="Example image" width="500">
 
 ##
 This repository contains code for training and testing delphinID models, convolutional neural networks designed to accurately identify delphinid species by latent features in the frequency spectra of their echolocation click and whistle vocalizations, detected from passive acoustic recordings using [PAMGuard software](https://www.pamguard.org/). Code is available in the following scripts:
