@@ -23,6 +23,9 @@ R packages required for running eventClassifier application.
 ### Using the event classifier app
 ##
 #### 1. Run the below R code to download necessary packages and launch the eventClassifier app interface
+<p align="justify">
+When run, the "runApp.R" script will make sure all required packages are installed before launching the app in a new browser window.
+</p>
 ```R
 setwd('___SET PATH TO FOLDER CONTAINING eventClassifier FOLDER___')
 packages <- readLines("eventClassifier/requirements.txt")
