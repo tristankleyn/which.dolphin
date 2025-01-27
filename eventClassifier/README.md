@@ -58,3 +58,6 @@ Upon finishing uploading and classifying the data, a visual display will appear 
 <p align="justify">
 Users can either export all classified events contained within the range of dates specified or only classified events above the decision thresholds applied. Results are saved to the eventClassifier folder in .csv format.
 </p>
+
+![image](https://github.com/user-attachments/assets/53a70ce9-475a-42a9-9975-cd09352dda7e)
+
