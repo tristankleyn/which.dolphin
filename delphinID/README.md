@@ -101,7 +101,7 @@ The northeast Atlantic delphinid classifier predicts events with an average accu
 *Not included in classifier due to data insufficiency  
 
 ## Train your own delphinID classifiers
-The R and Python scripts described above can be used to train and test your own delphinID classifier models through the following steps:
+Scripts contained in this folder can be used to train and test your own delphinID classifier models using the following steps:
 
 1. Make sure the latest versions of [R](https://cran.r-project.org/) and [Python](https://www.python.org/downloads/) are installed on your device.
 
