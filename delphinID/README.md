@@ -134,7 +134,7 @@ Scripts contained in this folder can be used to train and test your own delphinI
 </p>
 
 
-
+6. Save your classifiers in "saved_model" format to upload into and use within the PAMGuard Deep Learning module.
 
 #### Adjustable classification hyperparameters
 | Parameter | Default | Description |
