@@ -42,10 +42,11 @@ vocRate <- function(sub, d1, d2, w=30, step=60, verbose=0) {
   return(df)
 }
 
-clickData <- function(myStudy, fft) {
+clickData <- function(myStudy, fft, selectEvent=NULL) {
   cdata <- getClickData(myStudy)
-  print(length(cdata))
-  print(dim(cdata))
+  if (!is.null(selectEvent)) {
+    cdata <- subset(cdata, eventId == selectEvent)
+  }
   if (length(cdata) != 0) {
     subcdata <- cdata[order(cdata$UTC),]
     subcdata$t <- as.numeric(subcdata$UTC - subcdata$UTC[1])
@@ -94,7 +95,7 @@ filterClicks <- function(cdata, dt=0, w=1, nmin=3) {
 }
 
 createClickSpectra <- function(subsub, spec, nspec=NULL, dest='temp.csv', file='clickspectra.csv', startrect0=NULL, sr=96000,
-                               dur=4, step=1, nmin=3, k=3, maxout=1800, site=NULL, startrec=NULL, endrec=NULL, include_empty=FALSE) {
+                               dur=4, step=1, nmin=3, k=3, maxout=1800, site=NULL, startrec=NULL, endrec=NULL, include_empty=FALSE, remove_dups=FALSE) {
   t0 <- 0
   t1 <- t0 + dur
   data <- data.frame()
@@ -124,11 +125,11 @@ createClickSpectra <- function(subsub, spec, nspec=NULL, dest='temp.csv', file='
         snr_val <- mean(spectrum)
 #        spectrum <- spectrum - nspec
       }
-      
-      y0 <- as.integer(10*length(spectrum)/(sr/2000))
-      y1 <- as.integer(40*length(spectrum)/(sr/2000))
       y <- rollmeanr(spectrum, k)
+      y0 <- as.integer(10*length(y)/(sr/2000))
+      y1 <- as.integer(40*length(y)/(sr/2000))
       y <- y[y0:y1]
+      
       speclevel <- mean(y)
       nlevel <- mean(nspec)
 
@@ -141,13 +142,12 @@ createClickSpectra <- function(subsub, spec, nspec=NULL, dest='temp.csv', file='
         if (i%%2 != 0 & i != length(y)) {
           ynew <- append(ynew, mean(c(y[i], y[i+1])))
           ccount <- ccount + 1
-        } else if (i == length(y)) {
-          ynew <- append(ynew, y[i])
-        }
+        } 
       }
       
       ynew <- as.numeric(ynew)
       ynew <- ynew/sum(ynew)
+      print(length(ynew))
       
       if (any(is.nan(y)) == FALSE) {
         data <- rbind(data, ynew)
@@ -163,7 +163,7 @@ createClickSpectra <- function(subsub, spec, nspec=NULL, dest='temp.csv', file='
       
     } else {
       if (include_empty==TRUE) {
-        f <- seq(10, 40, 30/80)
+        f <- seq(10, 40, 30/79)
         y <- rep(0, length(f))
         data <- rbind(data, y)
         nclicks <- append(nclicks, length(inds))
@@ -185,6 +185,21 @@ createClickSpectra <- function(subsub, spec, nspec=NULL, dest='temp.csv', file='
     data <- cbind(endrec=endrec, data)
     data <- cbind(startrec=startrec, data)
     data <- cbind(site=site, data)
+    
+    if (remove_dups == TRUE) {
+      newdata <- data.frame()
+      for (k in 1:nrow(data)) {
+        if (k == 1) {
+          newdata <- rbind(newdata, data[k,])
+        } else {
+          if (data$SNR[k] != data$SNR[k-1] & data$n[k] != data$n[k-1]) {
+            newdata <- rbind(newdata, data[k,])
+          }
+        }
+      }
+      data <- newdata
+    }
+    
     write.table(data, dest, sep=',', quote=TRUE, row.names=FALSE, col.names = TRUE)
     print(sprintf('Done. Saved %s click %ss-detection frames to file.', dim(data)[1], dur))
   }
@@ -222,8 +237,11 @@ createClickSpectra <- function(subsub, spec, nspec=NULL, dest='temp.csv', file='
   
 }
 
-whistleData <- function(myStudy, dt=0) {
+whistleData <- function(myStudy, dt=0, selectEvent=NULL) {
   wdata <- getWhistleData(myStudy)
+  if (!is.null(selectEvent)) {
+    wdata <- subset(wdata, eventId==selectEvent)
+  }
   if (length(wdata) != 0) {
     wdata <- wdata[order(wdata$UTC),]
     wdata$t <- as.numeric(wdata$UTC - wdata$UTC[1])
@@ -266,7 +284,7 @@ filterWhistles <- function(wdata, mindur=0.2, dt=0) {
 
 createWhistleSpectra <- function(wdata, bwdata, temp_res, dest='temp.csv', file='whistlespectra.csv', startrect0=NULL, 
                                  w=4, step=1, dd_thr=0.05, min_combined_bandwidth=0, min_bandwidth=0, include_empty=FALSE,
-                                 maxout=1800, site=NULL, startrec=NULL, endrec=NULL) {
+                                 maxout=1800, site=NULL, startrec=NULL, endrec=NULL, remove_dups=FALSE) {
   t0 <- 0
   data <- data.frame()
   starts <- c()
@@ -281,17 +299,20 @@ createWhistleSpectra <- function(wdata, bwdata, temp_res, dest='temp.csv', file=
   while (t0 < maxt) {
     t1 <- t0 + w
     inds <- as.numeric(rownames(subset(wdata, t >= t0 & t < t1)))
-    
-    if (length(inds) > 0) {
+    binary_inds <- c()
+    for (ind in inds) {
+      binary_inds <- append(binary_inds, which(as.numeric(ind) == as.numeric(rownames(wdata))))
+    }
+    if (length(binary_inds) > 0) {
       ctr <- c()
       bandwidths <- c()
       dt <- c()
-      for (i in inds) {
+      for (i in binary_inds) {
         ctr <- append(ctr, bwdata[[i]]$contour*temp_res)
         bandwidths <- append(bandwidths, max(ctr)-min(ctr))
         ns <- bwdata[[i]]$nSlices
-        dur <- bwdata[[i]]$sampleDuration/sr
-        dt <- append(dt, dur/ns)
+        L <- bwdata[[i]]$sampleDuration/sr
+        dt <- append(dt, L/ns)
       }
       
       dt <- mean(dt)
@@ -325,8 +346,6 @@ createWhistleSpectra <- function(wdata, bwdata, temp_res, dest='temp.csv', file=
     } 
   }
   
-  print(length(starts))
-  print(dim(data))
   if (dim(data)[1] > 0) {
     names(data) <- seq(1, dim(data)[2])
     data <- cbind(dd=dd, data)
@@ -335,8 +354,23 @@ createWhistleSpectra <- function(wdata, bwdata, temp_res, dest='temp.csv', file=
     data <- cbind(endrec=endrec, data)
     data <- cbind(startrec=startrec, data)
     data <- cbind(site=site, data)
+    
+    if (remove_dups == TRUE) {
+      newdata <- data.frame()
+      for (k in 1:nrow(data)) {
+        if (k == 1) {
+          newdata <- rbind(newdata, data[k,])
+        } else {
+          if (data$dd[k] != data$dd[k-1]) {
+            newdata <- rbind(newdata, data[k,])
+          }
+        }
+      }
+      data <- newdata
+    }
+    
     write.table(data, dest, sep=',', quote=TRUE, row.names=FALSE, col.names = TRUE)
-    print(sprintf('Done. Saved %s click %ss-detection frames to file.', dim(data)[1], dur))
+    print(sprintf('Done. Saved %s whistle %ss-detection frames to file.', dim(data)[1], w))
   }
 }
     
@@ -581,4 +615,5 @@ groupSpectra <- function(events, dfc, dfw, selectsite, n, voctype) {
   
   return(list(subsub, spec_ds, labels))
 }
+
 

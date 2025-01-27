@@ -1,11 +1,13 @@
 DBI
 dbplyr
 dplyr
+DT
 ggplot2
 janitor
 randomForest
 RSQLite
 rvest
 shiny
+shinyjs
 shinyWidgets
 tidyverse
