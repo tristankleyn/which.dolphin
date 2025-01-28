@@ -1,7 +1,7 @@
-<img src="./images/logo_2.PNG" alt="Example image" width="600">
+<img src="./images/logo_2.PNG" alt="Example image" width="500">
 
 ##
-This repository contains code for training and testing delphinID models, convolutional neural networks designed to accurately identify delphinid species by latent features in the frequency spectra of their echolocation click and whistle vocalizations, detected from passive acoustic recordings using [PAMGuard software](https://www.pamguard.org/). Code is available in the following scripts:
+This repository contains code for training and testing delphinID models, convolutional neural networks designed to accurately identify delphinid species by latent features in the frequency spectra of their echolocation click and whistle vocalizations, detected from passive acoustic recordings using [PAMGuard](https://www.pamguard.org/) software. Code is available in the following scripts:
 
 ### delphinID/
 
@@ -22,10 +22,8 @@ R script containing functions required for compiledata_main script
 
 
 
-## Using pre-trained classifiers for Northeast Atlantic delphinid species 
-Trained models for classifying recordings of seven northeast Atlantic delphinid species (Short-beaked common dolpins _(Delphinus delphis)_, Common bottlenose dolphins _(Tursiops truncatus)_, Risso's dolphins _(Grampus griseus)_, Atlantic white-sided dolphins _(Lagenorhynchus acutus)_, white-beaked dolphins _(Lagenorhynchus albirostris)_, killer whales _(Orcinus orca)_, and long-finned pilot whales _(Globicephala melas)_) are available and citable for use [here](https://zenodo.org/records/14578299?preview=1).
-
-The northeast Atlantic delphinid classifier predicts events with an average accuracy of 86.3% (90% CI 82.5-90.1%) across the seven species, ranging from 80% accuracy for short-beaked common dolphins to 92% for white-beaked dolphins. F1 score (accuracy x precision) is shown for each species below:
+## Pre-trained classifiers for northeast Atlantic delphinid species 
+Trained models are available for classifying northeast Atlantic delphinid species from passive acoustic recordings. [Click HERE to access delphinID classifiers for northeast Atlantic delphinids](https://zenodo.org/records/14578299?preview=1), as well as tutorials and suggested citations. On average, the northeast Atlantic delphinID classifier predicts events containing 1 or more vocalizations with an accuracy of 86.3% (90% CI 82.5-90.1%) across the seven species, ranging from 80% accuracy for short-beaked common dolphins to 92% for white-beaked dolphins, while discarding an average of 24.4% of classifications as ambiguous. F1 score (accuracy x precision) is shown for each species below:
 
 ##### Average performance of the northeast Atlantic event classifier (F1 score = accuracy x precision)
 <table>
@@ -101,7 +99,7 @@ The northeast Atlantic delphinid classifier predicts events with an average accu
 *Not included in classifier due to data insufficiency  
 
 ## Train your own delphinID classifiers
-The R and Python scripts described above can be used to train and test your own delphinID classifier models through the following steps:
+Scripts contained in this folder can be used to train and test your own delphinID classifiers. The necessary stages for doing so include generating delphinID-compatible inputs, which are spectral characterisations of groups of whistle or click detections we refer to as "detection frames", and training and evaluating delphinID (CNN) models to classify species present in your data. Follow the steps outlined below to train your own models and please get in touch if you have further questions.
 
 1. Make sure the latest versions of [R](https://cran.r-project.org/) and [Python](https://www.python.org/downloads/) are installed on your device.
 
@@ -109,7 +107,7 @@ The R and Python scripts described above can be used to train and test your own 
    `git clone https://github.com/tristankleyn/which.dolphin.git`
    
 
-4. Detect whistle and click vocalizations in passive acoustic recordings. Support for running automatic detectors in PAMGuard can be found [here](https://www.pamguard.org/tutorials/getstarted.html), though classifiers can be trained with data from any software.
+3. Detect whistle and click vocalizations in passive acoustic recordings. Support for running automatic detectors in PAMGuard can be found [here](https://www.pamguard.org/tutorials/getstarted.html), though classifiers can in theory be trained with data from any software.
 
 <p align="center">
    <img width="545" alt="image" src="https://github.com/user-attachments/assets/719973a2-1e02-4b2b-8803-1c10dccea0a9" />
@@ -117,7 +115,7 @@ The R and Python scripts described above can be used to train and test your own 
    <em>PAMGuard display showing bearings, waveforms, and spectra of click detections in passive acoustic data.</em>
 </p>
 
-6. Generate detection frame examples from whistle and click detections. [compiledata_main.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_main.R) and its functions [compiledata_functions.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R) can be used to generate detection frames for detections made in PAMGuard. Other software or custom methods can alternatively be used to generate detection frames. All detection frames to should be saved into .csv files within ./delphinID/data - this is done automatically when using the scripts provided.
+4. Generate detection frame examples from whistle and click detections. [compiledata_main.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_main.R) and its functions [compiledata_functions.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R) can be used to generate detection frames for detections made in PAMGuard. Other software or custom methods can alternatively be used to generate detection frames. All detection frames to should be saved into .csv files within ./delphinID/data - this is done automatically when using the scripts provided.
 
 <p align="center">
    <img width="580" alt="image" src="https://github.com/user-attachments/assets/101ba3b2-43da-424f-aef2-42df0e045deb" />
@@ -125,7 +123,7 @@ The R and Python scripts described above can be used to train and test your own 
    <em>Detection frames represent average frequencies present in detections within 4-second time windows.</em>
 </p>
 
-8. Train and evaluate classifier models using [classify_main.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_main.py) and its functions [classify_functions.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R). All examples in each unique encounter will form a separate testing set for evaluating a new classifier trained on all other encounters in the dataset, while models and results are exported to ./delphinID/data. Classification parameters used in the "classify_main.py" script, which are described in the table below, can be adjusted to achieve optimal results.
+5. Train and evaluate classifier models using [classify_main.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_main.py) and its functions [classify_functions.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R). All examples in each unique encounter will form a separate testing set for evaluating a new classifier trained on all other encounters in the dataset, while models and results are exported to ./delphinID/data. Classification parameters used in the "classify_main.py" script, which are described in the table below, can be adjusted to achieve optimal results.
 
 <p align="center">
    <img width="581" alt="image" src="https://github.com/user-attachments/assets/a726f747-546d-46c0-81b2-d0fbc5003645" />
@@ -134,7 +132,7 @@ The R and Python scripts described above can be used to train and test your own 
 </p>
 
 
-
+6. Save your classifiers in "saved_model" format to upload into and use within the PAMGuard Deep Learning module.
 
 #### Adjustable classification hyperparameters
 | Parameter | Default | Description |
