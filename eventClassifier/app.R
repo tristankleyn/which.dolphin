@@ -24,7 +24,7 @@ ui <- fluidPage(
     tags$style(HTML("
       .shiny-title {
         text-align: left; 
-        color: #a6b8a6;   /* Change font color to a red shade */
+        color: #97a695;   /* Change font color to a red shade */
         font-size: 24px;  /* Change font size to 36px */
         font-weight: lighter;
         margin-left: 20px; 
@@ -34,7 +34,7 @@ ui <- fluidPage(
           width: 10px;
           height: 10px;
           border-radius: 50%;
-          background-color: #a6b8a6;
+          background-color: #97a695;
           animation: pulse 1.5s infinite ease-in-out;
           position: absolute;
           left: 50%;
@@ -50,7 +50,7 @@ ui <- fluidPage(
     "))
   ),
   
-  titlePanel(title = div(class = "shiny-title", "Classify acoustic events")),
+  titlePanel(title = div(class = "shiny-title", "eventClassifier/")),
   
   sidebarPanel(
     selectInput("classifierType", "Select supported PAMGuard classifier", c("ROCCA Classifier", "delphinID Classifier"), "ROCCA"),
@@ -67,14 +67,18 @@ ui <- fluidPage(
   mainPanel(
     div(id = "loading", class = "loading-dot", style = 'display:none;'),
     
-    fluidRow(
-      column(12,   # Full width column for both plot and table
-             plotOutput(outputId = "plt", width = "100%", style = "margin-bottom: 5px;"),  # Set width to 100% of column
-      )
+    div(
+      style = "margin:0%",
+      fluidRow(
+        column(12,   # Full width column for both plot and table
+               plotOutput(outputId = "plt", width = "100%", height = "300px"))),
     ),
-    fluidRow(
+    
+    div(
+      style = "margin-top:5%;",
+      fluidRow(
       column(12,
-             DTOutput("table1", style = "margin-top: 5px;"))
+             DTOutput("table1", height = "200px")))
     )
   ),
   
@@ -169,7 +173,8 @@ server <- function(input, output, session) {
         axis.title.x = element_blank(),
         axis.title.y = element_blank(),  
         axis.line.x = element_blank(), 
-        legend.position = "none")
+        legend.position = "none",
+        plot.margin = unit(c(0, 0, 0, 0), "cm"))
   }, width = 900, height = 300, res = 96)
   
   output$table1 <- renderDT({
@@ -180,7 +185,7 @@ server <- function(input, output, session) {
     show_table <- show_table[, !(names(show_table) %in% c('prom', 'conf'))]
     show_table$duration <- as.integer(show_table$duration)
     
-    datatable(show_table, options=list(pageLength=10, dom='tip', paging=TRUE)) %>% formatRound(columns = c("score"), digits = 3)
+    datatable(show_table, options=list(pageLength=5, dom='tip', paging=TRUE)) %>% formatRound(columns = c("score"), digits = 3)
   })
   
   output$downloadFiltered <- downloadHandler(
@@ -203,5 +208,5 @@ server <- function(input, output, session) {
   
 }
 
-shinyApp(ui, server)
+shinyApp(ui, server, options = list(launch.browser = TRUE))
 
