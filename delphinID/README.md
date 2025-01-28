@@ -23,7 +23,7 @@ R script containing functions required for compiledata_main script
 
 
 ## Pre-trained classifiers for northeast Atlantic delphinid species 
-Trained models are available for classifying recordings of seven northeast Atlantic delphinid species (Short-beaked common dolpins _(Delphinus delphis)_, Common bottlenose dolphins _(Tursiops truncatus)_, Risso's dolphins _(Grampus griseus)_, Atlantic white-sided dolphins _(Lagenorhynchus acutus)_, white-beaked dolphins _(Lagenorhynchus albirostris)_, killer whales _(Orcinus orca)_, and long-finned pilot whales _(Globicephala melas)_). [Click HERE to access delphinID classifiers for northeast Atlantic delphinids](https://zenodo.org/records/14578299?preview=1), as well as tutorials and suggested citations.
+Trained models are available for classifying northeast Atlantic delphinid species from passive acoustic recordings. [Click HERE to access delphinID classifiers for northeast Atlantic delphinids](https://zenodo.org/records/14578299?preview=1), as well as tutorials and suggested citations.
 
 The northeast Atlantic delphinid classifier predicts events with an average accuracy of 86.3% (90% CI 82.5-90.1%) across the seven species, ranging from 80% accuracy for short-beaked common dolphins to 92% for white-beaked dolphins. F1 score (accuracy x precision) is shown for each species below:
 
