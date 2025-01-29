@@ -1,5 +1,6 @@
 # (1) Set the appropriate working directory
-setwd('___SET PATH TO FOLDER CONTAINING eventClassifier FOLDER___')
+dir_path <- tcltk::tk_choose.dir(caption="Select folder with eventClassifier")
+setwd(dir_path)
 
 # (2) Load list of required packages
 packages <- readLines("eventClassifier/requirements.txt")
