@@ -24,7 +24,7 @@ R packages required for running eventClassifier application.
 ##
 #### 1. Run runApp.R script to launch eventClassifier interface
 <p align="justify">
-You can run the runApp.R script either by dragging its file into an R console window or sourcing the file within the console directly:
+You can run the runApp.R script either by dragging its file into an R console window or sourcing the file within the console directly. This script will install any packages on your device required for the eventClassifier interface to function (see requirements.txt) before the launching the interface in a browser window.
 </p>
 
 ```R
