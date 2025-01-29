@@ -1,4 +1,4 @@
-## Integrate whistles and clicks to classify delphinid events.
+## Integrate information from whistles and clicks to classify delphinid events.
 <p align="justify">
 This folder contains a graphical user <em>Shiny</em> interface for integrating predictions from ROCCA or delphinID classifiers to classify events to species based on information from  whistles and clicks. Learn below how to use predictions exported from PAMGuard's ROCCA or Deep Learning modules in PAMGuard databases as input for event classification. 
 </p>
@@ -22,21 +22,13 @@ R packages required for running eventClassifier application.
 ##
 ### Using the event classifier app
 ##
-#### 1. Run the below R code to download necessary packages and launch the eventClassifier app interface
+#### 1. Run runApp.R script to launch eventClassifier interface
 <p align="justify">
-When run, the "runApp.R" script will make sure all required packages are installed before launching the app in a new browser window.
+You can run the runApp.R script either by dragging its file into an R console window or sourcing the file within the console directly:
 </p>
 
 ```R
-setwd('___SET PATH TO FOLDER CONTAINING eventClassifier FOLDER___')
-packages <- readLines("eventClassifier/requirements.txt")
-for (pkg in packages) {
-  if (!require(pkg, character.only = TRUE)) {
-    install.packages(pkg)
-    library(pkg, character.only = TRUE)
-  }
-}
-shiny::runApp('eventClassifier')
+source('---INPUT PATH---/which.dolphin-main/eventClassifier/runApp.R')
 ```
 ##
 #### 2. Select database containing output of PAMGuard classifiers (delphinID or ROCCA)
