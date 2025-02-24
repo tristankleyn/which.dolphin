@@ -1,6 +1,8 @@
-## Integrate whistles and clicks to classify delphinid events.
+<img width="545" alt="image" src="https://github.com/user-attachments/assets/e1b7b051-fd61-4eb1-b3de-738e41bb0cfb" />
+
+## Integrate information from whistles and clicks to classify delphinid events.
 <p align="justify">
-This folder contains a graphical user <em>Shiny</em> interface for integrating predictions from ROCCA or delphinID classifiers to classify events to species based on information from  whistles and clicks. Learn below how to use predictions exported from PAMGuard's ROCCA or Deep Learning modules in PAMGuard databases as input for event classification. 
+This folder contains a graphical user <em>Shiny</em> interface for integrating predictions from ROCCA or delphinID classifiers to classify events to species based on information from  whistles and clicks. This workflow for integrating information from multiple sources of acoustic data was motivated by successful classification in prior studies [1] [2] [3] using similar methods, such as the <em>BANTER</em> method proposed in Rankin <em>et al.,</em> (2017). Continue reading to learn how to use the prediction outputs from classifiers used in PAMGuard to classify acoustic events using our eventClassifier interface.
 </p>
 
 ### eventClassifier/
@@ -22,21 +24,13 @@ R packages required for running eventClassifier application.
 ##
 ### Using the event classifier app
 ##
-#### 1. Run the below R code to download necessary packages and launch the eventClassifier app interface
+#### 1. Run runApp.R script to launch eventClassifier interface
 <p align="justify">
-When run, the "runApp.R" script will make sure all required packages are installed before launching the app in a new browser window.
+You can run the runApp.R script either by dragging its file into an R console window or sourcing the file within the console directly. This script will install any packages on your device required for the eventClassifier interface to function (see requirements.txt) before the launching the interface in a browser window.
 </p>
 
 ```R
-setwd('___SET PATH TO FOLDER CONTAINING eventClassifier FOLDER___')
-packages <- readLines("eventClassifier/requirements.txt")
-for (pkg in packages) {
-  if (!require(pkg, character.only = TRUE)) {
-    install.packages(pkg)
-    library(pkg, character.only = TRUE)
-  }
-}
-shiny::runApp('eventClassifier')
+source('---INPUT PATH---/which.dolphin-main/eventClassifier/runApp.R')
 ```
 ##
 #### 2. Select database containing output of PAMGuard classifiers (delphinID or ROCCA)
@@ -64,4 +58,14 @@ Users can either export all classified events contained within the range of date
 </p>
 
 ![image](https://github.com/user-attachments/assets/53a70ce9-475a-42a9-9975-cd09352dda7e)
+
+
+## References
+
+[1] Lu, Y., Mellinger, D. and Klinck, H., 2013, June. Joint classification of whistles and echolocation clicks from odontocetes. In Proceedings of Meetings on Acoustics (Vol. 19, No. 1). AIP Publishing.
+
+[2] Rankin, S., Archer, F., Keating, J.L., Oswald, J.N., Oswald, M., Curtis, A. and Barlow, J., 2017. Acoustic classification of dolphins in the California Current using whistles, echolocation clicks, and burst pulses. Marine Mammal Science, 33(2), pp.520-540.
+
+[3] Rankin, S., Sakai, T., Archer, F.I., Barlow, J., Cholewiak, D., DeAngelis, A.I., McCullough, J.L., Oleson, E.M., Simonis, A.E., Soldevilla, M.S. and Trickey, J.S., 2024. Open-source machine learning BANTER acoustic classification of beaked whale echolocation pulses. Ecological Informatics, 80, p.102511.
+
 

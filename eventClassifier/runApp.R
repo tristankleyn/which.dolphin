@@ -15,3 +15,4 @@ for (pkg in packages) {
 
 # (4) Run app
 shiny::runApp('eventClassifier')
+
