@@ -52,6 +52,7 @@ Below is a screenshot the eventClassifier interface displaying classification re
 12. Download classification reuslts for all events or only events above thresholds.
 13. Plot display (classification counts or classification map)
 14. Table display, showing classification results for each identified event.
+</p>
   
 ##
 #### 3. View classification results and adjust thresholds to filter predictions
