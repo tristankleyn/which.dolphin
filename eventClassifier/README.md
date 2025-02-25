@@ -41,19 +41,14 @@ Below is a screenshot the eventClassifier interface displaying classification re
 ![image](https://github.com/user-attachments/assets/5815e106-58be-4670-9dfa-a024e55a3484)
 
 
-<ol>
-  <li><font color="darkred"><small>Select the type of classifiers (ROCCA or delphinID) used for classifying whistles and clicks in PAMGuard.</small></font></li>
-  <li><font color="darkred"><small>Choose a database to identify and classify acoustic events.</small></font></li>
-  <li><font color="darkred"><small>Select the database tables containing click and whistle classifier predictions (not needed for ROCCA).</small></font></li>
-  <li><font color="darkred"><small>Select a decision score threshold below which event classifications are discarded from the displayed results.</small></font></li>
-  <li><font color="darkred"><small>Select thresholds for the minimum number of click and/or whistle predictions to use for event classification.</small></font></li>
-  <li><font color="darkred"><small>Filter events by range of dates.</small></font></li>
-  <li><font color="darkred"><small>Choose between plot displays (classification counts or classification map).</small></font></li>
-  <li><font color="darkred"><small>Click the 'Classify' button to initialize or refresh results.</small></font></li>
-  <li><font color="darkred"><small>Download classification results for all events or only events above thresholds.</small></font></li>
-  <li><font color="darkred"><small>Plot display (classification counts or classification map).</small></font></li>
-  <li><font color="darkred"><small>Table display, showing classification results for each identified event.</small></font></li>
-</ol>
+1. 🔴 **Select the type of classifiers** (ROCCA or delphinID) used for classifying whistles and clicks in PAMGuard.
+2. 🔴 **Choose a database** to identify and classify acoustic events.
+3. 🔴 **Select the database tables** containing click and whistle classifier predictions (not needed for ROCCA).
+4. 🔴 **Set a decision score threshold** below which event classifications are discarded from the displayed results.
+5. 🔴 **Filter events by range of dates**.
+6. 🔴 **Choose between plot displays** (classification counts or classification map).
+7. 🔴 **Click "Classify"** to initialize or refresh results.
+8. 🔴 **Download classification results** for all events or only events above thresholds.
   
 ##
 #### 3. View classification results and adjust thresholds to filter predictions
