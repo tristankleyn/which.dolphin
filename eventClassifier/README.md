@@ -44,22 +44,12 @@ Below is a screenshot the eventClassifier interface displaying classification re
 
   
 ##
-#### 3. View classification results and adjust thresholds to filter predictions
-<p align="justify">
-Upon finishing uploading and classifying the data, a visual display will appear to the right of the control panel showing classification results. A barplot shows the number of classifications for each species, while a pageable table below provides further information on classified events: The <strong>eventID</strong> column specifies the filename of an acoustic event, <strong>clicks</strong> shows the number of click predictions used by the event classifier, <strong>whistles</strong> shows the number of whistle predictions used by the event classifier, <strong>predictedSpecies</strong> gives the species predicted by the event classifer, <strong>score</strong> shows the decision score for the event, and columns further to the right show classification likelihoods for each individual species included by the event classifier.
-</p>
-
-![image](https://github.com/user-attachments/assets/aa368f76-fb9d-4f2b-9640-8b1f42eb5dea)
-
-
-
+### FAQ's & Comments
 ##
-#### 4. Export classified events
+#### What's the difference between ROCCA and delphinID classifiers? 
 <p align="justify">
-Users can either export all classified events contained within the range of dates specified or only classified events above the decision thresholds applied. Results are saved to the eventClassifier folder in .csv format.
+ROCCA uses Random Forest analysis to predict species based on measured characteristics of whistle contours and click spectra, while delphinID uses deep learning to predict species based on average spectra of whistle contours and clicks. Both classifier types can run using automated detections made in PAMGuard.
 </p>
-
-![image](https://github.com/user-attachments/assets/53a70ce9-475a-42a9-9975-cd09352dda7e)
 
 
 ## References
