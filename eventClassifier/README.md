@@ -40,7 +40,7 @@ Below is a screenshot the eventClassifier interface displaying classification re
 
 ![image](https://github.com/user-attachments/assets/7a46be3a-0b4a-437e-aa6c-876466a85cbe)
 
-![image](https://github.com/user-attachments/assets/af4394de-1904-41d4-a849-27f3f2e02a73)
+![image](https://github.com/user-attachments/assets/20a56e04-c2d8-4601-953c-027fac894193)
 
   
 ##
