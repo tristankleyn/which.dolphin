@@ -48,7 +48,7 @@ Below is a screenshot the eventClassifier interface displaying classification re
 ##
 #### What's the difference between ROCCA and delphinID classifiers? 
 <p align="justify">
-ROCCA uses Random Forest analysis to predict species based on measured characteristics of whistle contours and click spectra, while delphinID uses deep learning to predict species based on average spectra of whistle contours and clicks. Both classifier types can run using automated detections made in PAMGuard.
+💡 ROCCA uses Random Forest analysis to predict species based on measured characteristics of whistle contours and click spectra, while delphinID uses deep learning to predict species based on average spectra of whistle contours and clicks. Both classifier types can run using automated detections made in PAMGuard.
 </p>
 
 
