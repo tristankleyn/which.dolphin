@@ -40,19 +40,18 @@ Below is a screenshot the eventClassifier interface displaying classification re
 
 ![image](https://github.com/user-attachments/assets/5815e106-58be-4670-9dfa-a024e55a3484)
 
-<small>
-1. Select the type of classifiers (ROCCA or delphinID) used for classifying whistles and clicks in PAMGuard.
-2. Choose a database to identify and classify acoustic events.
-3-4. Select the database tables containing click and whistle classifier predictions (not needed for ROCCA)
-5. Select a decision score threshold below which event classifications are discarded from the displayed results.
-6-8. Select thresholds for the minimum number of click and/or whistle predictions to use for event classification.
-9. Filter events by range of dates.
-10. Choose between plot displays (classification counts or classification map)
-11. Click the 'Classify' button to initialise or refresh results
-12. Download classification reuslts for all events or only events above thresholds.
-13. Plot display (classification counts or classification map)
-14. Table display, showing classification results for each identified event.
-</small>
+
+<small> 1. Select the type of classifiers (ROCCA or delphinID) used for classifying whistles and clicks in PAMGuard </small>
+<small> 2. Choose a database to identify and classify acoustic events </small>
+<small> 3-4. Select the database tables containing click and whistle classifier predictions (not needed for ROCCA) </small>
+<small> 5. Select a decision score threshold below which event classifications are discarded from the displayed results </small>
+<small> 6-8. Select thresholds for the minimum number of click and/or whistle predictions to use for event classification </small>
+<small> 9. Filter events by range of dates </small>
+<small> 10. Choose between plot displays (classification counts or classification map) </small>
+<small> 11. Click the 'Classify' button to initialise or refresh results </small>
+<small> 12. Download classification reuslts for all events or only events above thresholds </small>
+<small> 13. Plot display (classification counts or classification map) </small>
+<small> 14. Table display, showing classification results for each identified event </small>
   
 ##
 #### 3. View classification results and adjust thresholds to filter predictions
