@@ -40,7 +40,6 @@ Below is a screenshot the eventClassifier interface displaying classification re
 
 ![image](https://github.com/user-attachments/assets/5815e106-58be-4670-9dfa-a024e55a3484)
 
-<p align="justify">
 1. Select the type of classifiers (ROCCA or delphinID) used for classifying whistles and clicks in PAMGuard.
 2. Choose a database to identify and classify acoustic events.
 3-4. Select the database tables containing click and whistle classifier predictions (not needed for ROCCA)
@@ -52,7 +51,6 @@ Below is a screenshot the eventClassifier interface displaying classification re
 12. Download classification reuslts for all events or only events above thresholds.
 13. Plot display (classification counts or classification map)
 14. Table display, showing classification results for each identified event.
-</p>
   
 ##
 #### 3. View classification results and adjust thresholds to filter predictions
