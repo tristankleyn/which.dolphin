@@ -38,7 +38,7 @@ source('---INPUT PATH---/which.dolphin-main/eventClassifier/runApp.R')
 Below is a screenshot the eventClassifier interface displaying classification results for an example database containing classification output from delphinID whistle and click classifiers.
 </p>
 
-![image](https://github.com/user-attachments/assets/5815e106-58be-4670-9dfa-a024e55a3484)
+![image](https://github.com/user-attachments/assets/7a46be3a-0b4a-437e-aa6c-876466a85cbe)
 
 ![image](https://github.com/user-attachments/assets/af4394de-1904-41d4-a849-27f3f2e02a73)
 
