@@ -24,7 +24,7 @@ R packages required for running eventClassifier application.
 ##
 ### Using the event classifier app
 ##
-#### 1. Run runApp.R script to launch eventClassifier interface
+#### Run runApp.R script to launch eventClassifier interface
 <p align="justify">
 You can run the runApp.R script either by dragging its file into an R console window or sourcing the file within the console directly. This script will install any packages on your device required for the eventClassifier interface to function (see requirements.txt) before the launching the interface in a browser window.
 </p>
@@ -33,12 +33,13 @@ You can run the runApp.R script either by dragging its file into an R console wi
 source('---INPUT PATH---/which.dolphin-main/eventClassifier/runApp.R')
 ```
 ##
-#### 2. Select database containing output of PAMGuard classifiers (delphinID or ROCCA)
+#### Select example of tracking database to monitor delphinid event classifications using ROCCA or delphinID classifiers
 <p align="justify">
-The event classifier app requires upload of PAMGuard databases (.sqlite3) containing information pertaining to the sound files used and the classification output from either the ROCCA or Deep Learning module. These data are stored in the <em>Sound_Aquisition</em> and <em>ROCCA_Whistle_Stats</em> or <em>Deep_Learning</em> tables, respectively. Note that upon selecting the database file, the app may take up to several minutes to process files containing many acoustic events, which are defined as individual files analysed in PAMGuard. To process smaller batches of data, users can adjust the period of days from which data are analysed. Users may then specify the minimum number of whistles or clicks required per event for classification, as well as minimum decision score threshold. The decision score is defined as the product of the maximum species likelihood for a given prediction and the difference between the first and second species likelihoods for the same prediction. For example, if the most likely species predicted for an event was predicted with a likelihood of 0.40 and the second most likely species with a likelihood of 0.30, the decision score would be equal to 0.40 x (0.40-0.30) = 0.04. 
+Below is a screenshot the eventClassifier interface displaying classification results for an example database containing classification output from delphinID whistle and click classifiers.
 </p>
 
-![image](https://github.com/user-attachments/assets/d4584e59-3dde-4022-8159-5486d322a0d4)
+![image](https://github.com/user-attachments/assets/5815e106-58be-4670-9dfa-a024e55a3484)
+
 
 
 ##
