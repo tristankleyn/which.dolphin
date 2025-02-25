@@ -46,10 +46,22 @@ Below is a screenshot the eventClassifier interface displaying classification re
 ##
 ### FAQ's & Comments
 ##
-#### What's the difference between ROCCA and delphinID classifiers? 
+#### ❓ What's the difference between ROCCA and delphinID classifiers? 
 <p align="justify">
-💡 ROCCA uses Random Forest analysis to predict species based on measured characteristics of whistle contours and click spectra, while delphinID uses deep learning to predict species based on average spectra of whistle contours and clicks. Both classifier types can run using automated detections made in PAMGuard.
+ROCCA uses Random Forest analysis to predict species based on measured characteristics of whistle contours and click spectra, while delphinID uses deep learning to predict species based on average spectra of whistle contours and clicks. Both classifier types can run using automated detections made in PAMGuard.
 </p>
+
+#### ❓ What are the best settings to use for decision score and minimum whistles and clicks?
+<p align="justify">
+Generally, we find that both ROCCA and delphinID classifiers classify with higher accuracy when using a higher decision score threshold. This improvement, however, comes at the cost of discarding a portion of classifications, which is higher for higher decision score thresholds. 
+</p>
+
+#### 💡 Our classifiers are only as good as the detections you feed it!
+<p align="justify">
+The tools desribed here are not detectors - they are designed to classify detections of delphinid vocalizations to species level. ROCCA and delphinID classifiers were developed and tested using high signal-to-noise ratio detections, very few of which were false detections. Thus, when using our classifiers to classify novel data, it is highly beneficial to validate a portion of your detections to ensure false detection rates are minimised prior to classification.
+</p>
+
+
 
 
 ## References
