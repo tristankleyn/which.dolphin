@@ -41,18 +41,18 @@ Below is a screenshot the eventClassifier interface displaying classification re
 ![image](https://github.com/user-attachments/assets/5815e106-58be-4670-9dfa-a024e55a3484)
 
 
-<ol style="font-size: 12px; color: darkred;">
-  <li>Select the type of classifiers (ROCCA or delphinID) used for classifying whistles and clicks in PAMGuard.</li>
-  <li>Choose a database to identify and classify acoustic events.</li>
-  <li>Select the database tables containing click and whistle classifier predictions (not needed for ROCCA).</li>
-  <li>Select a decision score threshold below which event classifications are discarded from the displayed results.</li>
-  <li>Select thresholds for the minimum number of click and/or whistle predictions to use for event classification.</li>
-  <li>Filter events by range of dates.</li>
-  <li>Choose between plot displays (classification counts or classification map).</li>
-  <li>Click the 'Classify' button to initialize or refresh results.</li>
-  <li>Download classification results for all events or only events above thresholds.</li>
-  <li>Plot display (classification counts or classification map).</li>
-  <li>Table display, showing classification results for each identified event.</li>
+<ol>
+  <li><font color="darkred"><small>Select the type of classifiers (ROCCA or delphinID) used for classifying whistles and clicks in PAMGuard.</small></font></li>
+  <li><font color="darkred"><small>Choose a database to identify and classify acoustic events.</small></font></li>
+  <li><font color="darkred"><small>Select the database tables containing click and whistle classifier predictions (not needed for ROCCA).</small></font></li>
+  <li><font color="darkred"><small>Select a decision score threshold below which event classifications are discarded from the displayed results.</small></font></li>
+  <li><font color="darkred"><small>Select thresholds for the minimum number of click and/or whistle predictions to use for event classification.</small></font></li>
+  <li><font color="darkred"><small>Filter events by range of dates.</small></font></li>
+  <li><font color="darkred"><small>Choose between plot displays (classification counts or classification map).</small></font></li>
+  <li><font color="darkred"><small>Click the 'Classify' button to initialize or refresh results.</small></font></li>
+  <li><font color="darkred"><small>Download classification results for all events or only events above thresholds.</small></font></li>
+  <li><font color="darkred"><small>Plot display (classification counts or classification map).</small></font></li>
+  <li><font color="darkred"><small>Table display, showing classification results for each identified event.</small></font></li>
 </ol>
   
 ##
