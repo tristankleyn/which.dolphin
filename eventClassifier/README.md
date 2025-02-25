@@ -41,21 +41,19 @@ Below is a screenshot the eventClassifier interface displaying classification re
 ![image](https://github.com/user-attachments/assets/5815e106-58be-4670-9dfa-a024e55a3484)
 
 
-<small>
-
-1. Select the type of classifiers (ROCCA or delphinID) used for classifying whistles and clicks in PAMGuard.  
-2. Choose a database to identify and classify acoustic events.  
-3. Select the database tables containing click and whistle classifier predictions (not needed for ROCCA).  
-4. Select a decision score threshold below which event classifications are discarded from the displayed results.  
-5. Select thresholds for the minimum number of click and/or whistle predictions to use for event classification.  
-6. Filter events by range of dates.  
-7. Choose between plot displays (classification counts or classification map).  
-8. Click the 'Classify' button to initialise or refresh results.  
-9. Download classification results for all events or only events above thresholds.  
-10. Plot display (classification counts or classification map).  
-11. Table display, showing classification results for each identified event.  
-
-</small>
+<ol style="font-size: 12px;">
+  <li>Select the type of classifiers (ROCCA or delphinID) used for classifying whistles and clicks in PAMGuard.</li>
+  <li>Choose a database to identify and classify acoustic events.</li>
+  <li>Select the database tables containing click and whistle classifier predictions (not needed for ROCCA).</li>
+  <li>Select a decision score threshold below which event classifications are discarded from the displayed results.</li>
+  <li>Select thresholds for the minimum number of click and/or whistle predictions to use for event classification.</li>
+  <li>Filter events by range of dates.</li>
+  <li>Choose between plot displays (classification counts or classification map).</li>
+  <li>Click the 'Classify' button to initialize or refresh results.</li>
+  <li>Download classification results for all events or only events above thresholds.</li>
+  <li>Plot display (classification counts or classification map).</li>
+  <li>Table display, showing classification results for each identified event.</li>
+</ol>
   
 ##
 #### 3. View classification results and adjust thresholds to filter predictions
