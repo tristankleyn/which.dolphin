@@ -117,15 +117,20 @@ processdataRocca <- function(db_con, dateRange) {
   list(df=test_events)
 }
 
-processdataDelphinID <- function(db_con, dateRange, ctable=NULL, wtable=NULL) {
+processdataDelphinID <- function(db_con, dateRange, ctable=NULL, wtable=NULL, randseed=42) {
   ctable <- gsub(' ', '', paste(ctable, '_Predictions'))
   wtable <- gsub(' ', '', paste(wtable, '_Predictions'))
   print(sprintf('%s - %s', ctable, wtable))
   cdata <- dbGetQuery(db_con, paste0(sprintf("SELECT * FROM %s", ctable)))
   wdata <- dbGetQuery(db_con, paste0(sprintf("SELECT * FROM %s", wtable)))
   SAQ <- dbGetQuery(db_con, paste0("SELECT * FROM Sound_Acquisition"))
-  wdata$UTC <- as.POSIXct(wdata$UTC, '%Y-%m-%d %H:%M:%OS', tz='UTC')
-  cdata$UTC <- as.POSIXct(cdata$UTC, '%Y-%m-%d %H:%M:%OS', tz='UTC')
+  if (nrow(wdata) > 0) {
+    wdata$UTC <- as.POSIXct(wdata$UTC, '%Y-%m-%d %H:%M:%OS', tz='UTC')
+  }
+  if (nrow(cdata) > 0) {
+    cdata$UTC <- as.POSIXct(cdata$UTC, '%Y-%m-%d %H:%M:%OS', tz='UTC')
+  }
+  
   SAQ$UTC <- as.POSIXct(SAQ$UTC, '%Y-%m-%d %H:%M:%OS', tz='UTC')
   cspecies <- c('Dde', 'Ggr', 'Gme', 'Lal', 'Ttr')
   wspecies <- c('Dde', 'Ggr', 'Gme', 'Lac', 'Lal', 'Oor', 'Ttr')
@@ -155,6 +160,62 @@ processdataDelphinID <- function(db_con, dateRange, ctable=NULL, wtable=NULL) {
       if (!is.na(t0) & !is.na(t1)) {
         csub <- subset(cdata, UTC > t0 & UTC <= t1)
         wsub <- subset(wdata, UTC > t0 & UTC <= t1)
+        
+        keep <- c()
+        for (j in 1:nrow(csub)) {
+          preds <- csub$Predicition[j]
+          if (length(preds) > 0) {
+            if (is.character(preds) == TRUE & length(preds) > 0 & !is.na(preds)) {
+              nums <- as.numeric(fromJSON(preds)$predictions)
+              if (all(nums >= 0) == TRUE) {
+                keep <- append(keep, 1)
+              } else {
+                keep <- append(keep, 0)
+              }
+            } else {
+              keep <- append(keep, 0)
+            }
+          } else {
+            keep <- append(keep, 0)
+          }
+        }
+        
+        if (nrow(csub) == length(keep)) {
+          csub$keep <- keep
+          csub <- subset(csub, keep > 0)
+        } else {
+          csub <- csub[0:0,]
+        }
+
+        
+        keep <- c()
+        for (j in 1:nrow(wsub)) {
+          preds <- wsub$Predicition[j]
+          if (length(preds) > 0) {
+            if (is.character(preds) == TRUE & !is.na(preds)) {
+              nums <- as.numeric(fromJSON(preds)$predictions)
+              if (all(nums >= 0) == TRUE) {
+                keep <- append(keep, 1)
+              } else {
+                keep <- append(keep, 0)
+              }
+            } else {
+              keep <- append(keep, 0)
+            }
+          } else {
+            keep <- append(keep, 0)
+          }
+        }
+        
+        if (nrow(wsub) == length(keep)) {
+          wsub$keep <- keep
+          wsub <- subset(wsub, keep > 0)
+        } else {
+          print('keep error')
+          wsub <- wsub[0:0,]
+        }
+        
+        
         
         if (length(dim(csub)) > 0) {
           if (dim(csub)[1] > 0) {
@@ -191,6 +252,7 @@ processdataDelphinID <- function(db_con, dateRange, ctable=NULL, wtable=NULL) {
               votes <- c()
               for (i in 1:dim(wsub)[1]){
                 preds <- wsub$Predicition[i]
+                nums <- as.numeric(fromJSON(preds)$predictions)
                 p <- as.numeric(fromJSON(preds)$predictions[[count]])
                 votes <- append(votes, p)
               }
@@ -209,30 +271,60 @@ processdataDelphinID <- function(db_con, dateRange, ctable=NULL, wtable=NULL) {
         }
             dfc <- csub
             dfw <- wsub
-            print(wsub)
-          
-            dfc_e <- colMeans(dfc[,cspecies])/sum(colMeans(dfc[,cspecies]))
+            
+            print(head(dfw))
+
+            dfc_e <- colMeans(dfc[,cspecies])/sum(colMeans(dfc[,cspecies]), na.rm=TRUE)
+            seed <- as.integer(nrow(dfc)*nrow(dfw))
+            cc <- 0
             if (any(is.na(dfc_e))) {
               for (name in names(dfc_e)) {
                 dfc_e[[name]] <- runif(1,10,15)
+                set.seed(seed + cc)
+                cc <- cc + 1
               }
               dfc_e <- dfc_e/sum(dfc_e)
+              nc <- 0
+            } else {
+              nc <- nrow(dfc)
             }
+            
+            set.seed(randseed)
 
             namesc <- c('Dde_c', 'Ggr_c', 'Gme_c', 'Lal_c', 'Ttr_c')
             
-            dfw_e <- colMeans(dfw[,wspecies])/sum(colMeans(dfw[,wspecies]))
+            dfw_e <- colMeans(dfw[,wspecies])/sum(colMeans(dfw[,wspecies]), na.rm=TRUE)
+            seed <- as.integer(nrow(dfc)*nrow(dfw))
+            cc <- 0
             if (any(is.na(dfw_e))) {
               for (name in names(dfw_e)) {
                 dfw_e[[name]] <- runif(1,10,15)
+                set.seed(seed + cc)
+                cc <- cc + 1
               }
               dfw_e <- dfw_e/sum(dfw_e)
+              nw <- 0
+            } else {
+              nw <- nrow(dfw)
             }
+            
+            namesw <- c('Dde_w', 'Ggr_w', 'Gme_w', 'Lac_w', 'Lal_w', 'Oor_w', 'Ttr_w')
+            
+            set.seed(randseed)
             
             names(dfc_e) <- namesc
             names(dfw_e) <- namesw
             xtest <- data.frame(cbind(t(dfc_e), t(dfw_e)))
-            print(xtest)
+            xround <- as.integer(xtest*100)
+            
+            barcode <- ''
+            for (item in xround) {
+              item <- as.character(item)
+              if (nchar(item) < 2) {
+                item <- gsub(' ', '', paste('0', item))
+              }
+              barcode <- gsub(' ', '', paste(barcode, item))
+            }
             
             startT <- min(c(csub$UTC[1], wsub$UTC[1]))
             endT <- max(c(csub$UTC[dim(csub)[1]], wsub$UTC[dim(wsub)[1]]))
@@ -242,8 +334,9 @@ processdataDelphinID <- function(db_con, dateRange, ctable=NULL, wtable=NULL) {
             xtest$endUTC <- endT
             xtest$duration <- evDur
             xtest$eventID <- str_trim(as.character(evID))
-            xtest$clicks <- dim(dfc)[1]
-            xtest$whistles <- dim(dfw)[1]
+            xtest$clicks <- nc
+            xtest$whistles <- nw
+            xtest$barcode <- barcode
             print(sprintf('Event %s start %s', event_count, xtest$startUTC))
             print(sprintf('Event %s end %s', event_count, xtest$endUTC))
             test_events <- rbind(test_events, xtest)
@@ -254,5 +347,4 @@ processdataDelphinID <- function(db_con, dateRange, ctable=NULL, wtable=NULL) {
       }
   list(df=test_events)
   }
-
 

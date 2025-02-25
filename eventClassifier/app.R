@@ -79,13 +79,14 @@ ui <- fluidPage(
   
   sidebarPanel(
     selectInput("classifierType", "Select supported PAMGuard classifier", c("ROCCA Classifier", "delphinID Classifier"), "delphinID Classifier"),
-    fileInput("file1", "Select database", accept='.sqlite3'),
+    selectInput("selectDB", "Select database", c("exampleDB", "trackDB"), selected="exampleDB"),
     uiOutput("ctableSelectUI"),
     uiOutput("wtableSelectUI"), 
-    sliderInput("evScore", "Minimum decision score", 0, 0.2, 0),
-    sliderInput("minClicks", "Minimum click predictions", 0, 100, 0),
-    sliderInput("minWhistles", "Minimum whistle predictions", 0, 100, 0),
+    sliderInput("evScore", "Minimum decision score", 0, 0.2, 0, step=0.025),
+    sliderInput("minClicks", "Minimum click predictions", 0, 100, 0, step=5),
+    sliderInput("minWhistles", "Minimum whistle predictions", 0, 100, 0, step=5),
     dateRangeInput("dateRange", "Filter dates", start = Sys.Date() - 3652, end = Sys.Date()),
+    selectInput("plotType", "Show plot", c("Counts", "Map"), selected="Counts"),
     actionButton("classifyButton", "Classify", class = "btn-primary"),
     br(),
     br(),
@@ -122,20 +123,21 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   
-  process_data <- reactive({
-    req(input$file1)
-    print(input$file1)
+  process_data <- eventReactive(input$classifyButton, {
+    req(input$classifyButton)
     shinyjs::show("loading")
     
     set.seed(rseed)
-    db_con <- dbConnect(RSQLite::SQLite(), input$file1$datapath)
+    db_con <- dbConnect(RSQLite::SQLite(), sprintf('%s.sqlite3', input$selectDB))
+    print(getwd())
+    print(RSQLite::dbListTables(db_con))
     on.exit(dbDisconnect(db_con))
     dateRange <- input$dateRange
     if (input$classifierType == 'ROCCA Classifier') {
       testevents <- processdataRocca(db_con, dateRange)[[1]]
     } else if (input$classifierType == 'delphinID Classifier') {
       req(input$cTable)
-      testevents <- processdataDelphinID(db_con, dateRange, ctable=input$cTable, wtable=input$wTable)[[1]]
+      testevents <- processdataDelphinID(db_con, dateRange, ctable=input$cTable, wtable=input$wTable, randseed=rseed)[[1]]
     }
     
     list(df=testevents)
@@ -143,17 +145,24 @@ server <- function(input, output, session) {
   
   
   predictions <- eventReactive (input$classifyButton, {
+    req(input$classifyButton)
     set.seed(rseed)
     test_events <- process_data()$df
+    
+    bc <- test_events$barcode
     if (input$classifierType == 'ROCCA Classifier') {
       probs <- data.frame(predict(model, test_events, type='prob'))
     } else if (input$classifierType == 'delphinID Classifier') {
       probs <- data.frame(predict(model_D, test_events, type='prob'))
     }
     
-    predspecieslist <- c('Common', 'Rissos', 'LF pilot whale', 'Atlantic white-sided', 
-                         'White-beaked', 'Orca', 'Bottlenose')
+    predspecieslist <- c('De. delphis', 'Gr. griseus', 'Gl. melas', 'La. acutus', 
+                         'La. albirostris', 'Or. orca', 'Tu. truncatus')
     
+    ind1 <- which(names(test_events) == 'Dde_c')
+    ind2 <- which(names(test_events) == 'Ttr_w')
+    pcadf <- test_events[,ind1:ind2]
+    PCAvars <- names(pcadf) 
     
     pred_df <- data.frame()
     for (i in 1:dim(probs)[1]) {
@@ -163,7 +172,7 @@ server <- function(input, output, session) {
       prom <- row[rev(order(row))][1] - row[rev(order(row))][2]
       score <- prom*conf
       predrow <- data.frame(eventID=test_events$eventID[i], clicks=as.integer(test_events$clicks[i]), whistles=as.integer(test_events$whistles[i]),
-                            duration=test_events$duration[i], predictedSpecies=pred, score=score, prom=prom, conf=conf)
+                            duration=test_events$duration[i], predictedSpecies=pred, score=score, prom=prom, conf=conf, barcode=bc[i])
       
       spcount <- 1
       for (sp in predspecieslist) {
@@ -173,72 +182,128 @@ server <- function(input, output, session) {
       pred_df <- rbind(pred_df, predrow)
     }
     
+    pca_result <- prcomp(pcadf, scale. = TRUE)
+    pca_result <- data.frame(pca_result$x)
+    pcadf$predictedSpecies <- pred_df$predictedSpecies
+    pcadf$PC1 <- pca_result$PC1
+    pcadf$PC2 <- pca_result$PC2
+    pcadf$clicks <- pred_df$clicks
+    pcadf$whistles <- pred_df$whistles
+    pcadf$score <- pred_df$score
+    pcadf <- subset(pcadf, clicks >= input$minClicks)
+    pcadf <- subset(pcadf, whistles >= input$minWhistles)
+    pcadf <- subset(pcadf, score >= input$evScore)
+    
+
     allpreds <- pred_df
     pred_df <- subset(pred_df, clicks >= input$minClicks)
     pred_df <- subset(pred_df, whistles >= input$minWhistles)
     pred_df <- subset(pred_df, score >= input$evScore)
+    pred_df <- subset(pred_df, clicks > 0 | whistles > 0)
+    
     evScore <- input$evScore
     if (input$classifierType == 'delphinID Classifier') {
       colnames(pred_df)[colnames(pred_df) == "whistles"] <- "whistleFrames"
       colnames(pred_df)[colnames(pred_df) == "clicks"] <- "clickFrames"
     }
     
-    list(preds=pred_df, allpreds=allpreds, evScore=evScore)
+    list(preds=pred_df, allpreds=allpreds, evScore=evScore, PCAdf=pcadf)
     
   })
   
   output$plt <- renderPlot({
-    req(input$file1)
+    req(input$classifyButton)
     
-    plot_data <- predictions()
-    shinyjs::hide("loading")
-    df <- plot_data$preds
-    x <- seq(0,1,0.01)
-    y <- as.numeric(plot_data$evScore)/x
-    thr <- data.frame(x=x, y=y)
-    
-    custom_colors <- c('Common'='royalblue',
-                'Rissos'='darkred',
-                'LF pilot whale'='forestgreen',
-                'Atlantic white-sided'='purple',
-                'White-beaked'='grey',
-                'Orca'='orange',
-                'Bottlenose'='turquoise')
-    
-    all_levels <- c("Common", "Rissos", "LF pilot whale", "Atlantic white-sided", "White-beaked", "Orca", "Bottlenose")
-    
-    df$predictedSpecies <- factor(df$predictedSpecies, levels = all_levels)
-    df_full <- data.frame(predictedSpecies = all_levels) %>%
-      left_join(df %>% count(predictedSpecies), by = "predictedSpecies") %>%
-      mutate(n = ifelse(is.na(n), 0, n))
-    
-    ymax <- max(df_full$n)
-    block <- as.integer(max(df_full$n)/10)
-    if (block < 1) {
-      block <- 1
+    if (input$plotType == "Counts") {
+      plot_data <- predictions()
+      shinyjs::hide("loading")
+      df <- plot_data$preds
+      x <- seq(0,1,0.01)
+      y <- as.numeric(plot_data$evScore)/x
+      thr <- data.frame(x=x, y=y)
+      
+      custom_colors <- c('De. delphis'='royalblue',
+                         'Gr. griseus'='darkred',
+                         'Gl. melas'='forestgreen',
+                         'La. acutus'='purple',
+                         'La. albirostris'='grey',
+                         'Or. orca'='orange',
+                         'Tu. truncatus'='turquoise')
+      
+      all_levels <- c('De. delphis', 'Gr. griseus', 'Gl. melas', 'La. acutus', 
+                      'La. albirostris', 'Or. orca', 'Tu. truncatus')
+      
+      df$predictedSpecies <- factor(df$predictedSpecies, levels = all_levels)
+      df_full <- data.frame(predictedSpecies = all_levels) %>%
+        left_join(df %>% count(predictedSpecies), by = "predictedSpecies") %>%
+        mutate(n = ifelse(is.na(n), 0, n))
+      
+      ymax <- max(df_full$n)
+      block <- as.integer(max(df_full$n)/10)
+      if (block < 1) {
+        block <- 1
+      }
+      
+      ggplot(data = df_full, aes(x = predictedSpecies, y=n, fill = predictedSpecies)) +
+        geom_bar(stat='identity', fill='#a6b8a6', color = "#a6b8a6") +
+        theme_minimal() +
+        scale_y_continuous(
+          breaks = seq(1, ymax, by = block)) + 
+        theme(
+          axis.text.x = element_text(size = 8),
+          axis.ticks.x = element_blank(),
+          axis.title.x = element_blank(),
+          axis.title.y = element_blank(),  
+          axis.line.x = element_blank(), 
+          legend.position = "none",
+          plot.margin = unit(c(0, 0, 0, 0), "cm"))
+    } else {
+      plot_data <- predictions()
+      shinyjs::hide("loading")
+      df <- plot_data$PCAdf
+      
+      custom_colors <- c('De. delphis'='royalblue',
+                         'Gr. griseus'='darkred',
+                         'Gl. melas'='forestgreen',
+                         'La. acutus'='purple',
+                         'La. albirostris'='grey',
+                         'Or. orca'='orange',
+                         'Tu. truncatus'='turquoise')
+      
+      all_levels <- c('De. delphis', 'Gr. griseus', 'Gl. melas', 'La. acutus', 
+                      'La. albirostris', 'Or. orca', 'Tu. truncatus')
+      
+      label_counts <- df %>%
+        group_by(predictedSpecies) %>%
+        summarise(n = n()) %>%
+        mutate(label_n = paste0(predictedSpecies, " (n = ", n, ")"))
+      
+      df <- df %>% left_join(label_counts, by='predictedSpecies')
+      
+      ggplot(df, aes(x = PC1, y = PC2, color = label_n)) +
+        geom_point(size = 1.5, alpha=0.6) +
+        stat_ellipse(level = 0.90) +  # 90% confidence ellipse
+        theme_minimal(base_size = 8) + 
+        theme(legend.text = element_text(size = 8),
+              axis.title.x = element_text(size=8), 
+              axis.title.y = element_text(size=8),
+              ) + 
+        xlab('Component 1') + 
+        ylab('Component 2') + 
+        guides(color = guide_legend(title = "Classified species"))
     }
-    
-    ggplot(data = df_full, aes(x = predictedSpecies, y=n, fill = predictedSpecies)) +
-      geom_bar(stat='identity', fill='#a6b8a6', color = "#a6b8a6") +
-      theme_minimal() +
-      scale_y_continuous(
-        breaks = seq(1, ymax, by = block)) + 
-      theme(
-        axis.text.x = element_text(size = 12),
-        axis.ticks.x = element_blank(),
-        axis.title.x = element_blank(),
-        axis.title.y = element_blank(),  
-        axis.line.x = element_blank(), 
-        legend.position = "none",
-        plot.margin = unit(c(0, 0, 0, 0), "cm"))
-  }, width = 900, height = 300, res = 96)
+
+  }, width = 1000, height = 300, res = 192)
   
   output$table1 <- renderDT({
+    req(input$classifyButton)
     show_table <- predictions()$preds
+    bc <- show_table$barcode
     shinyjs::hide("loading")
     ind <- which(names(show_table) == 'score')
     show_table <- show_table[,1:ind]
     show_table <- show_table[, !(names(show_table) %in% c('prom', 'conf'))]
+    show_table[['delphinID']] <- bc
     show_table$duration <- as.integer(show_table$duration)
     
     datatable(show_table, options=list(pageLength=5, dom='tip', paging=TRUE)) %>% formatRound(columns = c("score"), digits = 3)
@@ -263,11 +328,11 @@ server <- function(input, output, session) {
   )
   
   output$ctableSelectUI <- renderUI({
-  req(input$file1)  # Ensure file is uploaded
   req(input$classifierType == "delphinID Classifier")  # Show only if delphinID is selected
   
   # Try to extract table names
-  db_con <- dbConnect(RSQLite::SQLite(), input$file1$datapath)
+  
+  db_con <- dbConnect(RSQLite::SQLite(), sprintf('%s.sqlite3', input$selectDB))
   on.exit(dbDisconnect(db_con))  # Ensure disconnection after use
   
   tables <- dbListTables(db_con)  # Get table names
@@ -293,11 +358,10 @@ server <- function(input, output, session) {
 })
   
   output$wtableSelectUI <- renderUI({
-    req(input$file1)  # Ensure file is uploaded
     req(input$classifierType == "delphinID Classifier")  # Show only if delphinID is selected
     
     # Try to extract table names
-    db_con <- dbConnect(RSQLite::SQLite(), input$file1$datapath)
+    db_con <- dbConnect(RSQLite::SQLite(), sprintf('%s.sqlite3', input$selectDB))
     on.exit(dbDisconnect(db_con))  # Ensure disconnection after use
     
     tables <- dbListTables(db_con)  # Get table names
