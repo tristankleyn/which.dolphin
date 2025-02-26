@@ -189,12 +189,12 @@ Trained models for northeast Atlantic delphinid species are available [HERE](htt
 Detection frames are representations of the average frequency content in detections of clicks or whistles contained within a 4-second time window and are the input features used by delphinID classifier models. To train the northeast Atlantic delphinID classifiers, detection frames were produced for clicks and whistles in slightly different ways. Average frequency power spectra for individual clicks were calculated using the R package _PAMpal_ [[1]](https://taikisan21.github.io/PAMpal/) and then averaged together for all click detections within 4-second time windows and normalised to form detection frames. Whistle detection frames were instead calculated as arrays of the relative density of frequency values within detected whistle peak frequency contours. While limitations of our dataset restricted us to training our classifiers on low frequency spectra of clicks (10-40 kHz) and whistles (2-20 kHz), detection frames can be characterised across any desired frequency range. One main benefit of using a detection-based approach over one using spectrogram images as input is that a majority of the information contained in the input is relevant to our signals of interest, so long as detections of signals are accurate and of high signal-to-noise ratio. Training classifiers on inputs that are largely robust to background noise is likely to benefit their performance and generalisability. 
 </p>
 
-#####❓ Why don't detection frames utilise a wider frequency bandwidth?
+##### ❓ Why don't detection frames utilise a wider frequency bandwidth?
 <p align="justify">
 Our models were trained to classify species based on acoustic characteristics in the 2-20 kHz range for whistles and in the 10-40 kHz range for clicks - these ranges were limited by the number of recordings at different sampling rates which were available to us. Delphinid clicks can contain energy up to frequencies above 150 kHz, while whistles and their harmonic structures often contain energy higher than 20 kHz. While the pre-trained classifiers for the northeast Atlantic are bound to low-frequency characterisations of whistles and clicks, new delphinID models could be trained using other bandwidths and this may be useful provided sufficient data at higher sampling rates.
 </p>
 
-####❓ What settings should I use for detecting signals in PAMGuard?
+#### ❓ What settings should I use for detecting signals in PAMGuard?
 <p align="justify">
 Detailed support and tutorials for using automatic detectors in PAMGuard can be found at [pamguard.org](https://www.pamguard.org/tutorials/getstarted.html). For training accurate classifiers, users should target whistles and clicks of high signal-to-noise ratio that are unmasked by other loud sound sources. Certain settings within automatic detectors, such as trigger thresholds, trigger filters, and spectral criteria can be used to filter detections.
 </p>
