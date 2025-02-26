@@ -28,19 +28,19 @@ R script containing functions required for compiledata_main script
 #### 🧾 [Overview](#overview)
 #### 🔧 [DIY: Make your own delphinID classifier](#diy-train-a-delphinid-classifier-for-your-dataspecies)
 #### 🌎 [Pre-trained classifiers for northeast Atlantic delphinids](#pre-trained-classifiers-for-northeast-atlantic-delphinid-species)
-#### ❓ [FAQ's](#faqs)
+#### 💡 [FAQ's](#faqs)
 
 ##
 ##
 
-### Overview
+### 🧾 Overview
 <p align="justify">
 delphinID models are convolutional neural networks trained to accurately classify delphinid species by latent characteristics in the average low-frequency spectra of their whistle and click vocalizations, calculated across 4-second windows we term detection frames. Thus, delphinID classification is not based on spectrogram representations but rather compressed spectra averaged across successive vocalizations - this has benefits both in terms of computational efficiency when models are run within [PAMGuard](https://www.pamguard.org/) and in terms of the models' robustness to overfitting. For the delphinID classifiers we have developed, detections of whistles and clicks were automatically extracted in PAMGuard and calculation of detection frames was done using the R package [PAMPal](https://taikisan21.github.io/PAMpal/), while the delphinID models themselves were trained in Tensorflow 2.18. Interested developers are welcome to use other methods to detect vocalizations and calculate detection frames, though we recommend at least loosely following our methods to achieve similar results. 
 </p>
 
 ##
 
-### DIY: Train a delphinID classifier for your data/species
+### 🔧 DIY: Train a delphinID classifier for your data/species
 <p align="justify">
 Scripts contained in this folder can be used to train and test your own delphinID classifiers. The necessary stages for doing so include generating delphinID-compatible inputs, which are spectral characterisations of groups of whistle or click detections we refer to as "detection frames", and training and evaluating delphinID (CNN) models to classify species present in your data. Follow the steps outlined below to train your own models and please get in touch if you have further questions.
 </p>
@@ -107,8 +107,8 @@ Scripts contained in this folder can be used to train and test your own delphinI
 
 ##
 
-### Pre-trained classifiers for northeast Atlantic delphinid species 
-Trained models are available for classifying northeast Atlantic delphinid species from passive acoustic recordings. [Click HERE to access delphinID classifiers for northeast Atlantic delphinids](https://zenodo.org/records/14578299?preview=1), as well as tutorials and suggested citations. On average, the northeast Atlantic delphinID classifier predicts events containing 1 or more vocalizations with an accuracy of 86.3% (90% CI 82.5-90.1%) across the seven species, ranging from 80% accuracy for short-beaked common dolphins to 92% for white-beaked dolphins, while discarding an average of 24.4% of classifications as ambiguous. F1 score (accuracy x precision) is shown for each species below:
+### 🌎 Pre-trained classifiers for northeast Atlantic delphinid species 
+Trained models for northeast Atlantic delphinid species are available [HERE](https://zenodo.org/records/14578299?preview=1), along with further information and suggested citations. On average, the northeast Atlantic delphinID classifier predicts events containing 1 or more vocalizations with an accuracy of 86.3% (90% CI 82.5-90.1%) across seven species common to this region, ranging in average accuracy from 80% for short-beaked common dolphins to 92% for white-beaked dolphins, while discarding an average of 24.4% of classifications as ambiguous. F1 score (recall x precision) is shown for each species below:
 
 ##### Average performance of the northeast Atlantic event classifier (F1 score = accuracy x precision)
 <table>
@@ -185,8 +185,8 @@ Trained models are available for classifying northeast Atlantic delphinid specie
 
 ##
 
-### FAQ's
-#####❓ What exactly is a detection frame?
+### 💡 FAQ's
+#### ❓ What exactly is a detection frame?
 <p align="justify">
 Detection frames are representations of the average frequency content in detections of clicks or whistles contained within a 4-second time window and are the input features used by delphinID classifier models. To train the northeast Atlantic delphinID classifiers, detection frames were produced for clicks and whistles in slightly different ways. Average frequency power spectra for individual clicks were calculated using the R package _PAMpal_ [[1]](https://taikisan21.github.io/PAMpal/) and then averaged together for all click detections within 4-second time windows and normalised to form detection frames. Whistle detection frames were instead calculated as arrays of the relative density of frequency values within detected whistle peak frequency contours. While limitations of our dataset restricted us to training our classifiers on low frequency spectra of clicks (10-40 kHz) and whistles (2-20 kHz), detection frames can be characterised across any desired frequency range. One main benefit of using a detection-based approach over one using spectrogram images as input is that a majority of the information contained in the input is relevant to our signals of interest, so long as detections of signals are accurate and of high signal-to-noise ratio. Training classifiers on inputs that are largely robust to background noise is likely to benefit their performance and generalisability. 
 </p>
