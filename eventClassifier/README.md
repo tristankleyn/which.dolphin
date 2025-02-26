@@ -1,4 +1,3 @@
-🔵  🔵  🔵  🔵  🔵  🔵  🔵  🔵
 
 ## Integrate information from whistles and clicks to classify delphinid events.
 <p align="justify">
