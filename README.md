@@ -9,14 +9,15 @@ Classifier models provided here are designed to work in a two-stage process: **b
 ### which.dolphin/
 
 > #### └── [delphinID](https://github.com/tristankleyn/which.dolphin/tree/main/delphinID)/
-> delphinID models are convolutional neural networks (CNNs) developed in TensorFlow and trained to classify species by latent characteristics in concatenated normalised frequency power spectra of whistles or clicks. 
+> Convolutional neural networks (CNNs) developed in Python TensorFlow and trained to classify species by latent characteristics in concatenated normalised frequency power spectra of whistles or clicks. 
 
-> #### └── [rocca](https://github.com/tristankleyn/which.dolphin/tree/main/rocca)/
-> [ROCCA](https://www.pamguard.org/rocca/rocca.html) (Real-time Odontocete Call Classification Algorithm) ([Oswald et al., 2007](https://pubs.aip.org/asa/jasa/article/122/1/587/813007)) models are Random Forest models developed in WEKA and trained to classify species based on select acoustic-temporal measurements extracted from whistles or clicks.
+> #### └── [ROCCA](https://github.com/tristankleyn/which.dolphin/tree/main/rocca)/
+> Random Forest models developed in WEKA [2] to classify species based on select acoustic-temporal measurements extracted from whistles or clicks.
 
 > #### └── [eventClassifier](https://github.com/tristankleyn/which.dolphin/tree/main/eventClassifier)/
-> Folder containing simple graphical user interface developed in R _Shiny_, which allows users to integrate predictions from whistle and click classifiers (either ROCCA or delphinID) with an event classifier model to form final species predictions for isolated acoustic events.
+> Graphical user interface for integrating predictions from base classifiers (ROCCA or delphinID) to form final species predictions for isolated delphinid events.
 
 ## References
 [1] Rankin, S., Archer, F., Keating, J.L., Oswald, J.N., Oswald, M., Curtis, A. and Barlow, J., 2017. Acoustic classification of dolphins in the California Current using whistles, echolocation clicks, and burst pulses. Marine Mammal Science, 33(2), pp.520-540.
 
+[2] Oswald, J.N., and M. Oswald. 2013. ROCCA (Real-time Odontocete Call Classification Algorithm) User’s Manual. Prepared for Naval Facilities Engineering Command Atlantic, Norfolk, Virginia under HDR Environmental, Operations and Construction, Inc Contract No. CON005-4394-009, Subproject 164744, Task Order 03, Agreement # 105067. Prepared by Bio-Waves, Inc., Encinitas, California.
