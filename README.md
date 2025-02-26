@@ -15,7 +15,7 @@ Classifier models provided here are designed to work in a two-stage process: **b
 > Random Forest models developed in WEKA [2] to classify species based on select acoustic-temporal measurements extracted from whistles or clicks.
 
 > #### └── [eventClassifier](https://github.com/tristankleyn/which.dolphin/tree/main/eventClassifier)/
-> Graphical user interface for integrating predictions from base classifiers (ROCCA or delphinID) to form final species predictions for recordings containing delphinid vocalizations.
+> Graphical user interface for integrating predictions from base classifiers (ROCCA or delphinID) to form event-level species predictions for recordings containing delphinid vocalizations.
 
 ## References
 [1] Rankin, S., Archer, F., Keating, J.L., Oswald, J.N., Oswald, M., Curtis, A. and Barlow, J., 2017. Acoustic classification of dolphins in the California Current using whistles, echolocation clicks, and burst pulses. Marine Mammal Science, 33(2), pp.520-540.
