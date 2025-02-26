@@ -3,6 +3,8 @@
 ##
 This repository contains code for training and testing delphinID models, convolutional neural networks designed to accurately identify delphinid species by latent features in the frequency spectra of their echolocation click and whistle vocalizations, detected from passive acoustic recordings using [PAMGuard](https://www.pamguard.org/) software. Code is available in the following scripts:
 
+##
+
 ### delphinID/
 
 #### └── [classify_main.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_main.py)
@@ -20,13 +22,15 @@ R script for extracting features from PAMGuard detections and preparing data in 
 
 R script containing functions required for compiledata_main script
 
+##
 
 ### Learn about delphinID
 #### 🧾 [Overview](#overview)
-#### 🔧 [DIY: Make your own delphinID classifier](#diy:-train-a-delphinid-classifier-for-your-data/species)
+#### 🔧 [DIY: Make your own delphinID classifier](#diy:-train-a-delphinid-classifier-for-your-dataspecies)
 #### 🌎 [Pre-trained classifiers for northeast Atlantic delphinids](#pre-trained-classifiers-for-northeast-atlantic-delphinid-species)
 #### ❓ [FAQ's](#faq's)
 
+##
 ##
 
 ### Overview
