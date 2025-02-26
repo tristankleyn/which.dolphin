@@ -21,8 +21,11 @@ R script for extracting features from PAMGuard detections and preparing data in 
 R script containing functions required for compiledata_main script
 
 
+### [Link Text](#Pre-trained classifiers for northeast Atlantic delphinid species)
 
-## Pre-trained classifiers for northeast Atlantic delphinid species 
+
+
+### Pre-trained classifiers for northeast Atlantic delphinid species 
 Trained models are available for classifying northeast Atlantic delphinid species from passive acoustic recordings. [Click HERE to access delphinID classifiers for northeast Atlantic delphinids](https://zenodo.org/records/14578299?preview=1), as well as tutorials and suggested citations. On average, the northeast Atlantic delphinID classifier predicts events containing 1 or more vocalizations with an accuracy of 86.3% (90% CI 82.5-90.1%) across the seven species, ranging from 80% accuracy for short-beaked common dolphins to 92% for white-beaked dolphins, while discarding an average of 24.4% of classifications as ambiguous. F1 score (accuracy x precision) is shown for each species below:
 
 ##### Average performance of the northeast Atlantic event classifier (F1 score = accuracy x precision)
@@ -98,7 +101,7 @@ Trained models are available for classifying northeast Atlantic delphinid specie
 </table>
 *Not included in classifier due to data insufficiency  
 
-## Train your own delphinID classifiers
+### Train your own delphinID classifiers
 Scripts contained in this folder can be used to train and test your own delphinID classifiers. The necessary stages for doing so include generating delphinID-compatible inputs, which are spectral characterisations of groups of whistle or click detections we refer to as "detection frames", and training and evaluating delphinID (CNN) models to classify species present in your data. Follow the steps outlined below to train your own models and please get in touch if you have further questions.
 
 1. Make sure the latest versions of [R](https://cran.r-project.org/) and [Python](https://www.python.org/downloads/) are installed on your device.
@@ -165,14 +168,14 @@ Scripts contained in this folder can be used to train and test your own delphinI
 
 
 
-## FAQ's
+### FAQ's
 ##### What is a detection frame?
 Detection frames are representations of the average frequency content in detections of clicks or whistles contained within a 4-second time window and are the input features used by delphinID classifier models. To train the northeast Atlantic delphinID classifiers, detection frames were produced for clicks and whistles in slightly different ways. Average frequency power spectra for individual clicks were calculated using the R package _PAMpal_ [[1]](https://taikisan21.github.io/PAMpal/) and then averaged together for all click detections within 4-second time windows and normalised to form detection frames. Whistle detection frames were instead calculated as arrays of the relative density of frequency values within detected whistle peak frequency contours. While limitations of our dataset restricted us to training our classifiers on low frequency spectra of clicks (10-40 kHz) and whistles (2-20 kHz), detection frames can be characterised across any desired frequency range. One main benefit of using a detection-based approach over one using spectrogram images as input is that a majority of the information contained in the input is relevant to our signals of interest, so long as detections of signals are accurate and of high signal-to-noise ratio. Training classifiers on inputs that are largely robust to background noise is likely to benefit their performance and generalisability. 
 
 #### What settings should I use for detecting signals in PAMGuard?
 Detailed support and tutorials for using automatic detectors in PAMGuard can be found at [pamguard.org](https://www.pamguard.org/tutorials/getstarted.html). For training accurate classifiers, users should target whistles and clicks of high signal-to-noise ratio that are unmasked by other loud sound sources. Certain settings within automatic detectors, such as trigger thresholds, trigger filters, and spectral criteria can be used to filter detections.
 
-## References
+### References
 [1] Sakai, T., 2020. PAMpal: Load and process passive acoustic data. R package version 0.9, 14.
 
 
