@@ -196,7 +196,7 @@ Our models were trained to classify species based on acoustic characteristics in
 
 #### ❓ What settings should I use for detecting signals in PAMGuard?
 <p align="justify">
-Detailed support and tutorials for using automatic detectors in PAMGuard can be found at (www.pamguard.org). For training accurate classifiers, users should target whistles and clicks of high signal-to-noise ratio that are unmasked by other loud sound sources. Certain settings within automatic detectors, such as trigger thresholds, trigger filters, and spectral criteria can be used to filter detections.
+Detailed support and tutorials for using automatic detectors in PAMGuard can be found at [pamguard.org](https://www.pamguard.org/). For training accurate classifiers, users should target whistles and clicks of high signal-to-noise ratio that are unmasked by other loud sound sources. Certain settings within automatic detectors, such as trigger thresholds, trigger filters, and spectral criteria can be used to filter detections.
 </p>
 
 ### References
