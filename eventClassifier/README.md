@@ -1,4 +1,3 @@
-<img width="545" alt="image" src="https://github.com/user-attachments/assets/e1b7b051-fd61-4eb1-b3de-738e41bb0cfb" />
 
 ## Integrate information from whistles and clicks to classify delphinid events.
 <p align="justify">
@@ -9,22 +8,28 @@ This folder contains a graphical user <em>Shiny</em> interface for integrating p
 
 #### └── www/
 
-#### └── EventClassifier_7sp.rds
-Random Forest model for classifying events to species based on the output of ROCCA or delphinID classifiers.
+> #### └── EventClassifier_ROCCA.rds
+> Random Forest model for classifying events to species based on the output of ROCCA classifiers.
 
-#### └── [app.R](https://github.com/tristankleyn/which.dolphin/blob/main/eventClassifier/app.R)
-_Shiny_ application for classifying events. 
+> #### └── EventClassifier_delphinID.rds
+> Random Forest model for classifying events to species based on the output of delphinID classifiers.
 
-#### └── [runApp.R](https://github.com/tristankleyn/which.dolphin/blob/main/eventClassifier/runApp.R)
-R script for installing required packages and running _Shiny_ app.
+> #### └── trackDB.sqlite3
+> Database for storing base classification output from PAMGuard.
 
-#### └── [requirements.txt](https://github.com/tristankleyn/which.dolphin/blob/main/eventClassifier/requirements.txt)
-R packages required for running eventClassifier application.
+> #### └── [app.R](https://github.com/tristankleyn/which.dolphin/blob/main/eventClassifier/app.R)
+> _Shiny_ application for classifying events. 
+
+> #### └── [runApp.R](https://github.com/tristankleyn/which.dolphin/blob/main/eventClassifier/runApp.R)
+> Script for installing required packages and running _Shiny_ app.
+
+> #### └── [requirements.txt](https://github.com/tristankleyn/which.dolphin/blob/main/eventClassifier/requirements.txt)
+> Packages required for running eventClassifier application.
 
 ##
 ### Using the event classifier app
 ##
-#### 1. Run runApp.R script to launch eventClassifier interface
+#### Run runApp.R script to launch eventClassifier interface
 <p align="justify">
 You can run the runApp.R script either by dragging its file into an R console window or sourcing the file within the console directly. This script will install any packages on your device required for the eventClassifier interface to function (see requirements.txt) before the launching the interface in a browser window.
 </p>
@@ -33,31 +38,35 @@ You can run the runApp.R script either by dragging its file into an R console wi
 source('---INPUT PATH---/which.dolphin-main/eventClassifier/runApp.R')
 ```
 ##
-#### 2. Select database containing output of PAMGuard classifiers (delphinID or ROCCA)
+#### Select example of tracking database to monitor delphinid event classifications using ROCCA or delphinID classifiers
 <p align="justify">
-The event classifier app requires upload of PAMGuard databases (.sqlite3) containing information pertaining to the sound files used and the classification output from either the ROCCA or Deep Learning module. These data are stored in the <em>Sound_Aquisition</em> and <em>ROCCA_Whistle_Stats</em> or <em>Deep_Learning</em> tables, respectively. Note that upon selecting the database file, the app may take up to several minutes to process files containing many acoustic events, which are defined as individual files analysed in PAMGuard. To process smaller batches of data, users can adjust the period of days from which data are analysed. Users may then specify the minimum number of whistles or clicks required per event for classification, as well as minimum decision score threshold. The decision score is defined as the product of the maximum species likelihood for a given prediction and the difference between the first and second species likelihoods for the same prediction. For example, if the most likely species predicted for an event was predicted with a likelihood of 0.40 and the second most likely species with a likelihood of 0.30, the decision score would be equal to 0.40 x (0.40-0.30) = 0.04. 
+Below is a screenshot the eventClassifier interface displaying classification results for an example database containing classification output from delphinID whistle and click classifiers.
 </p>
 
-![image](https://github.com/user-attachments/assets/d4584e59-3dde-4022-8159-5486d322a0d4)
+![image](https://github.com/user-attachments/assets/7a46be3a-0b4a-437e-aa6c-876466a85cbe)
 
+![image](https://github.com/user-attachments/assets/eedbeebf-b757-4caa-9eed-d561f84b5043)
 
+  
 ##
-#### 3. View classification results and adjust thresholds to filter predictions
-<p align="justify">
-Upon finishing uploading and classifying the data, a visual display will appear to the right of the control panel showing classification results. A barplot shows the number of classifications for each species, while a pageable table below provides further information on classified events: The <strong>eventID</strong> column specifies the filename of an acoustic event, <strong>clicks</strong> shows the number of click predictions used by the event classifier, <strong>whistles</strong> shows the number of whistle predictions used by the event classifier, <strong>predictedSpecies</strong> gives the species predicted by the event classifer, <strong>score</strong> shows the decision score for the event, and columns further to the right show classification likelihoods for each individual species included by the event classifier.
-</p>
-
-![image](https://github.com/user-attachments/assets/aa368f76-fb9d-4f2b-9640-8b1f42eb5dea)
-
-
-
+### FAQ's & Comments
 ##
-#### 4. Export classified events
+#### ❓ What's the difference between ROCCA and delphinID classifiers? 
 <p align="justify">
-Users can either export all classified events contained within the range of dates specified or only classified events above the decision thresholds applied. Results are saved to the eventClassifier folder in .csv format.
+ROCCA uses Random Forest analysis to predict species based on measured characteristics of whistle contours and click spectra, while delphinID uses deep learning to predict species based on average spectra of whistle contours and clicks. Both classifier types can run using automated detections made in PAMGuard.
 </p>
 
-![image](https://github.com/user-attachments/assets/53a70ce9-475a-42a9-9975-cd09352dda7e)
+#### ❓ What are the best settings to use for decision score and minimum whistles and clicks?
+<p align="justify">
+Generally, we find that both ROCCA and delphinID classifiers classify with higher accuracy when using a higher decision score threshold. This improvement, however, comes at the cost of discarding a portion of classifications, which is higher for higher decision score thresholds. 
+</p>
+
+#### 💡 Our classifiers are only as good as the detections you feed it!
+<p align="justify">
+The tools desribed here are not detectors - they are designed to classify detections of delphinid vocalizations to species level. ROCCA and delphinID classifiers were developed and tested using high signal-to-noise ratio detections, very few of which were false detections. Thus, when using our classifiers to classify novel data, it is highly beneficial to validate a portion of your detections to ensure false detection rates are minimised prior to classification.
+</p>
+
+
 
 
 ## References
