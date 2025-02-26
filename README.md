@@ -18,6 +18,6 @@ Classifier models provided here are designed to work in a two-stage process: **b
 > #### └── [eventClassifier](https://github.com/tristankleyn/which.dolphin/tree/main/eventClassifier)/
 > Folder containing simple graphical user interface developed in R _Shiny_, which allows users to integrate predictions from whistle and click classifiers (either ROCCA or delphinID) with an event classifier model to form final species predictions for isolated acoustic events.
 
-### References
+## References
 [1] Rankin, S., Archer, F., Keating, J.L., Oswald, J.N., Oswald, M., Curtis, A. and Barlow, J., 2017. Acoustic classification of dolphins in the California Current using whistles, echolocation clicks, and burst pulses. Marine Mammal Science, 33(2), pp.520-540.
 
