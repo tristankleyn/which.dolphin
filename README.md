@@ -17,6 +17,9 @@ Classifier models provided here are designed to work in a two-stage process: **b
 > #### └── [eventClassifier](https://github.com/tristankleyn/which.dolphin/tree/main/eventClassifier)/
 > Graphical user interface for integrating predictions from base classifiers (ROCCA or delphinID) to form event-level species predictions for recordings containing delphinid vocalizations.
 
+## Tutorial: delphinID in PAMGuard
+[![VIDEO](thumbnail.png)](https://www.youtube.com/watch?v=ukDdzeGHlsk)
+
 ## References
 [1] Rankin, S., Archer, F., Keating, J.L., Oswald, J.N., Oswald, M., Curtis, A. and Barlow, J., 2017. Acoustic classification of dolphins in the California Current using whistles, echolocation clicks, and burst pulses. Marine Mammal Science, 33(2), pp.520-540.
 
