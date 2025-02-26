@@ -17,7 +17,6 @@ Classifier models provided here are designed to work in a two-stage process: **b
 > #### └── [eventClassifier](https://github.com/tristankleyn/which.dolphin/tree/main/eventClassifier)/
 > Graphical user interface for integrating predictions from base classifiers (ROCCA or delphinID) to form event-level species predictions for recordings containing delphinid vocalizations.
 
-## Tutorial: delphinID in PAMGuard
 [![VIDEO](https://github.com/user-attachments/assets/d104f7d5-6cec-42b7-8d9f-5f7697d6f432)](https://www.youtube.com/watch?v=ukDdzeGHlsk)
 
 
