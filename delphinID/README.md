@@ -25,10 +25,10 @@ R script containing functions required for compiledata_main script
 ##
 
 ### Learn about delphinID
-#### 🧾 [Overview](#overview)
-#### 🔧 [DIY: Make your own delphinID classifier](#diy-train-a-delphinid-classifier-for-your-dataspecies)
-#### 🌎 [Pre-trained classifiers for northeast Atlantic delphinids](#pre-trained-classifiers-for-northeast-atlantic-delphinid-species)
-#### 💡 [FAQ's](#faqs)
+&nbsp;&nbsp;&nbsp;&nbsp; #### 🧾 [Overview](#overview)
+&nbsp;&nbsp;&nbsp;&nbsp; #### 🔧 [DIY: Make your own delphinID classifier](#diy-train-a-delphinid-classifier-for-your-dataspecies)
+&nbsp;&nbsp;&nbsp;&nbsp; #### 🌎 [Pre-trained classifiers for northeast Atlantic delphinids](#pre-trained-classifiers-for-northeast-atlantic-delphinid-species)
+&nbsp;&nbsp;&nbsp;&nbsp; #### 💡 [FAQ's](#faqs)
 
 ##
 ##
