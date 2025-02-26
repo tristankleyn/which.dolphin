@@ -21,6 +21,11 @@ source('appFunctions.R')
 
 ####SHINY####
 ui <- fluidPage(
+  tags$head(
+    tags$title("eventClassifier"),  
+    tags$link(rel = "icon", type = "image/png", href = "favicon.png")  # Sets the favicon
+  ),
+  
   useShinyjs(), 
   
   tags$head(
@@ -79,11 +84,12 @@ ui <- fluidPage(
   
   sidebarPanel(
     selectInput("classifierType", "Select supported PAMGuard classifier", c("ROCCA Classifier", "delphinID Classifier"), "delphinID Classifier"),
-    selectInput("selectDB", "Select database", c("exampleDB", "trackDB"), selected="exampleDB"),
+    selectInput("selectDB", "Select database", c("exampleDB_Atlantic", "exampleDB_ES2019", "exampleDB_BB2022", "exampleDB_WS2024", "exampleDB_SD2025", "exampleDB_HWDTmixed", "trackDB"), selected="exampleDB"),
     uiOutput("ctableSelectUI"),
     uiOutput("wtableSelectUI"), 
     sliderInput("evScore", "Minimum decision score", 0, 0.2, 0, step=0.025),
     sliderInput("minClicks", "Minimum click predictions", 0, 100, 0, step=5),
+    radioButtons(inputId = "AndOr", label = NULL, choices = list("AND" = 1, "OR" = 2)),
     sliderInput("minWhistles", "Minimum whistle predictions", 0, 100, 0, step=5),
     dateRangeInput("dateRange", "Filter dates", start = Sys.Date() - 3652, end = Sys.Date()),
     selectInput("plotType", "Show plot", c("Counts", "Map"), selected="Counts"),
@@ -182,7 +188,12 @@ server <- function(input, output, session) {
       pred_df <- rbind(pred_df, predrow)
     }
     
-    pca_result <- prcomp(pcadf, scale. = TRUE)
+    if (nrow(pcadf) > 1) {
+      pca_result <- prcomp(pcadf, scale. = TRUE)
+    } else {
+      pca_result <- prcomp(pcadf, scale. = FALSE)
+    }
+    
     pca_result <- data.frame(pca_result$x)
     pcadf$predictedSpecies <- pred_df$predictedSpecies
     pcadf$PC1 <- pca_result$PC1
@@ -190,15 +201,21 @@ server <- function(input, output, session) {
     pcadf$clicks <- pred_df$clicks
     pcadf$whistles <- pred_df$whistles
     pcadf$score <- pred_df$score
-    pcadf <- subset(pcadf, clicks >= input$minClicks)
-    pcadf <- subset(pcadf, whistles >= input$minWhistles)
-    pcadf <- subset(pcadf, score >= input$evScore)
+    
+    if (input$AndOr == 1) {
+      pcadf <- subset(pcadf, score >= input$evScore & clicks >= input$minClicks & whistles >= input$minWhistles)
+    } else {
+      pcadf <- subset(pcadf, score >= input$evScore & (clicks >= input$minClicks | whistles >= input$minWhistles))
+    }
     
 
     allpreds <- pred_df
-    pred_df <- subset(pred_df, clicks >= input$minClicks)
-    pred_df <- subset(pred_df, whistles >= input$minWhistles)
-    pred_df <- subset(pred_df, score >= input$evScore)
+    if (input$AndOr == 1) {
+      pred_df <- subset(pred_df, score >= input$evScore & clicks >= input$minClicks & whistles >= input$minWhistles)
+    } else {
+      pred_df <- subset(pred_df, score >= input$evScore & (clicks >= input$minClicks | whistles >= input$minWhistles))
+    }
+    
     pred_df <- subset(pred_df, clicks > 0 | whistles > 0)
     
     evScore <- input$evScore
@@ -261,7 +278,7 @@ server <- function(input, output, session) {
       plot_data <- predictions()
       shinyjs::hide("loading")
       df <- plot_data$PCAdf
-      
+      df <- subset(df, clicks > 0 | whistles > 0)
       custom_colors <- c('De. delphis'='royalblue',
                          'Gr. griseus'='darkred',
                          'Gl. melas'='forestgreen',

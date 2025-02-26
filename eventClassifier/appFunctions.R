@@ -272,9 +272,9 @@ processdataDelphinID <- function(db_con, dateRange, ctable=NULL, wtable=NULL, ra
             dfc <- csub
             dfw <- wsub
             
-            print(head(dfw))
+            
 
-            dfc_e <- colMeans(dfc[,cspecies])/sum(colMeans(dfc[,cspecies]), na.rm=TRUE)
+            dfc_e <- colMeans(dfc[,cspecies])/sum(colMeans(dfc[,cspecies]))
             seed <- as.integer(nrow(dfc)*nrow(dfw))
             cc <- 0
             if (any(is.na(dfc_e))) {
@@ -293,7 +293,7 @@ processdataDelphinID <- function(db_con, dateRange, ctable=NULL, wtable=NULL, ra
 
             namesc <- c('Dde_c', 'Ggr_c', 'Gme_c', 'Lal_c', 'Ttr_c')
             
-            dfw_e <- colMeans(dfw[,wspecies])/sum(colMeans(dfw[,wspecies]), na.rm=TRUE)
+            dfw_e <- colMeans(dfw[,wspecies])/sum(colMeans(dfw[,wspecies]))
             seed <- as.integer(nrow(dfc)*nrow(dfw))
             cc <- 0
             if (any(is.na(dfw_e))) {
@@ -316,7 +316,7 @@ processdataDelphinID <- function(db_con, dateRange, ctable=NULL, wtable=NULL, ra
             names(dfw_e) <- namesw
             xtest <- data.frame(cbind(t(dfc_e), t(dfw_e)))
             xround <- as.integer(xtest*100)
-            
+            print(dfw_e)
             barcode <- ''
             for (item in xround) {
               item <- as.character(item)
