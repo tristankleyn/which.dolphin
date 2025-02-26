@@ -8,17 +8,23 @@ This folder contains a graphical user <em>Shiny</em> interface for integrating p
 
 #### └── www/
 
-#### └── EventClassifier_7sp.rds
-Random Forest model for classifying events to species based on the output of ROCCA or delphinID classifiers.
+> #### └── EventClassifier_ROCCA.rds
+> Random Forest model for classifying events to species based on the output of ROCCA classifiers.
 
-#### └── [app.R](https://github.com/tristankleyn/which.dolphin/blob/main/eventClassifier/app.R)
-_Shiny_ application for classifying events. 
+> #### └── EventClassifier_delphinID.rds
+> Random Forest model for classifying events to species based on the output of delphinID classifiers.
 
-#### └── [runApp.R](https://github.com/tristankleyn/which.dolphin/blob/main/eventClassifier/runApp.R)
-R script for installing required packages and running _Shiny_ app.
+> #### └── trackDB.sqlite3
+> Database for storing base classification output from PAMGuard.
 
-#### └── [requirements.txt](https://github.com/tristankleyn/which.dolphin/blob/main/eventClassifier/requirements.txt)
-R packages required for running eventClassifier application.
+> #### └── [app.R](https://github.com/tristankleyn/which.dolphin/blob/main/eventClassifier/app.R)
+> _Shiny_ application for classifying events. 
+
+> #### └── [runApp.R](https://github.com/tristankleyn/which.dolphin/blob/main/eventClassifier/runApp.R)
+> Script for installing required packages and running _Shiny_ app.
+
+> #### └── [requirements.txt](https://github.com/tristankleyn/which.dolphin/blob/main/eventClassifier/requirements.txt)
+> Packages required for running eventClassifier application.
 
 ##
 ### Using the event classifier app
