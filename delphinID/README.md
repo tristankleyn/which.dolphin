@@ -7,20 +7,17 @@ This repository contains code for training and testing delphinID models, convolu
 
 ### delphinID/
 
-#### └── [classify_main.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_main.py)
-Python script for training, evaluating, and exporting delphinID models. 
+> #### └── [classify_main.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_main.py)
+> Python script for training, evaluating, and exporting delphinID models. 
 
-#### └── [classify_functions.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_functions.py)
+> #### └── [classify_functions.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_functions.py)
+> Python script containing functions required for classify_main script
 
-Python script containing functions required for classify_main script
+> #### └── [compiledata_main.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_main.R)
+> R script for extracting features from PAMGuard detections and preparing data in format required for training and evaluating models.
 
-#### └── [compiledata_main.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_main.R)
-
-R script for extracting features from PAMGuard detections and preparing data in format required for training and evaluating models.
-
-#### └── [compiledata_functions.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R)
-
-R script containing functions required for compiledata_main script
+> #### └── [compiledata_functions.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R)
+> R script containing functions required for compiledata_main script
 
 ##
 
