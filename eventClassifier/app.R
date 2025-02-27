@@ -84,7 +84,7 @@ ui <- fluidPage(
   
   sidebarPanel(
     selectInput("classifierType", "Select supported PAMGuard classifier", c("ROCCA Classifier", "delphinID Classifier"), "delphinID Classifier"),
-    selectInput("selectDB", "Select database", c("exampleDB_Atlantic", "exampleDB_ES2019", "exampleDB_BB2022", "exampleDB_WS2024", "exampleDB_SD2025", "exampleDB_HWDTmixed", "trackDB"), selected="exampleDB"),
+    selectInput("selectDB", "Select database", c("exampleDB_Atlantic", "exampleDB_ES2019", "exampleDB_BB2022", "exampleDB_WS2024", "exampleDB_SD2025", "exampleDB_HWDTmixed", "exampleDB_StTt", "trackDB"), selected="exampleDB"),
     uiOutput("ctableSelectUI"),
     uiOutput("wtableSelectUI"), 
     sliderInput("evScore", "Minimum decision score", 0, 0.2, 0, step=0.025),
@@ -297,8 +297,8 @@ server <- function(input, output, session) {
       
       df <- df %>% left_join(label_counts, by='predictedSpecies')
       
-      ggplot(df, aes(x = PC1, y = PC2, color = label_n)) +
-        geom_point(size = 1.5, alpha=0.6) +
+      ggplot(df, aes(x = PC1, y = PC2, color = label_n, label=1:nrow(df))) +
+        geom_text(size = 3, alpha = 0.6, show.legend = FALSE) +
         stat_ellipse(level = 0.90) +  # 90% confidence ellipse
         theme_minimal(base_size = 8) + 
         theme(legend.text = element_text(size = 8),
@@ -322,6 +322,7 @@ server <- function(input, output, session) {
     show_table <- show_table[, !(names(show_table) %in% c('prom', 'conf'))]
     show_table[['delphinID']] <- bc
     show_table$duration <- as.integer(show_table$duration)
+    row.names(show_table) <- NULL
     
     datatable(show_table, options=list(pageLength=5, dom='tip', paging=TRUE)) %>% formatRound(columns = c("score"), digits = 3)
   })
