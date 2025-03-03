@@ -22,7 +22,7 @@ I've done my best to provide all information information and code required for a
 
 🌱 **Develop [delphinID](https://github.com/tristankleyn/which.dolphin/tree/main/delphinID) or [ROCCA](https://github.com/tristankleyn/which.dolphin/tree/main/rocca) classifiers from scratch.**
 
-🧠 **[Use transfer learning](https://github.com/tristankleyn/which.dolphin/tree/main/eventClassifier) to produce a new event classifier.**
+🧠 **[Use transfer learning](https://github.com/tristankleyn/which.dolphin/tree/main/eventClassifier) to train a new classifier.**
 
 
 
