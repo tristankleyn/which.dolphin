@@ -84,7 +84,7 @@ ui <- fluidPage(
   
   sidebarPanel(
     selectInput("classifierType", "Select supported PAMGuard classifier", c("ROCCA Classifier", "delphinID Classifier"), "delphinID Classifier"),
-    selectInput("selectDB", "Select database", c("exampleDB_Atlantic", "exampleDB_ES2019", "exampleDB_BB2022", "exampleDB_WS2024", "exampleDB_SD2025", "exampleDB_HWDTmixed", "exampleDB_StTt", "trackDB"), selected="exampleDB"),
+    selectInput("selectDB", "Select database", c("exampleDB_ES2019", "exampleDB_BB2022", "exampleDB_WS2024", "exampleDB_SD2025", "trackDB"), selected="trackDB"),
     uiOutput("ctableSelectUI"),
     uiOutput("wtableSelectUI"), 
     sliderInput("evScore", "Minimum decision score", 0, 0.2, 0, step=0.025),
@@ -311,42 +311,46 @@ server <- function(input, output, session) {
           acc_formatted <- sprintf("%.3f", acc) # Round to 3 decimal places
           write.table(dgn, "model_diagnostics.csv", sep=',', row.names=FALSE)
           
-          
-          calc_lab_acc <- function(dgn) {
-            accuracies <- list()
-            accuracies[['All labels']] <- mean(dgn$correct)
-            ulabs <- unique(dgn$label)
-            ulabs <- ulabs[order(ulabs)]
-            for (lab in ulabs) {
-              sub <- subset(dgn, label == lab)
-              sub_acc <- mean(sub$correct)
-              accuracies[[lab]] <- sub_acc
-            }
-            
-            return(accuracies)
-          }
-          
           # Convert head_table to a formatted string for display
           
-          accuracies <- calc_lab_acc(dgn)
-          output_lines <- c("ESTIMATED CLASSIFICATION ACCURACY:")
-          for (label in names(accuracies)) {
-            acc_formatted <- sprintf("%.3f", accuracies[[label]])
-            output_lines <- c(output_lines, paste0("", label, ": ", acc_formatted))
-          }
-          
+          output_lines <- sprintf("Estimated classification accuracy: %s", acc_formatted)
           output_str <- paste(output_lines, collapse = "<br>")
+          output_str1 <- sprintf("Classifier confusion matrix estimated from cross-validated testing across %s events shows true classes along the vertical axis and predicted classes along the horizontal. Model and diagnostics saved in eventClassifier/", nrow(dgn))
           
           showModal(modalDialog(
-            title = "Exported new event classifier to eventClassifier/",
-            HTML(paste0("<div style='font-size: 17px;'>", output_str, "</div>")), # Increase font size
+            title = paste("eventClassifier_", Sys.Date(), ".rds", sep = ""),
+            tags$style(HTML(".modal-content {background-color: #f0f0f0; color: #333;}")),
+            HTML(paste0("<div style='font-size: 17px; font-weight: bold;'>", output_str, "</div>")),
+            HTML("<br>"),
+            DTOutput("table_in_modal"),
+            HTML(paste0("<br><div style='font-size: 15px;'>", output_str1, "</div>")),
             easyClose = TRUE,
-            footer = NULL
-          ))
+            footer = NULL)
+          )
         }
       })
     }
     
+  })
+  
+  output$table_in_modal <- renderDT({
+    req(input$testButton)
+    df <- read.csv('model_diagnostics.csv')
+    cm <- list()
+    splist <- unique(df$label)[order(unique(df$label))]
+    for (lab1 in splist) {
+      sub <- subset(df, label == lab1)
+      vals <- c()
+      for (lab2 in splist) {
+        p <- sum(sub$pred == lab2)/nrow(sub)
+        vals <- append(vals, p)
+      }
+      cm[[lab1]] <- vals
+    }
+    cm <- t(data.frame(cm))
+    rownames(cm) <- splist
+    colnames(cm) <- splist
+    datatable(cm, options = list(searching=FALSE, paging=FALSE, info=FALSE)) %>% formatRound(columns=names(cm), digits=3) %>% formatStyle(names(cm), fontWeight = "bold") 
   })
   
   output$plt <- renderPlot({
