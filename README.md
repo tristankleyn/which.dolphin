@@ -18,7 +18,7 @@ Classifier models provided here are designed to work in a two-stage process: **b
 > Graphical user interface for integrating predictions from base classifiers (ROCCA or delphinID) to form event-level species predictions for recordings containing delphinid vocalizations.
 
 ### Do-it-yourself 🔧
-I've done my best to provide all information information and code required for anyone interested to develop their own delphinID or ROCCA classifiers from scratch - this option requires some familiarity with Python. I've also implemented a functionality in the eventClassifier interface whereby users can harness transfer learning to more intuitively train delphinID or ROCCA event classifiers on their own data - this option requires no coding at all. Find code and guidance for these options through the links below:
+I've done my best to provide all information information and code required for anyone interested to develop their own delphinID or ROCCA classifiers from scratch - this option requires some familiarity with Python. Alternatively, the eventClassifier interface allows users to harness transfer learning to train event classifiers for their own data based on delphinID or ROCCA - this option is more intuitive, requiring no coding at all. Code and guidance for these options are available through the links below:
 
 🌱 **Develop [delphinID](https://github.com/tristankleyn/which.dolphin/tree/main/delphinID) or [ROCCA](https://github.com/tristankleyn/which.dolphin/tree/main/rocca) classifiers from scratch.**
 
