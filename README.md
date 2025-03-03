@@ -18,7 +18,12 @@ Classifier models provided here are designed to work in a two-stage process: **b
 > Graphical user interface for integrating predictions from base classifiers (ROCCA or delphinID) to form event-level species predictions for recordings containing delphinid vocalizations.
 
 ### Do-it-yourself 🔧
-Refer to the [delphinID](https://github.com/tristankleyn/which.dolphin/tree/main/delphinID) and [ROCCA](https://github.com/tristankleyn/which.dolphin/tree/main/rocca) folders in the repository for code and guidance on developing an acoustic classifier from scratch using the delphinID or ROCCA methods. Alternatively, [click here](https://github.com/tristankleyn/which.dolphin/tree/main/eventClassifier) to learn how you can use transfer learning to train your own delphinID or ROCCA event classifier using the eventClassifer interface.
+I've done my best to provide all information information and code required for anyone interested to develop their own delphinID or ROCCA classifiers from scratch - this option requires some familiarity with Python. I've also implemented a functionality in the eventClassifier interface whereby users can harness transfer learning to more intuitively train delphinID or ROCCA event classifiers on their own data - this option requires no coding at all. Find code and guidance for these options through the links below:
+
+🌱 Develop [delphinID](https://github.com/tristankleyn/which.dolphin/tree/main/delphinID) or [ROCCA](https://github.com/tristankleyn/which.dolphin/tree/main/rocca) classifiers from scratch.
+🧠 [Use transfer learning](https://github.com/tristankleyn/which.dolphin/tree/main/eventClassifier) to produce a new event classifier. 
+
+
 
 ## References
 [1] Rankin, S., Archer, F., Keating, J.L., Oswald, J.N., Oswald, M., Curtis, A. and Barlow, J., 2017. Acoustic classification of dolphins in the California Current using whistles, echolocation clicks, and burst pulses. Marine Mammal Science, 33(2), pp.520-540.
