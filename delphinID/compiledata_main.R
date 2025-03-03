@@ -5,18 +5,19 @@ library(lubridate)
 library(RSQLite)
 library(stringr)
 
-savefolder <- 'I:/newSpectra1/220125'               #INPUT FOLDER PATH FOR SAVING RESULTS TO
-binaryfolder <- 'I:/newSpectra1/binary'     #INPUT FOLDER PATH WHERE PAMGUARD BINARY DATA IS STORED
-dbfolder <- 'I:/detections122024'                #INPUT FOLDER PATH WHERE PAMGUARD DATABASES ARE STORED
+savefolder <- 'C:/Users/tk81/Downloads/whaleTest/results'               #INPUT FOLDER PATH FOR SAVING RESULTS TO
+binaryfolder <- 'C:/Users/tk81/Downloads/whaleTest/binary'     #INPUT FOLDER PATH WHERE PAMGUARD BINARY DATA IS STORED
+dbfolder <- 'C:/Users/tk81/Downloads/whaleTest'                #INPUT FOLDER PATH WHERE PAMGUARD DATABASES ARE STORED
 
-fileN1 <- 109
+fileN1 <- 1
 fileN2 <- length(dir(dbfolder))
-site <- 'test'
-selectdb <- NULL
+fileN2 <- 1
+site <- 'test1'
+selectdb <- 'test1'
 singleFile <- NULL
 
-GENERATE_CLICKS <- TRUE
-GENERATE_WHISTLES <- FALSE
+GENERATE_CLICKS <- FALSE
+GENERATE_WHISTLES <- TRUE
 if (!is.null(selectdb)) { 
   binaryfolder <- gsub(' ', '', paste(binaryfolder, '/', selectdb))
   selectdb <- gsub(' ', '', paste(selectdb, '.sqlite3'))
@@ -176,8 +177,8 @@ for (fileN in fileN1:fileN2) {
             name <- gsub(' ', '', paste(name, '_', f))
           }
           
-          createWhistleSpectra(wdata=wfilt, bwdata=bwdata, temp_res=temp_res, startrect0=0, startrec=startrec, endrec=endrec, site=site,
-                               min_combined_bandwidth = 0, min_bandwidth = 0, dd_thr=0.05, include_empty=FALSE, remove_dups=TRUE,
+          createWhistleSpectra(wdata=wfilt, bwdata=bwdata, temp_res=temp_res, startrect0=0, startrec=startrec, endrec=endrec, site=site, f0=0, f1=7200,
+                               min_combined_bandwidth = 0, min_bandwidth = 0, dd_thr=0.0, include_empty=TRUE, remove_dups=FALSE,
                                dest=sprintf('%s/%s/whistlespectra_%s.csv', savefolder, site, name))
         }
       }

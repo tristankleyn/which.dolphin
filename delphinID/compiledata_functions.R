@@ -283,12 +283,14 @@ filterWhistles <- function(wdata, mindur=0.2, dt=0) {
 
 
 createWhistleSpectra <- function(wdata, bwdata, temp_res, dest='temp.csv', file='whistlespectra.csv', startrect0=NULL, 
+                                 f0=2000, f1=20000, 
                                  w=4, step=1, dd_thr=0.05, min_combined_bandwidth=0, min_bandwidth=0, include_empty=FALSE,
                                  maxout=1800, site=NULL, startrec=NULL, endrec=NULL, remove_dups=FALSE) {
   t0 <- 0
   data <- data.frame()
   starts <- c()
   dd <- c()
+  fstep = as.integer((f1-f0)/180)
   
   if (max(wdata$t) > maxout) {
     maxt <- maxout
@@ -317,14 +319,18 @@ createWhistleSpectra <- function(wdata, bwdata, temp_res, dest='temp.csv', file=
       
       dt <- mean(dt)
       y <- c()
-      f <- seq(2000,19900,100)
+      
+      f <- seq(f0, f1-fstep, fstep)
       den <- length(ctr)/(w/dt)
       
       combined_bandwidth <- max(ctr) - min(ctr)
+      if (all(ctr) < 50) {
+        ctr <- ctr*1000
+      }
       
       if (den >= dd_thr & combined_bandwidth >= min_combined_bandwidth & all(bandwidths >= min_bandwidth)) {
         for (i in f) {
-          y <- append(y, sum(ctr >= i & ctr < i+100)/length(ctr))
+          y <- append(y, sum(ctr >= i & ctr < i+fstep)/length(ctr))
         }
         data <- rbind(data, y)
         dd <- append(dd, den)
@@ -336,7 +342,7 @@ createWhistleSpectra <- function(wdata, bwdata, temp_res, dest='temp.csv', file=
       }
     } else {
       if (include_empty==TRUE) {
-        f <- seq(2000,19900,100)
+        f <- seq(f0, f1-fstep, fstep)
         y <- rep(0, length(f))
         data <- rbind(data, y)
         dd <- append(dd, 0)
@@ -347,6 +353,7 @@ createWhistleSpectra <- function(wdata, bwdata, temp_res, dest='temp.csv', file=
   }
   
   if (dim(data)[1] > 0) {
+    print(dim(data))
     names(data) <- seq(1, dim(data)[2])
     data <- cbind(dd=dd, data)
     data <- cbind(dur=w, data)
