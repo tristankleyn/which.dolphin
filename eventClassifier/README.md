@@ -44,11 +44,11 @@ The below screenshot shows the eventClassifier interface displaying classificati
 </p>
 
 <ul>
-  <li>Minimum decision score: threshold for classification confidence, below which events are discarded.</li>
-  <li>Minimum click predictions: threshold for the number of click predictions, below which events are discarded.</li>
-  <li>Minimum whistle predictions: threshold for the number of whistle predictions, below which events are discarded.</li>
-  <li>Filter dates: range of dates for classification results, based on UTC time stamps stored in PAMGuard database.</li>
-  <li>Show plot: counts (total numbers of classified events per species) or map (clustering of events in acoustic space).</li>
+  <li>**Minimum decision score | threshold for classification confidence, below which events are discarded.</li>
+  <li>**Minimum click predictions** | threshold for the number of click predictions, below which events are discarded.</li>
+  <li>**Minimum whistle predictions** | threshold for the number of whistle predictions, below which events are discarded.</li>
+  <li>**Filter dates** | range of dates for classification results, based on UTC time stamps stored in PAMGuard database.</li>
+  <li>**Show plot** | counts (total numbers of classified events per species) or map (clustering of events in acoustic space).</li>
 </ul>
 <br>
 
