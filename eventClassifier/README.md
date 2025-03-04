@@ -40,7 +40,12 @@ source('---INPUT PATH---/which.dolphin-main/eventClassifier/runApp.R')
 ##
 #### Select PAMGuard database to monitor delphinid event classifications using ROCCA or delphinID classifier output
 <p align="justify">
-Below is a screenshot the eventClassifier interface displaying classification results for an example database containing classification output from delphinID whistle and click classifiers.
+The below screenshot shows the eventClassifier interface displaying classification results for an example database containing classification output from delphinID whistle and click classifiers. Several user inputs can be adjusted to filter classification results:
+  - Minimum decision score: threshold for classification confidence, below which events are discarded.
+  - Minimum click predictions: threshold for the number of click predictions, below which events are discarded.
+  - Minimum whistle predictions: threshold for the number of whistle predictions, below which events are discarded.
+  - Filter dates: range of dates for classification results, based on UTC time stamps stored in PAMGuard database.
+  - Show plot: counts (total numbers of classified events per species) or map (clustering of events in acoustic space)
 </p>
 
 ![image](https://github.com/user-attachments/assets/8b687701-01e4-4435-89a0-f44bfa621478)
