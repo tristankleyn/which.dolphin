@@ -54,10 +54,13 @@ Below is a screenshot the eventClassifier interface displaying classification re
 The "Add Labels" function in eventClassifier can be used to assign new labels to events. These labels can then in turn be used to train and evaluate a new Random Forest event classifier, which can be done automatically via the "Create new classifier" option. New event classifiers are trained using the event barcodes, feature vectors representing probabilities of classification for the original seven northeast Atlantic species the base delphinID or ROCCA classifiers were trained on based on whistles or clicks. While these barcodes were originally intended as direct predictors for the Atlantic species, they can be repurposed in eventClassifier for training a new model on a novel composition of labels. Below are screenshots of the labelling functionality in eventClassifier and the displayed output after creating a new classifier on user-created labels. New models and diagnostic reports are automatically exported to the eventClassifier folder.
 </p>
 
-![image](https://github.com/user-attachments/assets/4d3f159a-26e2-4239-a3e6-ce1c0f12667c)
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/4d3f159a-26e2-4239-a3e6-ce1c0f12667c" width="400" alt="Labeling Functionality">
+</div>
 
-![image](https://github.com/user-attachments/assets/0e44e883-58c5-494a-8546-7f73cb9b34f9)
-
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/0e44e883-58c5-494a-8546-7f73cb9b34f9" alt="New Classifier Output">
+</div>
 
   
 ##
