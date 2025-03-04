@@ -285,8 +285,9 @@ server <- function(input, output, session) {
                             data=filtered_events, ntree=500, strata=as.factor(filtered_events$label), sampsize=sampsizes, na.action = na.roughfix)
           
           dgn <- data.frame()
-          for (k in 1:nrow(filtered_events)) {
-            ev <- filtered_events$eventID[k]
+          uevents <- unique(filtered_events$eventID)[order(unique(filtered_events$eventID))]
+          for (k in 1:length(uevents)) {
+            ev <- uevents[k]
             test <- subset(filtered_events, eventID == ev)
             train <- subset(filtered_events, eventID != ev)
             testsp <- test$label[1]
