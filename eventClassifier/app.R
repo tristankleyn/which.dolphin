@@ -84,7 +84,7 @@ ui <- fluidPage(
   
   sidebarPanel(
     selectInput("classifierType", "Select supported PAMGuard classifier", c("ROCCA Classifier", "delphinID Classifier"), "delphinID Classifier"),
-    selectInput("selectDB", "Select database", c("exampleDB_ES2019", "exampleDB_BB2022", "exampleDB_WS2024", "exampleDB_SD2025", "trackDB"), selected="trackDB"),
+    selectInput("selectDB", "Select database", c("exampleDB_StTt", "exampleDB_ES2019", "exampleDB_BB2022", "exampleDB_WS2024", "exampleDB_SD2025", "trackDB"), selected="trackDB"),
     uiOutput("ctableSelectUI"),
     uiOutput("wtableSelectUI"), 
     sliderInput("evScore", "Minimum decision score", 0, 0.2, 0, step=0.025),
@@ -105,23 +105,28 @@ ui <- fluidPage(
     div(id = "loading", class = "loading-container", style = 'display:none;',
         div(class = "loading-dot"),
         div(class = "loading-text", "Classifying events...")),
-    
     div(
       style = "margin:0%",
       fluidRow(
         column(12,
                plotOutput(outputId = "plt", width = "100%", height = "300px"))),
     ),
-    
     div(
       style = "margin-top:5%;",
       fluidRow(
         column(12,
                DTOutput("table1", height = "200px"))
       ),
+      div(style = "height: 20px;"), # Add white space here
       fluidRow(
-        column(12, align = "right",
-               shinyjs::hidden(div(id = "testButtonDiv", actionButton("testButton", "Create new classifier", style = "background-color: #849d7c; color: white; margin-bottom: 20px;")))
+        column(12,
+               column(6, align = "left", shinyjs::hidden(div(id = "bulkLabelDiv", style = "display: inline-block;",
+                                                             div(style = "display: inline-block;", numericInput("startRow", "Start Row", value = 1, min = 1, width = "100px")),
+                                                             div(style = "display: inline-block;", numericInput("endRow", "End Row", value = 1, min = 1, width = "100px")),
+                                                             div(style = "display: inline-block;", textInput("bulkLabelText", "Label", width = "150px")),
+                                                             actionButton("bulkLabelButton", "Bulk Label", style = "background-color: #849d7c; color: white; margin-bottom: 20px; display: inline-block;")
+               ))),
+               column(6, align = "right", shinyjs::hidden(div(id = "testButtonDiv", style = "display: inline-block;", actionButton("testButton", "Create new classifier", style = "background-color: #849d7c; color: white; margin-bottom: 20px;"))))
         )
       )
     )
@@ -129,8 +134,7 @@ ui <- fluidPage(
   
   tags$style(type="text/css",
              ".shiny-output-error { visibility: hidden; }",
-             ".shiny-output-error:before { visibility: hidden; }"
-  )
+             ".shiny-output-error:before { visibility: hidden; }"),
 )
 
 server <- function(input, output, session) {
@@ -142,6 +146,8 @@ server <- function(input, output, session) {
   predictions_rv <- reactiveVal(NULL)
   testevents_rv <- reactiveVal(NULL)
   current_page <- reactiveVal(1)
+  
+  shinyjs::hide("bulkLabelDiv")
   
   process_data <- eventReactive(input$classifyButton, {
     req(input$classifyButton)
@@ -238,7 +244,8 @@ server <- function(input, output, session) {
     }
     
     labels_rv(NULL) #reset labels.
-    shinyjs::show("testButtonDiv") # Show the button
+    shinyjs::show("testButtonDiv") # Show make new classifier button
+    shinyjs::show("bulkLabelDiv") # Show bulk labelling options
     
     predictions_rv(list(preds = pred_df, allpreds = allpreds, evScore = evScore, PCAdf = pcadf)) #update reactive value
     
@@ -483,6 +490,37 @@ server <- function(input, output, session) {
       }
 
       replaceData(dataTableProxy("table1"), show_table)
+    }
+  })
+  
+  observeEvent(input$bulkLabelButton, {
+    req(input$startRow, input$endRow, input$bulkLabelText)
+    
+    start_row <- input$startRow
+    end_row <- input$endRow
+    label_text <- input$bulkLabelText
+    
+    preds <- predictions_rv()$preds
+    
+    if (!is.null(labels_rv())) {
+      labels <- labels_rv()
+    } else {
+      labels <- data.frame(eventID = preds$eventID, label = character(nrow(preds)), stringsAsFactors = FALSE)
+    }
+    
+    if (start_row <= end_row && start_row >= 1 && end_row <= nrow(preds)) {
+      for (i in start_row:end_row) {
+        event_id <- preds$eventID[i]
+        labels$label[labels$eventID == event_id] <- label_text
+      }
+      labels_rv(labels)
+      
+      # Update the datatable
+      show_table <- predictions_rv()$preds
+      show_table <- left_join(show_table, labels_rv(), by = "eventID")
+      replaceData(dataTableProxy("table1"), show_table)
+    } else {
+      showNotification("Invalid row indices.", type = "error")
     }
   })
   
