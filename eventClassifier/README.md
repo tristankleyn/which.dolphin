@@ -55,7 +55,7 @@ The "Add Labels" function in eventClassifier can be used to assign new labels to
 </p>
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/4d3f159a-26e2-4239-a3e6-ce1c0f12667c" width="400" alt="Labeling Functionality">
+  <img src="https://github.com/user-attachments/assets/4d3f159a-26e2-4239-a3e6-ce1c0f12667c" alt="Labeling Functionality">
 </div>
 
 <div align="center">
