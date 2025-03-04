@@ -2,7 +2,6 @@
 ## Integrate information from whistles and clicks to classify delphinid events.
 <p align="justify">
 This folder contains a graphical user <em>Shiny</em> interface for integrating predictions from ROCCA or delphinID classifiers to classify events to species based on information from  whistles and clicks. This workflow for integrating information from multiple sources of acoustic data was motivated by successful classification in prior studies [1] [2] [3] using similar methods, such as <em>BANTER</em> classification [2]. Continue reading to learn how to use the prediction outputs from classifiers used in PAMGuard to classify acoustic events using our eventClassifier interface.
-  <br>
 </p>
 
 ### eventClassifier/
@@ -51,7 +50,7 @@ The below screenshot shows the eventClassifier interface displaying classificati
   <li>Filter dates: range of dates for classification results, based on UTC time stamps stored in PAMGuard database.</li>
   <li>Show plot: counts (total numbers of classified events per species) or map (clustering of events in acoustic space).</li>
 </ul>
-
+<br>
 ![image](https://github.com/user-attachments/assets/8b687701-01e4-4435-89a0-f44bfa621478)
 
 
