@@ -50,7 +50,8 @@ The below screenshot shows the eventClassifier interface displaying classificati
   <li>Filter dates: range of dates for classification results, based on UTC time stamps stored in PAMGuard database.</li>
   <li>Show plot: counts (total numbers of classified events per species) or map (clustering of events in acoustic space).</li>
 </ul>
-<br></br>
+<br>
+
 ![image](https://github.com/user-attachments/assets/8b687701-01e4-4435-89a0-f44bfa621478)
 
 
