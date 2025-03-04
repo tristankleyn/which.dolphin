@@ -1,7 +1,7 @@
 
 ## Integrate information from whistles and clicks to classify delphinid events.
 <p align="justify">
-This folder contains a graphical user <em>Shiny</em> interface for integrating predictions from ROCCA or delphinID classifiers to classify events to species based on information from  whistles and clicks. This workflow for integrating information from multiple sources of acoustic data was motivated by successful classification in prior studies [1] [2] [3] using similar methods, such as the <em>BANTER</em> method proposed in Rankin <em>et al.,</em> (2017). Continue reading to learn how to use the prediction outputs from classifiers used in PAMGuard to classify acoustic events using our eventClassifier interface.
+This folder contains a graphical user <em>Shiny</em> interface for integrating predictions from ROCCA or delphinID classifiers to classify events to species based on information from  whistles and clicks. This workflow for integrating information from multiple sources of acoustic data was motivated by successful classification in prior studies [1] [2] [3] using similar methods, such as <em>BANTER</em> classification [2]. Continue reading to learn how to use the prediction outputs from classifiers used in PAMGuard to classify acoustic events using our eventClassifier interface.
 </p>
 
 ### eventClassifier/
@@ -27,7 +27,7 @@ This folder contains a graphical user <em>Shiny</em> interface for integrating p
 > Packages required for running eventClassifier application.
 
 ##
-### Using the event classifier app
+### The eventClassifier interface
 ##
 #### Run runApp.R script to launch eventClassifier interface
 <p align="justify">
@@ -38,14 +38,26 @@ You can run the runApp.R script either by dragging its file into an R console wi
 source('---INPUT PATH---/which.dolphin-main/eventClassifier/runApp.R')
 ```
 ##
-#### Select example of tracking database to monitor delphinid event classifications using ROCCA or delphinID classifiers
+#### Select PAMGuard database to monitor delphinid event classifications using ROCCA or delphinID classifier output
 <p align="justify">
 Below is a screenshot the eventClassifier interface displaying classification results for an example database containing classification output from delphinID whistle and click classifiers.
 </p>
 
-![image](https://github.com/user-attachments/assets/7a46be3a-0b4a-437e-aa6c-876466a85cbe)
+![image](https://github.com/user-attachments/assets/8b687701-01e4-4435-89a0-f44bfa621478)
 
-![image](https://github.com/user-attachments/assets/eedbeebf-b757-4caa-9eed-d561f84b5043)
+
+
+##
+
+### Easy transfer learning with eventClassifier
+<p align="justify">
+The "Add Labels" function in eventClassifier can be used to assign new labels to events. These labels can then in turn be used to train and evaluate a new Random Forest event classifier, which can be done automatically via the "Create new classifier" option. New event classifiers are trained using the event barcodes, feature vectors representing probabilities of classification for the original seven northeast Atlantic species the base delphinID or ROCCA classifiers were trained on based on whistles or clicks. While these barcodes were originally intended as direct predictors for the Atlantic species, they can be repurposed in eventClassifier for training a new model on a novel composition of labels. Below are screenshots of the labelling functionality in eventClassifier and the displayed output after creating a new classifier on user-created labels. New models and diagnostic reports are automatically exported to the eventClassifier folder.
+</p>
+
+![image](https://github.com/user-attachments/assets/4d3f159a-26e2-4239-a3e6-ce1c0f12667c)
+
+![image](https://github.com/user-attachments/assets/0e44e883-58c5-494a-8546-7f73cb9b34f9)
+
 
   
 ##
