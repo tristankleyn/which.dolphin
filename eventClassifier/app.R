@@ -84,7 +84,7 @@ ui <- fluidPage(
   
   sidebarPanel(
     selectInput("classifierType", "Select supported PAMGuard classifier", c("ROCCA Classifier", "delphinID Classifier"), "delphinID Classifier"),
-    selectInput("selectDB", "Select database", c("exampleDB_StTt", "exampleDB_ES2019", "exampleDB_BB2022", "exampleDB_WS2024", "exampleDB_SD2025", "trackDB"), selected="trackDB"),
+    selectInput("selectDB", "Select database", c("exampleDB_ES2019", "exampleDB_BB2022", "exampleDB_WS2024", "trackDB"), selected="trackDB"),
     uiOutput("ctableSelectUI"),
     uiOutput("wtableSelectUI"), 
     sliderInput("evScore", "Minimum decision score", 0, 0.2, 0, step=0.025),
@@ -244,8 +244,7 @@ server <- function(input, output, session) {
     }
     
     labels_rv(NULL) #reset labels.
-    shinyjs::show("testButtonDiv") # Show make new classifier button
-    shinyjs::show("bulkLabelDiv") # Show bulk labelling options
+
     
     predictions_rv(list(preds = pred_df, allpreds = allpreds, evScore = evScore, PCAdf = pcadf)) #update reactive value
     
@@ -254,6 +253,8 @@ server <- function(input, output, session) {
   
   
   observeEvent(input$addLabelsButton, {
+    shinyjs::show("testButtonDiv") # Show make new classifier button
+    shinyjs::show("bulkLabelDiv") # Show bulk labelling options
     preds <- predictions_rv()$preds
     labels_rv(data.frame(eventID = preds$eventID, label = character(nrow(preds)), stringsAsFactors = FALSE))
   })
