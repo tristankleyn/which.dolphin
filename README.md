@@ -20,7 +20,7 @@ Classifier models provided here are designed to work in a two-stage process: **b
 ### Do-it-yourself 🔧
 I've done my best to provide all information information and code required for anyone interested to develop their own delphinID or ROCCA classifiers from scratch - this option requires some familiarity with Python. Alternatively, the eventClassifier interface allows users to harness transfer learning to train event classifiers for their own data based on delphinID or ROCCA - this option is more intuitive, requiring no coding at all. Code and guidance for these options are available through the links below:
 
-🌱 **Develop [delphinID](https://github.com/tristankleyn/which.dolphin/tree/main/delphinID) or [ROCCA](https://github.com/tristankleyn/which.dolphin/tree/main/rocca) classifiers from scratch.**
+🌱 **Develop [delphinID](delphinID/README.md#diy-train-a-delphinid-classifier-for-your-own-dataspecies) or [ROCCA](https://github.com/tristankleyn/which.dolphin/tree/main/rocca) classifiers from scratch.**
 
 🧠 **[Harness transfer learning](eventClassifier/README.md#easy-transfer-learning-with-eventclassifier) to train a new classifier.**
 
