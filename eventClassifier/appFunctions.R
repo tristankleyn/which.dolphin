@@ -96,14 +96,25 @@ processdataRocca <- function(db_con, dateRange) {
             names(dfc_e) <- namesc
             names(dfw_e) <- namesw
             xtest <- data.frame(cbind(t(dfc_e), t(dfw_e)))
+            xround <- as.integer(xtest*100)
 
-            evDur <- as.numeric(seconds(difftime(sub$UTC[dim(sub)[1]], sub$UTC[1])))*60
+            barcode <- ''
+            for (item in xround) {
+              item <- as.character(item)
+              if (nchar(item) < 2) {
+                item <- gsub(' ', '', paste('0', item))
+              }
+              barcode <- gsub(' ', '', paste(barcode, item))
+            }
+
+            evDur <- as.numeric(seconds(difftime(sub$UTC[dim(sub)[1]], sub$UTC[1])))*60/60
             xtest$startUTC <- sub$UTC[1]
             xtest$endUTC <- sub$UTC[dim(sub)[1]]
-            xtest$duration <- evDur
+            xtest$minutes <- evDur
             xtest$eventID <- str_trim(as.character(evID))
             xtest$clicks <- dim(dfc)[1]
             xtest$whistles <- dim(dfw)[1]
+            xtest$barcode <- barcode
             print(sprintf('Event %s start %s', event_count, xtest$startUTC))
             print(sprintf('Event %s end %s', event_count, xtest$endUTC))
             test_events <- rbind(test_events, xtest)
@@ -118,8 +129,8 @@ processdataRocca <- function(db_con, dateRange) {
 }
 
 processdataDelphinID <- function(db_con, dateRange, ctable=NULL, wtable=NULL, randseed=42) {
-  ctable <- gsub(' ', '', paste(ctable, '_Group_Detections'))
-  wtable <- gsub(' ', '', paste(wtable, '_Group_Detections'))
+  ctable <- gsub(' ', '', paste(ctable, '_Predictions'))
+  wtable <- gsub(' ', '', paste(wtable, '_Predictions'))
   print(sprintf('%s - %s', ctable, wtable))
   cdata <- dbGetQuery(db_con, paste0(sprintf("SELECT * FROM %s", ctable)))
   wdata <- dbGetQuery(db_con, paste0(sprintf("SELECT * FROM %s", wtable)))
@@ -164,16 +175,12 @@ processdataDelphinID <- function(db_con, dateRange, ctable=NULL, wtable=NULL, ra
         #discard bad rows/missing values in click classifier output
         keep <- c()
         for (j in 1:nrow(csub)) {
-          preds <- csub$Prediction[j]
+          preds <- csub$Predicition[j]
           if (length(preds) > 0) {
-            if (!is.na(preds)) {
-              preds <- data.frame(fromJSON(preds)$predictions)
-              if (!is.null(preds)) {
-                if (nrow(preds) > 0) {
-                  keep <- append(keep, 1)
-                } else {
-                  keep <- append(keep, 0)
-                }
+            if (is.character(preds) == TRUE & length(preds) > 0 & !is.na(preds)) {
+              nums <- as.numeric(fromJSON(preds)$predictions)
+              if (all(nums >= 0) == TRUE) {
+                keep <- append(keep, 1)
               } else {
                 keep <- append(keep, 0)
               }
@@ -191,20 +198,17 @@ processdataDelphinID <- function(db_con, dateRange, ctable=NULL, wtable=NULL, ra
         } else {
           csub <- csub[0:0,]
         }
+        
 
         #discard bad rows/missing values in whistle classifier output
         keep <- c()
         for (j in 1:nrow(wsub)) {
-          preds <- wsub$Prediction[j]
+          preds <- wsub$Predicition[j]
           if (length(preds) > 0) {
-            if (!is.na(preds)) {
-              preds <- data.frame(fromJSON(preds)$predictions)
-              if (!is.null(preds)) {
-                if (nrow(preds) > 0) {
-                  keep <- append(keep, 1)
-                } else {
-                  keep <- append(keep, 0)
-                }
+            if (is.character(preds) == TRUE & !is.na(preds)) {
+              nums <- as.numeric(fromJSON(preds)$predictions)
+              if (all(nums >= 0) == TRUE) {
+                keep <- append(keep, 1)
               } else {
                 keep <- append(keep, 0)
               }
@@ -220,75 +224,67 @@ processdataDelphinID <- function(db_con, dateRange, ctable=NULL, wtable=NULL, ra
           wsub$keep <- keep
           wsub <- subset(wsub, keep > 0)
         } else {
-          print('keep error')
           wsub <- wsub[0:0,]
         }
         
         #get all predictions from click classifier
-        csub_preds <- list()
         if (length(dim(csub)) > 0) {
           if (dim(csub)[1] > 0) {
-            allpreds <- data.frame()
-            for (i in 1:nrow(csub)) {
-              preds <- csub$Prediction[i]
-              preds <- data.frame(fromJSON(preds)$predictions)
-              allpreds <- rbind(allpreds, preds)
-            }
             count <- 1
             namesc <- c()
             for (sp in cspecies) {
               namesc <- append(namesc, sprintf('%s_c', sp))
-              csub_preds[[sp]] <- as.numeric(allpreds[,count])
+              votes <- c()
+              for (i in 1:dim(csub)[1]){
+                preds <- csub$Predicition[i]
+                p <- as.numeric(fromJSON(preds)$predictions[[count]])
+                votes <- append(votes, p)
+              }
+              csub[[sp]] <- votes
               count <- count + 1
             }
-            
           } else {
-            csub_preds <- data.frame(t(data.frame(rep(NaN, length(cspecies)))))
-            rownames(csub_preds) <- c(1)
-            names(csub_preds) <- cspecies
+            csub <- data.frame(t(data.frame(rep(NaN, length(cspecies)))))
+            rownames(csub) <- c(1)
+            names(csub) <- cspecies
           }
         } else {
-          csub_preds <- data.frame(t(data.frame(rep(NaN, length(cspecies)))))
-          rownames(csub_preds) <- c(1)
-          names(csub_preds) <- cspecies
+          csub <- data.frame(t(data.frame(rep(NaN, length(cspecies)))))
+          rownames(csub) <- c(1)
+          names(csub) <- cspecies
         }
         
-        #get all predictions from whistle classifiers
-        wsub_preds <- list()
         if (length(dim(wsub)) > 0) {
           if (dim(wsub)[1] > 0) {
-            allpreds <- data.frame()
-            for (i in 1:nrow(wsub)) {
-              preds <- wsub$Prediction[i]
-              preds <- data.frame(fromJSON(preds)$predictions)
-              allpreds <- rbind(allpreds, preds)
-            }
             count <- 1
             namesw <- c()
             for (sp in wspecies) {
               namesw <- append(namesw, sprintf('%s_w', sp))
-              wsub_preds[[sp]] <- as.numeric(allpreds[,count])
+              votes <- c()
+              for (i in 1:dim(wsub)[1]){
+                preds <- wsub$Predicition[i]
+                nums <- as.numeric(fromJSON(preds)$predictions)
+                p <- as.numeric(fromJSON(preds)$predictions[[count]])
+                votes <- append(votes, p)
+              }
+              wsub[[sp]] <- votes
               count <- count + 1
             }
-            
           } else {
-            wsub_preds <- data.frame(t(data.frame(rep(NaN, length(wspecies)))))
-            rownames(wsub_preds) <- c(1)
-            names(wsub_preds) <- wspecies
+            wsub <- data.frame(t(data.frame(rep(NaN, length(wspecies)))))
+            rownames(wsub) <- c(1)
+            names(wsub) <- wspecies
           }
         } else {
-          wsub_preds <- data.frame(t(data.frame(rep(NaN, length(wspecies)))))
-          rownames(wsub_preds) <- c(1)
-          names(wsub_preds) <- wspecies
+          wsub <- data.frame(t(data.frame(rep(NaN, length(wspecies)))))
+          rownames(wsub) <- c(1)
+          names(wsub) <- wspecies
         }
             
-            dfc <- data.frame(csub_preds)
-            names(dfc) <- cspecies
-            
-            dfw <- data.frame(wsub_preds)
-            names(dfw) <- wspecies
+            dfc <- csub
+            dfw <- wsub
           
-            dfc_e <- colMeans(dfc[,cspecies])/sum(colMeans(dfc[,cspecies]))
+            dfc_e <- colMeans(dfc[,cspecies])/sum(colMeans(dfc[,cspecies]), na.rm=TRUE)
             seed <- as.integer(nrow(dfc)*nrow(dfw))
             cc <- 0
             if (any(is.na(dfc_e))) {
@@ -304,10 +300,10 @@ processdataDelphinID <- function(db_con, dateRange, ctable=NULL, wtable=NULL, ra
             }
             
             set.seed(randseed)
-
+            
             namesc <- c('Dde_c', 'Ggr_c', 'Gme_c', 'Lal_c', 'Ttr_c')
             
-            dfw_e <- colMeans(dfw[,wspecies])/sum(colMeans(dfw[,wspecies]))
+            dfw_e <- colMeans(dfw[,wspecies])/sum(colMeans(dfw[,wspecies]), na.rm=TRUE)
             seed <- as.integer(nrow(dfc)*nrow(dfw))
             cc <- 0
             if (any(is.na(dfw_e))) {
@@ -330,7 +326,6 @@ processdataDelphinID <- function(db_con, dateRange, ctable=NULL, wtable=NULL, ra
             names(dfw_e) <- namesw
             xtest <- data.frame(cbind(t(dfc_e), t(dfw_e)))
             xround <- as.integer(xtest*100)
-            print(dfw_e)
             barcode <- ''
             for (item in xround) {
               item <- as.character(item)

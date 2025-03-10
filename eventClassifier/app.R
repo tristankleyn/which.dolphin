@@ -246,7 +246,7 @@ server <- function(input, output, session) {
       pred_df <- rbind(pred_df, predrow)
     }
     pred_df$eventGroup <- NA
-    
+
     if (nrow(pcadf) > 1) {
       pca_result <- prcomp(pcadf, scale. = TRUE)
     } else {
@@ -274,6 +274,7 @@ server <- function(input, output, session) {
       pred_df <- subset(pred_df, score >= input$evScore & (clicks >= input$minClicks | whistles >= input$minWhistles))
     }
     
+    allpreds <- subset(allpreds, clicks > 0 | whistles > 0)
     pred_df <- subset(pred_df, clicks > 0 | whistles > 0)
     
     evScore <- input$evScore
