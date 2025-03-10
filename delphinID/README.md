@@ -1,5 +1,5 @@
 
-<img src="./images/logo_2.PNG" alt="Example image" width="500">
+<img src="./images/logo_2.PNG" alt="Example image" width="300">
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14578299.svg)](https://doi.org/10.5281/zenodo.14578299)
 ##
