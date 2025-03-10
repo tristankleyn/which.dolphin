@@ -35,7 +35,14 @@ This repository contains code for training and testing delphinID models, convolu
 
 ### 🧾 Overview
 <p align="justify">
-delphinID models are convolutional neural networks (CNNs) trained to classify delphinid species by latent characteristics in low-frequency average spectra calculated from groups of detections of whistle or click vocalizations. delphinID classification is thus not based on 2D spectrograms containing vocalizations (and background noise) but rather on 1D arrays characterising the frequency content in detections. These relatively simple representations, which we refer to as *detection frames*, were found to have several benefits as a machine learning input, including improved computational efficiency, enhanced feature robustness to inherent imperfection in detections of clicks (e.g. occasional false detections) and whistles (e.g fragmented whistle contours), and a minimal influence of background noise (check this page for upcoming publication with full detail). Automated detections of whistles and clicks were made in PAMGuard, filtering of detections and generation of detection frames was done in R 4.4.2, and CNN models were trained and evaluated in Python Tensorflow 2.18. Anyone interested is welcome to use other methods to detect vocalizations and generate features, though we recommend following our methods as closely as possible to optain comparable results. 
+delphinID models are convolutional neural networks (CNNs) trained to classify delphinid species by latent characteristics in low-frequency average spectra calculated from groups of detections of whistle or click vocalizations. delphinID classification is thus not based on 2D spectrograms containing vocalizations (and background noise) but rather on 1D arrays characterising the frequency content in detections. These relatively simple representations, which we refer to as *detection frames* and are depicted in the plots below, were found to have several benefits as a machine learning input, including improved computational efficiency, enhanced feature robustness to inherent imperfection in detections of clicks (e.g. occasional false detections) and whistles (e.g fragmented whistle contours), and a minimal influence of background noise (check this page for upcoming publication with full detail). Automated detections of whistles and clicks were made in PAMGuard, filtering of detections and generation of detection frames was done in R 4.4.2, and CNN models were trained and evaluated in Python Tensorflow 2.18. Anyone interested is welcome to use other methods to detect vocalizations and generate features, though we recommend following our methods as closely as possible to optain comparable results. 
+
+   <p align="center">
+   <img width="580" alt="image" src="https://github.com/user-attachments/assets/101ba3b2-43da-424f-aef2-42df0e045deb" />
+   <br>
+   <em>Detection frames represent average frequencies present in detections within 4-second time windows.</em>
+   </p>
+
 </p>
 
 ##
@@ -60,12 +67,6 @@ Scripts contained in this folder can be used to train and test your own delphinI
 </p>
 
 4. Generate detection frame examples from whistle and click detections. [compiledata_main.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_main.R) and its functions [compiledata_functions.R](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R) can be used to generate detection frames for detections made in PAMGuard. Other software or custom methods can alternatively be used to generate detection frames. All detection frames to should be saved into .csv files within ./delphinID/data - this is done automatically when using the scripts provided.
-
-<p align="center">
-   <img width="580" alt="image" src="https://github.com/user-attachments/assets/101ba3b2-43da-424f-aef2-42df0e045deb" />
-   <br>
-   <em>Detection frames represent average frequencies present in detections within 4-second time windows.</em>
-</p>
 
 5. Train and evaluate classifier models using [classify_main.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/classify_main.py) and its functions [classify_functions.py](https://github.com/tristankleyn/which.dolphin/blob/main/delphinID/compiledata_functions.R). All examples in each unique encounter will form a separate testing set for evaluating a new classifier trained on all other encounters in the dataset, while models and results are exported to ./delphinID/data. Classification parameters used in the "classify_main.py" script, which are described in the table below, can be adjusted to achieve optimal results.
 
