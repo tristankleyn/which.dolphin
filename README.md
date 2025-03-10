@@ -1,10 +1,10 @@
-## Identify dolphin species acoustically with machine learning.
 ##### Cite delphinID 
 ![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14578299.svg)
 
-##### Cite ROCCA 
+##### Cite ROCCA Northeast Atlantic
 ![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14936662.svg)
 
+## Identify dolphin species acoustically with machine learning.
 This repository contains code for developing and applying machine learning models for identifying delphinid species by acoustic characteristics of their vocalizations. Models are designed to be used in conjunction with the open-source acoustic analysis software [PAMGuard](https://www.pamguard.org/), while interested developers are welcome to suggest alterations or additions to any code.
 
 ![Alt text](images/methods_simple_1.PNG)
