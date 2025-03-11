@@ -84,7 +84,7 @@ ui <- fluidPage(
   titlePanel(title = div(class = "shiny-title", "eventClassifier/")),
   
   sidebarPanel(
-    selectInput("selectDB", "Select database", c("exampleDB_ES2019", "exampleDB_BB2022", "exampleDB_WS2024", "trackDB"), selected = "trackDB"),
+    selectInput("selectDB", "Select database", c("exampleDB_BB2022", "trackDB"), selected = "trackDB"),
     selectInput("classifierType", "Select supported PAMGuard classifier", c("ROCCA Classifier", "delphinID Classifier"), "delphinID Classifier"),
     selectInput("classifierSelect", "Select event classifier", choices = NULL),
     uiOutput("ctableSelectUI"),
@@ -93,7 +93,7 @@ ui <- fluidPage(
     sliderInput("minClicks", "Minimum click predictions", 0, 100, 0, step = 5),
     radioButtons(inputId = "AndOr", label = NULL, choices = list("AND" = 1, "OR" = 2)),
     sliderInput("minWhistles", "Minimum whistle predictions", 0, 100, 0, step = 5),
-    dateRangeInput("dateRange", "Filter dates", start = Sys.Date() - 3652, end = Sys.Date()),
+    dateRangeInput("dateRange", "Filter dates", start = Sys.Date() - 10652, end = Sys.Date()),
     selectInput("plotType", "Show plot", c("Counts", "Map"), selected = "Counts"),
     actionButton("classifyButton", "Classify", class = "btn-primary"),
     actionButton("addLabelsButton", "Add Labels"),
@@ -200,6 +200,7 @@ server <- function(input, output, session) {
       testevents <- processdataDelphinID(db_con, dateRange, ctable = input$cTable, wtable = input$wTable, randseed = rseed)[[1]]
     }
     
+    print(testevents)
     testevents$uid <- 1:nrow(testevents)
     testevents_rv(list(df = testevents))
     list(df = testevents)
