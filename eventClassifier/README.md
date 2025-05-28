@@ -87,7 +87,7 @@ The "Add Labels" function in eventClassifier can be used to assign new labels to
 ##
 #### ❓ What's the difference between ROCCA and delphinID classifiers? 
 <p align="justify">
-ROCCA uses Random Forest analysis to predict species based on measured characteristics of whistle contours and click spectra, while delphinID uses deep learning to predict species based on average spectra of whistle contours and clicks. Both classifier types can run using automated detections made in PAMGuard.
+ROCCA uses Random Forest analysis to predict species based on measured characteristics of whistle contours and click spectra, while delphinID uses deep learning to predict species based on distributions of the frequencies observed in detections of whistle contours and clicks. Both classifier types can run using automated detections made in PAMGuard.
 </p>
 
 #### ❓ What are the best settings to use for decision score and minimum whistles and clicks?
